@@ -23,12 +23,16 @@ const handleSubmit = async (e) => {
   }
 }
 
+const storeFile = (event) => {
+  excel.value = event.target.files[0]
+}
+
 </script>
 
 <template>
   <div>
     <label for="file">Seleccione el archivo excel:</label>
-    <input type="file" id="file" accept=".xls, .xlsx" @change="excel = $event.target.files[0]">
+    <input type="file" id="file" accept=".xls, .xlsx" @change="storeFile" />
 
     <button @click="handleSubmit">Enviar</button>
   </div>
