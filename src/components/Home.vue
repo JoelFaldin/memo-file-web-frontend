@@ -17,9 +17,9 @@ const giro = ref(null)
 const agtp = ref(null)
 
 
-const excel = ref(null)
+const excel = ref<File | null>(null)
 
-const handleSubmit = async (e) => {
+const handleSubmit = async (e: Event) => {
   e.preventDefault()
 
   const formData = new FormData()
@@ -39,7 +39,10 @@ const handleSubmit = async (e) => {
 }
 
 const storeFile = (event: Event) => {
-    excel.value = event.target.files[0]
+    const target = event.target as HTMLInputElement
+
+    excel.value = target.files![0]
+     
 }
 
 const handleSubmitData = async (event: Event) => {
@@ -78,6 +81,8 @@ const handleSubmitData = async (event: Event) => {
 
 <template>
   <div class="excel">
+    <h1 class="title">Subir archivo excel</h1>
+
     <label for="file">Seleccione el archivo excel:</label>
     <input type="file" id="file" accept=".xls, .xlsx" @change="storeFile" />
 
@@ -87,6 +92,8 @@ const handleSubmitData = async (event: Event) => {
   <br />
 
   <form class="form">
+    <h2 class="title">Guardar un memo</h2>
+
     <label for="tipo">Tipo</label>
     <input id="tipo" v-model="tipo" />
 
@@ -115,7 +122,7 @@ const handleSubmitData = async (event: Event) => {
     <input id="capital" v-model="capital" />
 
     <label for="afecto">Afecto</label>
-    <input id="afecto" v-model="afecto" />
+    <input id="afecto" v-model="afecto" type="number" />
 
     <label for="fechaPagos">Fecha de pago</label>
     <input id="fechaPagos" v-model="fechaPagos" />
@@ -131,8 +138,14 @@ const handleSubmitData = async (event: Event) => {
 </template>
 
 <style scoped>
-  .excel, .form {
+  .excel, .form, .nav {
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: x-large;
   }
 </style>
