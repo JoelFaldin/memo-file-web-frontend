@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { useColorMode } from '@vueuse/core';
 
 import Sidebar from './components/Sidebar.vue';
+
+const mode = useColorMode()
 
 </script>
 
 <template>
-  <header>
+  <div class="flex h-screen">
     <Sidebar />
-  </header>
-
-  <!-- <RouterView /> -->
+    <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto p-4 text-white`">
+      <RouterView />
+    </section>
+  </div>
 </template>
 
 <style scoped>
-
+  .bgSectionDark {
+    background: linear-gradient(to bottom, #1e1e2e, #12121a);
+  }
+  .bgSectionLight {
+    background: linear-gradient(to bottom, #ffffff, #cecece)
+  }
 </style>

@@ -16,7 +16,7 @@ const route = useRoute()
             <div class="space-y-2">
                 <span v-for="item in router.options.routes">
                     <RouterLink :to="item.path">
-                        <Button :variant="route.path == item.path ? 'secondary' : 'ghost'" class="dark:text-white">{{ item.name }}</Button>
+                        <Button class="dark:text-white w-full justify-start my-1 py-4" :variant="route.path == item.path ? 'secondary' : 'ghost'">{{ item.name }}</Button>
                     </RouterLink>
                 </span>
             </div>
@@ -24,5 +24,5 @@ const route = useRoute()
         <div className="absolute bottom-6 left-4">
             <ThemeToggle />
         </div>
-    </nav>    
+    </nav>
 </template>
