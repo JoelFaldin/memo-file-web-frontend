@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterLink } from 'vue-router';
+
+import Sidebar from './components/Sidebar.vue';
+
 </script>
 
 <template>
   <header>
-    <div>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/update">Update memo</RouterLink>
-      </nav>
-    </div>
+    <Sidebar />
   </header>
 
-
-  <RouterView />
+  <!-- <RouterView /> -->
 </template>
 
 <style scoped>
