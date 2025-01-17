@@ -35,7 +35,7 @@ export default {
 </script>
 
 <template>
-    <form class="form">
+    <form>
         <label for="searchMemo">Buscar memo (por patente):</label>
         <input id="searchMemo" type="text" v-model="patente">
 
@@ -44,9 +44,5 @@ export default {
 </template>
 
 <style scoped>
-  .form {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-  }
+
 </style>

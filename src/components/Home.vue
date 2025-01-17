@@ -80,8 +80,8 @@ const handleSubmitData = async (event: Event) => {
 </script>
 
 <template>
-  <div class="excel">
-    <h1 class="title">Subir archivo excel</h1>
+  <div>
+    <h1>Subir archivo excel</h1>
 
     <label for="file">Seleccione el archivo excel:</label>
     <input type="file" id="file" accept=".xls, .xlsx" @change="storeFile" />
@@ -91,8 +91,8 @@ const handleSubmitData = async (event: Event) => {
 
   <br />
 
-  <form class="form">
-    <h2 class="title">Guardar un memo</h2>
+  <form>
+    <h2>Guardar un memo</h2>
 
     <label for="tipo">Tipo</label>
     <input id="tipo" v-model="tipo" />
@@ -138,14 +138,5 @@ const handleSubmitData = async (event: Event) => {
 </template>
 
 <style scoped>
-  .excel, .form, .nav {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-  }
 
-  .title {
-    font-weight: bold;
-    font-size: x-large;
-  }
 </style>
