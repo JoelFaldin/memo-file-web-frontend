@@ -10,17 +10,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: 'Inicio',
       component: HomeView,
     },
     {
       path: '/update',
-      name: 'Actualizar memo',
+      name: 'Actualizar memorándum',
       component: UpdateMemo,
     },
     {
       path: '/create',
-      name: 'Crear memo',
+      name: 'Crear memorándum',
       component: CreateMemo,
     },
     {
