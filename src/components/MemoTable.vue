@@ -7,9 +7,9 @@ const props = defineProps(['data']);
 </script>
 
 <template>
-    <Table>
+    <Table class="border border-slate-500">
         <TableCaption>Lista de memos</TableCaption>
-        <TableHeader>
+        <TableHeader class="border-slate-500">
             <TableRow>
                 <TableHead v-for="header in headers">
                     {{ header }}
@@ -18,7 +18,7 @@ const props = defineProps(['data']);
         </TableHeader>
 
         <TableBody>
-            <TableRow v-for="row in props.data.findMemo">
+            <TableRow v-for="row in props.data.findMemo" class="border-slate-500">
                 <TableCell>{{ row.id }}</TableCell>
                 <TableCell>{{ row.rut }}</TableCell>
                 <TableCell>{{ row.tipo }}</TableCell>

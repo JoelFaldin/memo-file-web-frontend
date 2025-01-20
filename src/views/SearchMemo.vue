@@ -61,6 +61,8 @@ const searchMemo = async (event: Event) => {
       <p>No hay memos con la patente indicada.</p>
     </section>
     <section v-else-if="data">
+      <p class="text-center mb-5 text-slate-400">Total: {{ data.total }}</p>
+
       <MemoTable :data="data" />
     </section>
   </div>
