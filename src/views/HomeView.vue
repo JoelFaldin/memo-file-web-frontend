@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from 'vue-query';
+import { useQuery } from '@tanstack/vue-query';
 
 const fetchData = async () => {
     const res = await fetch('http://localhost:3000/memo/overall');
@@ -8,7 +8,10 @@ const fetchData = async () => {
     return response;
 }
 
-const { isLoading, isError, data, error } = useQuery('overall', fetchData);
+const { isLoading, isError, data, error } = useQuery({
+    queryKey: ['overall'],
+    queryFn: fetchData
+});
 
 </script>
 

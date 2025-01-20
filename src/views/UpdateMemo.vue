@@ -1,25 +1,34 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query';
 import { Label } from 'radix-vue';
 import { ref } from 'vue';
 
-const patente = ref(null)
-const isLoading = ref(false)
+const patente = ref('');
+
+const getMemos = async (patente: string) => {
+  const res = await fetch(`http://localhost:3000/memo/${patente}`);
+  const response = await res.json();
+
+  console.log(response);
+  return response;
+}
+
+const { data, isLoading, refetch } = useQuery({
+  queryKey: ['searchedMemos'],
+  queryFn: () => getMemos(patente.value),
+  enabled: false
+});
 
 const searchMemo = async (event: Event) => {  
   if (!patente.value) {
-    alert('No has indicado una patente!')
-    return
+    alert('No has indicado una patente!');
+    return;
   }
-
-  try {
-    isLoading.value = true;
-
-    const res = await fetch(`http://localhost:3000/memo/${patente.value}`);
-    const data = await res.json();
-
-    console.log(data);
-    isLoading.value = false;
-  } catch (error) {
+  
+  try {    
+    refetch();
+    patente.value = '';
+  } catch(error) {
     console.log(error);
   }
 }
@@ -41,6 +50,8 @@ const searchMemo = async (event: Event) => {
         Buscar
       </button>
     </div>
+
+
   </div>
 </template>
 

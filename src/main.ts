@@ -1,4 +1,4 @@
-import { VueQueryPlugin } from 'vue-query';
+import { VueQueryPlugin } from '@tanstack/vue-query';
 import { createApp } from 'vue';
 
 import router from './router';
