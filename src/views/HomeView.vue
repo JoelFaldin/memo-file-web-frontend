@@ -25,7 +25,7 @@ const { isLoading, isError, data, error } = useQuery({
                 <p>Cargando tabla resumen...</p>
             </span>
             <span v-else-if="isError">
-                <p>Hubo un errorr</p>
+                <p>Hubo un error</p>
             </span>
             <span v-else-if="data" class="w-9/12">
                 <table style="width:100%;" class="text-slate-400 mb-2">

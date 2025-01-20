@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody,TableCell } from './ui/table';
 
-const headers = ["Memo Id", "Rut", "Tipo", "Patente", "Periodo", "Capital", "Afecto", "Total", "Emisión", "Giro", "AGTP"];
+const headers = ["Memo Id", "Rut", "Tipo", "Patente", "Periodo", "Capital", "Afecto", "Total", "Emisión", "Giro", "AGTP", "Fecha de pago"];
 
 const props = defineProps(['data']);
 </script>
@@ -18,7 +18,7 @@ const props = defineProps(['data']);
         </TableHeader>
 
         <TableBody>
-            <TableRow v-for="row in props.data.findMemo" class="border-slate-500">
+            <TableRow v-for="row in props.data.joinedMemos" class="border-slate-500">
                 <TableCell>{{ row.id }}</TableCell>
                 <TableCell>{{ row.rut }}</TableCell>
                 <TableCell>{{ row.tipo }}</TableCell>
@@ -30,6 +30,7 @@ const props = defineProps(['data']);
                 <TableCell>{{ row.emision }}</TableCell>
                 <TableCell>{{ row.giro }}</TableCell>
                 <TableCell>{{ row.agtp }}</TableCell>
+                <TableCell>{{ row.pay_times }}</TableCell>
             </TableRow>
         </TableBody>
     </Table>
