@@ -16,7 +16,7 @@ const { isLoading, isError, data, error } = useQuery('overall', fetchData);
     <div class="min-h-screen flex items-center justify-center p-4">
         <div :class="`flex flex-col items-center bg-card rounded-lg border border-slate-700 p-6 shadow-sm max-w-md w-full`">
             <h3 class="text-3xl font-bold">Resumen general</h3>
-            <p class="pb-10 pt-2 text-slate-400">Memorándums 2010-2024</p>
+            <p class="pb-10 pt-2 text-slate-400">Lista de memorándums 2010-2024</p>
 
             <span v-if="isLoading">
                 <p>Cargando tabla resumen...</p>
