@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from '@/views/HomeView.vue'
-import UpdateMemo from '@/views/UpdateMemo.vue'
+import SearchMemo from '@/views/SearchMemo.vue'
 import CreateMemo from '@/views/CreateMemo.vue'
 import UploadExcel from '@/views/UploadExcel.vue'
 
@@ -14,9 +14,9 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/update',
-      name: 'Actualizar memorándum',
-      component: UpdateMemo,
+      path: '/search',
+      name: 'Buscar memorándums',
+      component: SearchMemo,
     },
     {
       path: '/create',

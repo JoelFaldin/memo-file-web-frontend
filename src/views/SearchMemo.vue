@@ -10,11 +10,10 @@ const patente = ref('');
 const getMemos = async (patente: string) => {
   const res = await fetch(`http://localhost:3000/memo/${patente}`);
   const response = await res.json();
-
   return response;
 }
 
-const { data, isLoading, refetch } = useQuery({
+const { data, isLoading, isError, refetch } = useQuery({
   queryKey: ['searchedMemos'],
   queryFn: () => getMemos(patente.value),
   enabled: false
@@ -52,7 +51,16 @@ const searchMemo = async (event: Event) => {
       </button>
     </section>
 
-    <section v-if="data">
+    <section v-if="isLoading">
+      Buscando memos...
+    </section>
+    <section v-else-if="isError">
+      <p>Ha ocurrido un error al intentar buscar memorándums con esa patente, revisa que el servidor esté funcionando.</p>
+    </section>
+    <section v-else-if="data?.findMemo?.length === 0">
+      <p>No hay memos con la patente indicada.</p>
+    </section>
+    <section v-else-if="data">
       <MemoTable :data="data" />
     </section>
   </div>

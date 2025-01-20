@@ -2,10 +2,11 @@
 import { IconSun, IconMoon } from '@tabler/icons-vue';
 import { useColorMode } from '@vueuse/core';
 
-import DropdownMenu from './ui/dropdown-menu/DropdownMenu.vue';
 import DropdownMenuContent from './ui/dropdown-menu/DropdownMenuContent.vue';
-import DropdownMenuItem from './ui/dropdown-menu/DropdownMenuItem.vue';
 import DropdownMenuTrigger from './ui/dropdown-menu/DropdownMenuTrigger.vue';
+import DropdownMenuItem from './ui/dropdown-menu/DropdownMenuItem.vue';
+import DropdownMenu from './ui/dropdown-menu/DropdownMenu.vue';
+import Button from './ui/button/Button.vue';
 
 const mode = useColorMode()
 

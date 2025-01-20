@@ -4,7 +4,6 @@ import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody,TableC
 const headers = ["Memo Id", "Rut", "Tipo", "Patente", "Periodo", "Capital", "Afecto", "Total", "Emisión", "Giro", "AGTP"];
 
 const props = defineProps(['data']);
-console.log(props.data.findMemo)
 </script>
 
 <template>
