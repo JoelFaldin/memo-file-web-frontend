@@ -2,10 +2,14 @@
 import { useQuery } from '@tanstack/vue-query';
 
 const fetchData = async () => {
-    const res = await fetch('http://localhost:3000/memo/overall');
-    const response = await res.json();
-
-    return response;
+    try {
+        const res = await fetch('http://localhost:3000/memo/overall');
+        const response = await res.json();
+    
+        return response;
+    } catch(error) {
+        return error;
+    }
 }
 
 const { isLoading, isError, data, error } = useQuery({
@@ -24,8 +28,10 @@ const { isLoading, isError, data, error } = useQuery({
             <span v-if="isLoading">
                 <p>Cargando tabla resumen...</p>
             </span>
-            <span v-else-if="isError">
-                <p>Hubo un error</p>
+            <span v-else-if="isError" class="flex flex-col justify-center text-center">
+                <p>Ha habido un error, intenta más tarde.</p>
+                <p>Detalles del error:</p>
+                <p>{{ error }}</p>
             </span>
             <span v-else-if="data" class="w-9/12">
                 <table style="width:100%;" class="text-slate-400 mb-2">
