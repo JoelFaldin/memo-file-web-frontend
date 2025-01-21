@@ -26,7 +26,7 @@ const searchMemo = async (event: Event) => {
   }
   
   try {    
-    refetch();
+    await refetch();
     patente.value = '';
   } catch(error) {
     console.log(error);
@@ -57,7 +57,7 @@ const searchMemo = async (event: Event) => {
     <section v-else-if="isError">
       <p>Ha ocurrido un error al intentar buscar memorándums con esa patente, revisa que el servidor esté funcionando.</p>
     </section>
-    <section v-else-if="data?.findMemo?.length === 0">
+    <section v-else-if="data?.joinedMemos?.length === 0">
       <p>No hay memos con la patente indicada.</p>
     </section>
     <section v-else-if="data">
