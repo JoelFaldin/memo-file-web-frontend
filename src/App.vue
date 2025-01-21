@@ -10,7 +10,7 @@ const mode = useColorMode()
 <template>
   <div class="flex h-screen">
     <Sidebar />
-    <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto p-4 text-white`">
+    <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto text-white`">
       <RouterView />
     </section>
   </div>

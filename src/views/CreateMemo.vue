@@ -75,7 +75,7 @@ const handleSubmitData = async () => {
 
 <template>
   <div class="min-h-screen flex items-start justify-center">
-    <div class="flex flex-col items-center bg-card rounded-lg border border-slate-700 p-6 shadow-sm w-full">
+    <div class="flex flex-col items-center bg-card rounded-lg p-6 shadow-sm w-full">
       <h3 class="text-2xl font-bold mb-5">Guardar un nuevo memorándum</h3>
 
       <div class="flex flex-col gap-y-4 w-full">
