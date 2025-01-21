@@ -1,12 +1,52 @@
 <script lang="ts" setup>
 import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
+import { useMutation } from '@tanstack/vue-query';
 import { ref } from 'vue';
 
-import UserSection from '@/components/formComponents/UserSection.vue';
-import InfoSection from '@/components/formComponents/InfoSection.vue';
-import DirectionSection from '@/components/formComponents/DirectionSection.vue';
-import FinancesSection from '@/components/formComponents/FinancesSection.vue';
-import LabelSection from '@/components/formComponents/LabelSection.vue';
+import UserSection from '@/components/FormUserSection.vue';
+import InfoSection from '@/components/FormInfoSection.vue';
+import DirectionSection from '@/components/FormDirectionSection.vue';
+import FinancesSection from '@/components/FormFinancesSection.vue';
+import LabelSection from '@/components/FormLabelSection.vue';
+
+interface NewMemoInterface {
+  tipo: string,
+  patente: string,
+  rut: string,
+  nombre: string,
+  calle: string,
+  numero: string,
+  aclaratoria: string,
+  periodo: string,
+  capital: number,
+  afecto: number,
+  total: number,
+  emision: number,
+  fechaPagos: number,
+  giro: string,
+  agtp: string,
+}
+
+const uploadMemo = async (newMemo: NewMemoInterface) => {
+  try {
+    const res = await fetch('http://localhost:3000/memo/create', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(newMemo)
+    });
+
+    const response = await res.json();
+    return response;
+  } catch(error) {
+    return error;
+  }
+}
+
+const { isPending, isError, error, isSuccess, mutate } = useMutation({
+  mutationFn: uploadMemo
+})
 
 const userInputs = ref({ rut: '', nombre: '' })
 const infoInputs = ref({ tipo: '', patente: '', periodo: '' })
@@ -22,12 +62,7 @@ const handleSubmitData = async () => {
   try {
     isLoading.value = true;
 
-    const res = await fetch('http://localhost:3000/memo/create', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({
+    const response = mutate({
         tipo: infoInputs.value.tipo,
         patente: infoInputs.value.patente,
         rut: userInputs.value.rut,
@@ -43,12 +78,10 @@ const handleSubmitData = async () => {
         fechaPagos: parseInt(fecha),
         giro: labelInputs.value.giro,
         agtp: labelInputs.value?.agtp
-      })
     })
 
-    const response = await res.json();
     
-    if (response.response === 'ok') {
+    if (isSuccess) {
       userInputs.value.rut = '';
       userInputs.value.nombre = '';
       infoInputs.value.tipo = '';
@@ -66,7 +99,7 @@ const handleSubmitData = async () => {
       labelInputs.value.agtp = '';
     }
   } catch (error) {
-    console.log(error)
+    return error;
   } finally {
     isLoading.value = false;
   }
