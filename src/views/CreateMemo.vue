@@ -1,266 +1,95 @@
 <script lang="ts" setup>
-import { Label, SelectContent, SelectGroup, SelectItem, SelectItemIndicator, SelectItemText, SelectLabel, SelectPortal, SelectRoot, SelectScrollDownButton, SelectScrollUpButton, SelectTrigger, SelectValue, SelectViewport } from 'radix-vue';
-import { Icon } from '@iconify/vue';
 import { ref } from 'vue';
 
-import { Button } from '@/components/ui/button';
+import UserSection from '@/components/formComponents/UserSection.vue';
+import InfoSection from '@/components/formComponents/InfoSection.vue';
+import DirectionSection from '@/components/formComponents/DirectionSection.vue';
+import FinancesSection from '@/components/formComponents/FinancesSection.vue';
+import LabelSection from '@/components/formComponents/LabelSection.vue';
 
-const rut = ref('')
-const nombre = ref('')
-const tipo = ref('')
-const patente = ref('')
-const periodo = ref('')
-const calle = ref('')
-const numero = ref('')
-const aclaratoria = ref('')
-const capital = ref('')
-const afecto = ref('')
-const total = ref('')
-const emision = ref('')
-const fechaPagos = ref('')
-const giro = ref('')
-const agtp = ref('')
+const userInputs = ref({ rut: '', nombre: '' })
+const infoInputs = ref({ tipo: '', patente: '', periodo: '' })
+const directionInputs = ref({ calle: '', numero: '', aclaratoria: '' })
+const financesInputs = ref({ capital: '', afecto: '', total: '', emision: '' })
+const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' })
 
-// const formSchema = toTypedSchema(z.object({
-//   rut: z.string(),
-//   nombre: z.string(),
-//   tipo: z.enum(["COMER", "PROFE", "INDUS", "ALCOH", "MEF"]),
-//   patente: z.string().length(8),
-//   periodo: z.string().length(6),
-//   capital: z.number(),
-//   afecto: z.number().min(0).max(100),
-//   total: z.number(),
-//   emision: z.number().min(0),
-//   giro: z.string(),
-//   agtp: z.string(),
-//   fechaPago: z.string()
-// }))
-
-const types = ["COMER", "PROFE", "INDUS", "ALCOH", "MEF"]
+const isLoading = ref(false)
 
 const handleSubmitData = async () => {
-  const fecha = fechaPagos.value.split('').filter(char => char != '-').join('');
-  // console.log(fechaPagos.value.split('').filter(char => char != '-').join(''))
+  const fecha = labelInputs.value.fechaPagos.split('').filter(char => char != '-').join('');
 
   try {
+    isLoading.value = true;
+
     const res = await fetch('http://localhost:3000/memo/create', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        tipo: tipo.value,
-        patente: patente.value,
-        rut: rut.value,
-        nombre: nombre.value,
-        calle: calle.value,
-        numero: numero.value,
-        aclaratoria: aclaratoria?.value,
-        periodo: periodo.value,
-        capital: capital.value,
-        afecto: afecto.value,
-        total: total.value,
-        emision: parseInt(emision.value),
+        tipo: infoInputs.value.tipo,
+        patente: infoInputs.value.patente,
+        rut: userInputs.value.rut,
+        nombre: userInputs.value.nombre,
+        calle: directionInputs.value.calle,
+        numero: directionInputs.value.numero,
+        aclaratoria: directionInputs.value?.aclaratoria,
+        periodo: infoInputs.value.periodo,
+        capital: parseFloat(financesInputs.value.capital),
+        afecto: parseInt(financesInputs.value.afecto),
+        total: parseFloat(financesInputs.value.total),
+        emision: parseInt(financesInputs.value.emision),
         fechaPagos: parseInt(fecha),
-        giro: giro.value,
-        agtp: agtp.value
+        giro: labelInputs.value.giro,
+        agtp: labelInputs.value?.agtp
       })
     })
 
     const response = await res.json();
-    console.log(response);
+    
+    if (response.response === 'ok') {
+      userInputs.value.rut = '';
+      userInputs.value.nombre = '';
+      infoInputs.value.tipo = '';
+      infoInputs.value.patente = '';
+      infoInputs.value.periodo = '';
+      directionInputs.value.calle = '';
+      directionInputs.value.numero = '';
+      directionInputs.value.aclaratoria = '';
+      financesInputs.value.capital = '';
+      financesInputs.value.afecto = '';
+      financesInputs.value.total = '';
+      financesInputs.value.emision = '';
+      labelInputs.value.fechaPagos = '';
+      labelInputs.value.giro = '';
+      labelInputs.value.agtp = '';
+    }
   } catch (error) {
     console.log(error)
+  } finally {
+    isLoading.value = false;
   }
 }
 </script>
 
 <template>
   <div class="min-h-screen flex items-start justify-center p-4">
-    <div class="flex flex-col items-center bg-card rounded-lg border border-slate-700 p-6 shadow-sm w-2/4">
+    <div class="flex flex-col items-center bg-card rounded-lg border border-slate-700 p-6 shadow-sm w-full">
       <h3 class="text-2xl font-bold mb-5">Guardar un nuevo memorándum</h3>
 
       <div class="flex flex-col gap-y-4 w-full">
-        <section class="flex flex-col w-full">
-          <Label class="text-[15px] font-semibold leading-[35px] text-white" for="rut">Rut</Label>
-          <input
-            id="rut"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="rut"
-          />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="name">Nombre</Label>
-          <input
-            id="name"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="nombre"
-          />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="tipo">Tipo</Label>
-          <SelectRoot v-model="tipo">
-            <SelectTrigger
-              class="border b-slate-100 inline-flex min-w-[160px] items-center justify-between rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] shadow-[0_2px_10px] shadow-black/10 hover:bg-gray-800 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-slate-500"
-            >
-              <SelectValue placeholder="Selecciona un tipo de patente..." />
-              <Icon
-                icon="radix-icons:chevron-down"
-                class="h-3.5 w-3.5"
-              />
-            </SelectTrigger>
+        <UserSection v-model:rut="userInputs.rut" v-model:nombre="userInputs.nombre" />
 
-            <SelectPortal>
-              <SelectContent
-                class="min-w-[160px] bg-gray-800 rounded shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade z-[100]"
-              >
-                <SelectScrollUpButton class="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
-                  <Icon icon="radix-icons:chevron-up" />
-                </SelectScrollUpButton>
+        <InfoSection v-model:tipo="infoInputs.tipo" v-model:patente="infoInputs.patente" v-model:periodo="infoInputs.periodo" />
 
-                <SelectViewport class="p-[5px]">
-                  <SelectLabel class="px-[25px] text-xs leading-[25px] text-slate-400">
-                    Tipos
-                  </SelectLabel>
-                  <SelectGroup>
-                    <SelectItem
-                      v-for="(type, index) in types"
-                      :key="index"
-                      class="text-[13px] leading-none text-white rounded-[3px] flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-slate-700 data-[highlighted]:text-indigo-400"
-                      :value="type"
-                    >
-                      <SelectItemIndicator class="absolute left-0 w-[25px] inline-flex items-center justify-center">
-                        <Icon icon="radix-icons:check" />
-                      </SelectItemIndicator>
-                      <SelectItemText>
-                        {{ type }}
-                      </SelectItemText>
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectViewport>
+        <DirectionSection v-model:calle="directionInputs.calle" v-model:numero="directionInputs.numero" v-model:aclaratoria="directionInputs.aclaratoria" />
 
-                <SelectScrollDownButton class="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
-                  <Icon icon="radix-icons:chevron-down" />
-                </SelectScrollDownButton>
-              </SelectContent>
-            </SelectPortal>
-          </SelectRoot>
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="patente">Patente</Label>
-          <input
-            id="patente"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="patente"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="periodo">Periodo</Label>
-          <input
-            id="periodo"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="periodo"
-            />
-          <p class="text-sm text-slate-400 mt-1">Por ejemplo, 20251S (primer semestre del 2025)</p>
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="calle">Calle</Label>
-          <input
-            id="calle"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="calle"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="numero">Número</Label>
-          <input
-            id="numero"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="numero"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="aclaratoria">Aclaratoria</Label>
-          <input
-            id="aclaratoria"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="aclaratoria"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="capital">Capital</Label>
-          <input
-            id="capital"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="number"
-            v-model="capital"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="afecto">Afecto</Label>
-          <input
-            id="afecto"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="number"
-            v-model="afecto"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="total">Total</Label>
-          <input
-            id="total"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="number"
-            v-model="total"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="emision">Emisión</Label>
-          <input
-            id="emision"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="number"
-            v-model="emision"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="fechaPago">Fecha de pago</Label>
-          <input
-            id="fechaPago"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="fechaPagos"
-            />
-          <p class="text-sm text-slate-400 mt-1">Por ejemplo, 01-02-2025 (01 de febrero, 2025)</p>
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="giro">Giro</Label>
-          <input
-            id="giro"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="giro"
-            />
-        </section>
-        <section class="flex flex-col w-full">
-          <Label for="agtp">AGTP</Label>
-          <input
-            id="agtp"
-            class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"
-            type="text"
-            v-model="agtp"
-            />
-        </section>
+        <FinancesSection v-model:capital="financesInputs.capital" v-model:afecto="financesInputs.afecto" v-model:total="financesInputs.total" v-model:emision="financesInputs.emision" />
+
+        <LabelSection v-model:fechaPagos="labelInputs.fechaPagos" v-model:giro="labelInputs.giro" v-model:agtp="labelInputs.agtp" />      
       </div>
 
-      <Button class="mt-8" @click="handleSubmitData">Enviar datos</Button>
+      <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isLoading ? 'bg-slate-500 hover:bg-slate-500 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" @click="handleSubmitData">Enviar datos</button>
     </div>
   </div>
 </template>
