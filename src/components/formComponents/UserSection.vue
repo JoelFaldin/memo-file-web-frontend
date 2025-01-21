@@ -14,7 +14,7 @@ defineEmits([
 </script>
 
 <template>
-    <span class="flex flex-col gap-y-4">
+    <span class="flex flex-col gap-y-4 w-11/12 m-auto">
         <section class="flex flex-col w-full">
             <Label class="text-[15px] font-semibold leading-[35px] text-white" for="rut">Rut</Label>
             <input
@@ -26,7 +26,7 @@ defineEmits([
             />
         </section>
         <section class="flex flex-col w-full">
-            <Label for="name">Nombre</Label>
+            <Label class="text-[15px] font-semibold leading-[35px] text-white" for="name">Nombre</Label>
             <input
                 id="name"
                 class="w-full inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none bg-inherit text-white shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px_white] selection:color-white"

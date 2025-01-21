@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
 import { ref } from 'vue';
 
 import UserSection from '@/components/formComponents/UserSection.vue';
@@ -78,15 +79,36 @@ const handleSubmitData = async () => {
       <h3 class="text-2xl font-bold mb-5">Guardar un nuevo memorándum</h3>
 
       <div class="flex flex-col gap-y-4 w-full">
-        <UserSection v-model:rut="userInputs.rut" v-model:nombre="userInputs.nombre" />
+        <SplitterGroup
+          id="group1"
+          direction="horizontal"
+        >
+          <!-- Left panels: -->
+          <SplitterPanel
+            id="panel1"
+            size="1fr"
+            class="py-2 flex flex-col gap-y-4"
+          >
+            <UserSection v-model:rut="userInputs.rut" v-model:nombre="userInputs.nombre" />
+            <InfoSection v-model:tipo="infoInputs.tipo" v-model:patente="infoInputs.patente" v-model:periodo="infoInputs.periodo" />
+            <DirectionSection v-model:calle="directionInputs.calle" v-model:numero="directionInputs.numero" v-model:aclaratoria="directionInputs.aclaratoria" />
+          </SplitterPanel>
 
-        <InfoSection v-model:tipo="infoInputs.tipo" v-model:patente="infoInputs.patente" v-model:periodo="infoInputs.periodo" />
+          <SplitterResizeHandle
+            id="splitter-group-1-resize-handle-1"
+            class="w-2"
+          />
 
-        <DirectionSection v-model:calle="directionInputs.calle" v-model:numero="directionInputs.numero" v-model:aclaratoria="directionInputs.aclaratoria" />
-
-        <FinancesSection v-model:capital="financesInputs.capital" v-model:afecto="financesInputs.afecto" v-model:total="financesInputs.total" v-model:emision="financesInputs.emision" />
-
-        <LabelSection v-model:fechaPagos="labelInputs.fechaPagos" v-model:giro="labelInputs.giro" v-model:agtp="labelInputs.agtp" />      
+          <!-- Right panels -->
+          <SplitterPanel
+            id="panel2"
+            size="1fr"
+            class="py-2 flex flex-col gap-y-4"
+          >
+            <FinancesSection v-model:capital="financesInputs.capital" v-model:afecto="financesInputs.afecto" v-model:total="financesInputs.total" v-model:emision="financesInputs.emision" />
+            <LabelSection v-model:fechaPagos="labelInputs.fechaPagos" v-model:giro="labelInputs.giro" v-model:agtp="labelInputs.agtp" />      
+          </SplitterPanel>
+        </SplitterGroup>
       </div>
 
       <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isLoading ? 'bg-slate-500 hover:bg-slate-500 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" @click="handleSubmitData">Enviar datos</button>
