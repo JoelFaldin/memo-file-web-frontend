@@ -1,24 +1,11 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
 
-const fetchData = async () => {
-    try {
-        const res = await fetch('http://localhost:3000/memo/overall');
-        const response = await res.json();
-
-        if (!res.ok) {
-            return Promise.reject(response.message);
-        }
-    
-        return response;
-    } catch(error) {
-        return Promise.reject(error);
-    }
-}
+import { fetchOverall } from '@/api/memoService.ts';
 
 const { isLoading, isError, data, error } = useQuery({
     queryKey: ['overall'],
-    queryFn: fetchData
+    queryFn: fetchOverall
 });
 
 </script>

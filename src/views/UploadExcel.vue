@@ -2,33 +2,28 @@
 import { useMutation } from '@tanstack/vue-query';
 import { ref } from 'vue';
 
+import { uploadExcel } from '@/api/excelService';
+
 const excel = ref<File | null>(null);
 const isLoading = ref(false);
 
 const { mutate } = useMutation({
-  mutationFn: async () => {
-    const formData = new FormData();
-    formData.append('excel', excel.value as unknown as Blob);
-
-    try {
-      isLoading.value = true;
-
-      const res = await fetch('http://localhost:3000/excel/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      return res.json();
-    } catch (error) {
-      return error;
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  mutationFn: uploadExcel,
 });
 
-const handleSubmit = async (e: Event) => {
-  mutate()
+const handleSubmit = async () => {
+  const formData = new FormData();
+  formData.append('excel', excel.value as unknown as Blob);
+
+  try {
+    isLoading.value = true;
+
+    mutate(formData)
+  } catch(error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
 }
 
 const storeFile = (event: Event) => {

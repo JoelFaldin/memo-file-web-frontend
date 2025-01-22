@@ -4,23 +4,9 @@ import { Label } from 'radix-vue';
 import { ref } from 'vue';
 
 import MemoTable from '@/components/MemoTable.vue';
+import { getMemos } from '@/api/memoService.ts';
 
 const patente = ref('');
-
-const getMemos = async (patente: string) => {
-  try {
-    const res = await fetch(`http://localhost:3000/memo/${patente}`);
-    const response = await res.json();
-
-    if (!res.ok) {
-      return Promise.reject(response.message);
-    }
-
-    return response;
-  } catch(error) {
-    return Promise.reject(error);
-  }
-}
 
 const { data, isLoading, isError, error, refetch } = useQuery({
   queryKey: ['searchedMemos'],

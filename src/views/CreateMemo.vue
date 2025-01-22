@@ -9,48 +9,22 @@ import InfoSection from '@/components/FormInfoSection.vue';
 import DirectionSection from '@/components/FormDirectionSection.vue';
 import FinancesSection from '@/components/FormFinancesSection.vue';
 import LabelSection from '@/components/FormLabelSection.vue';
+import { uploadMemo } from '@/api/memoService.ts';
 
-interface NewMemoInterface {
-  tipo: string,
-  patente: string,
-  rut: string,
-  nombre: string,
-  calle: string,
-  numero: string,
-  aclaratoria: string,
-  periodo: string,
-  capital: number,
-  afecto: number,
-  total: number,
-  emision: number,
-  fechaPagos: number,
-  giro: string,
-  agtp: string,
-}
-
-const uploadMemo = async (newMemo: NewMemoInterface) => {
-  try {
-    const res = await fetch('http://localhost:3000/memo/create', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(newMemo)
-    });
-    const response = await res.json();
-
-    if (!res.ok) {
-      return Promise.reject(response.message);
-    }
-
-    return response;
-  } catch(error) {
-    return Promise.reject(error);
-  }
-}
-
-const { isPending, isError, error, isSuccess, mutate } = useMutation({
+const { mutate } = useMutation({
   mutationFn: uploadMemo,
+  onMutate: async (newMemo) => {
+    const loading = toast.loading('Creando memorándum...')
+
+    try {
+      await uploadMemo(newMemo);
+      toast.dismiss(loading);
+
+    } catch(error) {
+      toast.dismiss(loading);
+      return Promise.reject(error);
+    }
+  },
   onSuccess: () => {
     toast.success('Memorándum creado con éxito!');
 
@@ -85,8 +59,6 @@ const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' });
 const isLoading = ref(false);
 
 const handleSubmitData = async () => {
-  const fecha = labelInputs.value.fechaPagos.split('').filter(char => char != '-').join('');
-
   try {
     isLoading.value = true;
 
@@ -103,7 +75,7 @@ const handleSubmitData = async () => {
         afecto: parseInt(financesInputs.value.afecto),
         total: parseFloat(financesInputs.value.total),
         emision: parseInt(financesInputs.value.emision),
-        fechaPagos: parseInt(fecha),
+        fechaPagos: labelInputs.value.fechaPagos,
         giro: labelInputs.value.giro,
         agtp: labelInputs.value?.agtp
     });
