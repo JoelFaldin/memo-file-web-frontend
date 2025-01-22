@@ -18,8 +18,9 @@ const { mutate } = useMutation({
 
     return { loading };
   },
-  onSuccess: () => {
+  onSuccess: (_, __, context) => {
     toast.success('Memorándum creado con éxito!');
+    toast.dismiss(context?.loading);
 
     userInputs.value.rut = '';
     userInputs.value.nombre = '';
