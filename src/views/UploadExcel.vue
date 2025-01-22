@@ -53,15 +53,15 @@ const storeFile = (event: Event) => {
 
 <template>
   <div class="min-h-screen flex items-center justify-center">
-    <div :class="`flex flex-col items-center bg-card rounded-lg border border-slate-700 p-6 shadow-sm max-w-md w-full`">
-      <h1 class="text-3xl font-bold">Subir archivo excel</h1>
+    <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full">
+      <h1 class="text-3xl font-bold text-black dark:text-white">Subir archivo excel</h1>
 
       <section class="flex flex-col items-center mt-6 gap-y-4 my-4 w-full h-20">
-        <label for="file" class="w-full h-full flex flex-col my-auto border-[1px] border-dashed b-slate-500">
-          <p class="text-slate-300 m-auto">Seleccione el archivo excel:</p>
+        <label for="file" class="w-full h-full flex flex-col my-auto border-[1px] border-dashed border-slate-500">
+          <p class="text-slate-700 dark:text-slate-300 m-auto">Seleccione el archivo excel:</p>
 
-          <p class="text-slate-300 m-auto" v-if="excel === null">No has seleccionado un archivo aún</p>
-          <p class="text-slate-300 m-auto" v-else>{{ excel.name }}</p>
+          <p class="text-slate-700 dark:text-slate-300 m-auto" v-if="excel === null">No has seleccionado un archivo aún</p>
+          <p class="text-slate-700 dark:text-slate-300 m-auto" v-else>{{ excel.name }}</p>
         </label>
         <input class="opacity-0 absolute -z-10" type="file" id="file" ref="fileInput" accept=".xls, .xlsx" @change="storeFile" />
       </section>

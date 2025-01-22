@@ -32,8 +32,8 @@ const searchMemo = async () => {
 
 <template>
   <div class="min-h-screen flex flex-col gap-y-10 items-center justify-start p-4">
-    <section  class="flex flex-col items-center bg-card rounded-lg border border-slate-700 p-6 shadow-sm max-w-md w-full">
-      <Label class="text-[15px] font-semibold leading-[35px] text-white">
+    <section  class="flex flex-col items-center bg-white dark:bg-inherit rounded-lg border border-slate-700 p-6 shadow-sm max-w-md w-full">
+      <Label class="text-[15px] font-semibold leading-[35px] text-black dark:text-white">
         Buscar memorándum (por patente):
       </Label>
       <input
@@ -57,7 +57,7 @@ const searchMemo = async () => {
       <p>No hay memos con la patente indicada.</p>
     </section>
     <section v-else-if="data?.joinedMemos">
-      <p class="text-center mb-5 text-slate-400">Total: {{ data.total }}</p>
+      <p class="text-center mb-5 text-slate-600 dark:text-slate-400">Total: {{ data.total }}</p>
 
       <MemoTable :data="data" />
     </section>

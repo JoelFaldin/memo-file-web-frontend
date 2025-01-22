@@ -8,8 +8,8 @@ const props = defineProps(['data']);
 
 <template>
     <Table class="border border-slate-500">
-        <TableCaption>Lista de memos</TableCaption>
-        <TableHeader class="border-slate-500">
+        <TableCaption class="text-slate-600 dark:text-slate-400">Lista de memos</TableCaption>
+        <TableHeader>
             <TableRow>
                 <TableHead v-for="header in headers">
                     {{ header }}
@@ -18,7 +18,7 @@ const props = defineProps(['data']);
         </TableHeader>
 
         <TableBody>
-            <TableRow v-for="row in props.data.joinedMemos" class="border-slate-500">
+            <TableRow v-for="row in props.data.joinedMemos" class="border-slate-500 text-black dark:text-white">
                 <TableCell>{{ row.id }}</TableCell>
                 <TableCell>{{ row.rut }}</TableCell>
                 <TableCell>{{ row.tipo }}</TableCell>
