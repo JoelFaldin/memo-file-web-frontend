@@ -13,7 +13,7 @@ const mode = useColorMode()
     
     <Sidebar />
     <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto text-white`">
-      <Toaster position="bottom-right" />
+      <Toaster :theme="mode == 'light' ? 'light' : 'dark'" richColors position="bottom-right" />
       <RouterView />
     </section>
   </div>
