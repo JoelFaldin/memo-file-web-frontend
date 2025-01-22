@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import { uploadExcel } from '@/api/excelService';
 
 const excel = ref<File | null>(null);
+const fileInput = ref<HTMLInputElement | null>(null);
 
 const { mutate, isPending } = useMutation({
   mutationFn: uploadExcel,
@@ -19,6 +20,7 @@ const { mutate, isPending } = useMutation({
     toast.dismiss(context?.loading);
 
     excel.value = null;
+    fileInput.value!.value = '';
   },
   onError: (error, _, context) => {
     toast.error('Ha ocurrido un error al subir el archivo excel.');
@@ -28,19 +30,24 @@ const { mutate, isPending } = useMutation({
 });
 
 const handleSubmit = async () => {
+  if (!excel.value) {
+    toast.error('Debes seleccionar un archivo excel');
+    return;
+  }
+
   const formData = new FormData();
   formData.append('excel', excel.value as unknown as Blob);
 
   try {
-    mutate(formData)
+    mutate(formData);
   } catch(error) {
     console.error(error);
   }
 }
 
 const storeFile = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  excel.value = target.files![0]
+  const target = event.target as HTMLInputElement;
+  excel.value = target.files![0];
 }
 </script>
 
@@ -56,7 +63,7 @@ const storeFile = (event: Event) => {
           <p class="text-slate-300 m-auto" v-if="excel === null">No has seleccionado un archivo aún</p>
           <p class="text-slate-300 m-auto" v-else>{{ excel.name }}</p>
         </label>
-        <input class="opacity-0 absolute -z-10" type="file" id="file" accept=".xls, .xlsx" @change="storeFile" />
+        <input class="opacity-0 absolute -z-10" type="file" id="file" ref="fileInput" accept=".xls, .xlsx" @change="storeFile" />
       </section>
     
       <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isPending ? 'bg-slate-400 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" :disabled="isPending" @click="handleSubmit">Subir excel</button>
