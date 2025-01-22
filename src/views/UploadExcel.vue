@@ -6,9 +6,8 @@ import { ref } from 'vue';
 import { uploadExcel } from '@/api/excelService';
 
 const excel = ref<File | null>(null);
-const isLoading = ref(false);
 
-const { mutate } = useMutation({
+const { mutate, isPending } = useMutation({
   mutationFn: uploadExcel,
   onMutate: async () => {
     const loading = toast.loading('Subiendo archivo excel...');
@@ -33,19 +32,15 @@ const handleSubmit = async () => {
   formData.append('excel', excel.value as unknown as Blob);
 
   try {
-    isLoading.value = true;
-
     mutate(formData)
   } catch(error) {
     console.error(error);
-  } finally {
-    isLoading.value = false;
   }
 }
 
 const storeFile = (event: Event) => {
-    const target = event.target as HTMLInputElement
-    excel.value = target.files![0]
+  const target = event.target as HTMLInputElement
+  excel.value = target.files![0]
 }
 </script>
 
@@ -64,7 +59,7 @@ const storeFile = (event: Event) => {
         <input class="opacity-0 absolute -z-10" type="file" id="file" accept=".xls, .xlsx" @change="storeFile" />
       </section>
     
-      <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isLoading ? 'bg-slate-500 hover:bg-slate-500 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" @click="handleSubmit">Subir excel</button>
+      <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isPending ? 'bg-slate-400 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" :disabled="isPending" @click="handleSubmit">Subir excel</button>
     </div>
   </div>
 </template>

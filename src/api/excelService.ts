@@ -6,9 +6,14 @@ export const uploadExcel = async (formData: FormData) => {
       method: 'POST',
       body: formData
     });
+    const response = await res.json();
 
-    return res.json();
+    if (!res.ok) {
+      return Promise.reject(response.message);
+    }
+
+    return response;
   } catch (error) {
-    return error;
+    return Promise.reject(error);
   }
 }

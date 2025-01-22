@@ -11,7 +11,7 @@ import FinancesSection from '@/components/FormFinancesSection.vue';
 import LabelSection from '@/components/FormLabelSection.vue';
 import { uploadMemo } from '@/api/memoService.ts';
 
-const { mutate } = useMutation({
+const { mutate, isPending } = useMutation({
   mutationFn: uploadMemo,
   onMutate: async (newMemo) => {
     const loading = toast.loading('Creando memorándum...');
@@ -51,12 +51,8 @@ const directionInputs = ref({ calle: '', numero: '', aclaratoria: '' });
 const financesInputs = ref({ capital: '', afecto: '', total: '', emision: '' });
 const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' });
 
-const isLoading = ref(false);
-
 const handleSubmitData = async () => {
   try {
-    isLoading.value = true;
-
     mutate({
         tipo: infoInputs.value.tipo,
         patente: infoInputs.value.patente,
@@ -76,8 +72,6 @@ const handleSubmitData = async () => {
     });
   } catch (error) {
     console.error(error);
-  } finally {
-    isLoading.value = false;
   }
 }
 </script>
@@ -120,7 +114,7 @@ const handleSubmitData = async () => {
         </SplitterGroup>
       </div>
 
-      <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isLoading ? 'bg-slate-500 hover:bg-slate-500 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" :disabled="isLoading" @click="handleSubmitData">Enviar datos</button>
+      <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isPending ? 'bg-slate-500 hover:bg-slate-500 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" :disabled="isPending" @click="handleSubmitData">Enviar datos</button>
     </div>
   </div>
 </template>
