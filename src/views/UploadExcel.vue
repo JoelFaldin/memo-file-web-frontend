@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useMutation } from '@tanstack/vue-query';
+import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
 import { uploadExcel } from '@/api/excelService';
@@ -9,6 +10,22 @@ const isLoading = ref(false);
 
 const { mutate } = useMutation({
   mutationFn: uploadExcel,
+  onMutate: async () => {
+    const loading = toast.loading('Subiendo archivo excel...');
+
+    return { loading };
+  },
+  onSuccess: (_, __, context) => {
+    toast.success('Datos subidos exitosamente!');
+    toast.dismiss(context?.loading);
+
+    excel.value = null;
+  },
+  onError: (error, _, context) => {
+    toast.error('Ha ocurrido un error al subir el archivo excel.');
+    toast.dismiss(context?.loading);
+    console.error(error);
+  }
 });
 
 const handleSubmit = async () => {
