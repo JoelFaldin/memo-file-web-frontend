@@ -13,7 +13,7 @@ import { uploadMemo } from '@/api/memoService.ts';
 
 const { mutate, isPending } = useMutation({
   mutationFn: uploadMemo,
-  onMutate: async (newMemo) => {
+  onMutate: async () => {
     const loading = toast.loading('Creando memorándum...');
 
     return { loading };
