@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Label } from 'radix-vue';
 
-
 defineProps({
     capital: String,
     afecto: String,

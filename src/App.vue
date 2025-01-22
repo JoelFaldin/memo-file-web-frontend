@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core';
+import { Toaster } from 'vue-sonner';
 
 import Sidebar from './components/Sidebar.vue';
 
@@ -9,8 +10,10 @@ const mode = useColorMode()
 
 <template>
   <div class="flex h-screen">
+    
     <Sidebar />
     <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto text-white`">
+      <Toaster position="bottom-right" />
       <RouterView />
     </section>
   </div>

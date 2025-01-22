@@ -8,18 +8,27 @@ import MemoTable from '@/components/MemoTable.vue';
 const patente = ref('');
 
 const getMemos = async (patente: string) => {
-  const res = await fetch(`http://localhost:3000/memo/${patente}`);
-  const response = await res.json();
-  return response;
+  try {
+    const res = await fetch(`http://localhost:3000/memo/${patente}`);
+    const response = await res.json();
+
+    if (!res.ok) {
+      return Promise.reject(response.message);
+    }
+
+    return response;
+  } catch(error) {
+    return Promise.reject(error);
+  }
 }
 
-const { data, isLoading, isError, refetch } = useQuery({
+const { data, isLoading, isError, error, refetch } = useQuery({
   queryKey: ['searchedMemos'],
   queryFn: () => getMemos(patente.value),
   enabled: false
 });
 
-const searchMemo = async (event: Event) => {  
+const searchMemo = async () => {  
   if (!patente.value) {
     alert('No has indicado una patente!');
     return;
@@ -27,9 +36,10 @@ const searchMemo = async (event: Event) => {
   
   try {    
     await refetch();
+
     patente.value = '';
   } catch(error) {
-    console.log(error);
+    console.error(error);
   }
 }
 </script>
@@ -54,13 +64,13 @@ const searchMemo = async (event: Event) => {
     <section v-if="isLoading">
       Buscando memos...
     </section>
-    <section v-else-if="isError">
-      <p>Ha ocurrido un error al intentar buscar memorándums con esa patente, revisa que el servidor esté funcionando.</p>
+    <section v-else-if="isError || error" class="text-center">
+      <p class="text-slate-500 my-4">{{ error ?? 'Ha ocurrido un error al intentar buscar memorándums con esa patente.' }}</p>
     </section>
     <section v-else-if="data?.joinedMemos?.length === 0">
       <p>No hay memos con la patente indicada.</p>
     </section>
-    <section v-else-if="data">
+    <section v-else-if="data?.joinedMemos">
       <p class="text-center mb-5 text-slate-400">Total: {{ data.total }}</p>
 
       <MemoTable :data="data" />

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
 import { useMutation } from '@tanstack/vue-query';
+import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
 import UserSection from '@/components/FormUserSection.vue';
@@ -36,25 +37,52 @@ const uploadMemo = async (newMemo: NewMemoInterface) => {
       },
       body: JSON.stringify(newMemo)
     });
-
     const response = await res.json();
+
+    if (!res.ok) {
+      return Promise.reject(response.message);
+    }
+
     return response;
   } catch(error) {
-    return error;
+    return Promise.reject(error);
   }
 }
 
 const { isPending, isError, error, isSuccess, mutate } = useMutation({
-  mutationFn: uploadMemo
+  mutationFn: uploadMemo,
+  onSuccess: () => {
+    toast.success('Memorándum creado con éxito!');
+
+    userInputs.value.rut = '';
+    userInputs.value.nombre = '';
+    infoInputs.value.tipo = '';
+    infoInputs.value.patente = '';
+    infoInputs.value.periodo = '';
+    directionInputs.value.calle = '';
+    directionInputs.value.numero = '';
+    directionInputs.value.aclaratoria = '';
+    financesInputs.value.capital = '';
+    financesInputs.value.afecto = '';
+    financesInputs.value.total = '';
+    financesInputs.value.emision = '';
+    labelInputs.value.fechaPagos = '';
+    labelInputs.value.giro = '';
+    labelInputs.value.agtp = '';
+  },
+  onError: (error) => {
+    console.log(error)
+    toast.error('Ha ocurrido un error al crear el memorándum.')
+  }
 })
 
-const userInputs = ref({ rut: '', nombre: '' })
-const infoInputs = ref({ tipo: '', patente: '', periodo: '' })
-const directionInputs = ref({ calle: '', numero: '', aclaratoria: '' })
-const financesInputs = ref({ capital: '', afecto: '', total: '', emision: '' })
-const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' })
+const userInputs = ref({ rut: '', nombre: '' });
+const infoInputs = ref({ tipo: '', patente: '', periodo: '' });
+const directionInputs = ref({ calle: '', numero: '', aclaratoria: '' });
+const financesInputs = ref({ capital: '', afecto: '', total: '', emision: '' });
+const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' });
 
-const isLoading = ref(false)
+const isLoading = ref(false);
 
 const handleSubmitData = async () => {
   const fecha = labelInputs.value.fechaPagos.split('').filter(char => char != '-').join('');
@@ -62,7 +90,7 @@ const handleSubmitData = async () => {
   try {
     isLoading.value = true;
 
-    const response = mutate({
+    mutate({
         tipo: infoInputs.value.tipo,
         patente: infoInputs.value.patente,
         rut: userInputs.value.rut,
@@ -78,28 +106,9 @@ const handleSubmitData = async () => {
         fechaPagos: parseInt(fecha),
         giro: labelInputs.value.giro,
         agtp: labelInputs.value?.agtp
-    })
-
-    
-    if (isSuccess) {
-      userInputs.value.rut = '';
-      userInputs.value.nombre = '';
-      infoInputs.value.tipo = '';
-      infoInputs.value.patente = '';
-      infoInputs.value.periodo = '';
-      directionInputs.value.calle = '';
-      directionInputs.value.numero = '';
-      directionInputs.value.aclaratoria = '';
-      financesInputs.value.capital = '';
-      financesInputs.value.afecto = '';
-      financesInputs.value.total = '';
-      financesInputs.value.emision = '';
-      labelInputs.value.fechaPagos = '';
-      labelInputs.value.giro = '';
-      labelInputs.value.agtp = '';
-    }
+    });
   } catch (error) {
-    return error;
+    console.error(error);
   } finally {
     isLoading.value = false;
   }

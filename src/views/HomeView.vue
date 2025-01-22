@@ -5,10 +5,14 @@ const fetchData = async () => {
     try {
         const res = await fetch('http://localhost:3000/memo/overall');
         const response = await res.json();
+
+        if (!res.ok) {
+            return Promise.reject(response.message);
+        }
     
         return response;
     } catch(error) {
-        return error;
+        return Promise.reject(error);
     }
 }
 
@@ -28,10 +32,10 @@ const { isLoading, isError, data, error } = useQuery({
             <span v-if="isLoading">
                 <p>Cargando tabla resumen...</p>
             </span>
-            <span v-else-if="isError" class="flex flex-col justify-center text-center">
+            <span v-else-if="isError || error" class="flex flex-col justify-center text-center">
                 <p>Ha habido un error, intenta más tarde.</p>
                 <p>Detalles del error:</p>
-                <p>{{ error }}</p>
+                <p class="text-slate-500 my-4">{{ error }}</p>
             </span>
             <span v-else-if="data" class="w-9/12">
                 <table style="width:100%;" class="text-slate-400 mb-2">
