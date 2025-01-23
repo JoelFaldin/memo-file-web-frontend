@@ -8,7 +8,7 @@ import DropdownMenuItem from './ui/dropdown-menu/DropdownMenuItem.vue';
 import DropdownMenu from './ui/dropdown-menu/DropdownMenu.vue';
 import Button from './ui/button/Button.vue';
 
-const mode = useColorMode()
+const mode = useColorMode();
 
 </script>
 

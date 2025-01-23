@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 
-import { Button } from './ui/button';
 import ThemeToggle from './ThemeToggle.vue';
+import { Button } from './ui/button';
 
-const router = useRouter()
-const route = useRoute()
+const router = useRouter();
+const route = useRoute();
 
 </script>
 

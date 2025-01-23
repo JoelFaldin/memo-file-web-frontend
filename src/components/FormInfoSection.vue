@@ -2,7 +2,7 @@
 import { Label, SelectContent, SelectGroup, SelectItem, SelectItemIndicator, SelectItemText, SelectLabel, SelectPortal, SelectRoot, SelectScrollDownButton, SelectScrollUpButton, SelectTrigger, SelectValue, SelectViewport } from 'radix-vue';
 import { Icon } from '@iconify/vue';
 
-const types = ["COMER", "PROFE", "INDUS", "ALCOH", "MEF"]
+const types = ["COMER", "PROFE", "INDUS", "ALCOH", "MEF"];
 
 defineProps({
     tipo: {
@@ -46,7 +46,7 @@ defineEmits([
 
                     <SelectViewport class="p-[5px]">
                         <SelectLabel class="px-[25px] text-xs leading-[25px] text-slate-800 dark:text-slate-400">
-                        Tipos
+                            Tipos
                         </SelectLabel>
                         <SelectGroup>
                             <SelectItem
