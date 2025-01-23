@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
-import { Label } from 'radix-vue';
 import { ref } from 'vue';
 
 import SearchLabel from '@/components/SearchLabel.vue';

@@ -4,11 +4,8 @@ import { useMutation } from '@tanstack/vue-query';
 import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
-import UserSection from '@/components/FormUserSection.vue';
-import InfoSection from '@/components/FormInfoSection.vue';
-import DirectionSection from '@/components/FormDirectionSection.vue';
-import FinancesSection from '@/components/FormFinancesSection.vue';
-import LabelSection from '@/components/FormLabelSection.vue';
+import FormInput from '@/components/FormInput.vue';
+import FormSelect from '@/components/FormSelect.vue';
 import { uploadMemo } from '@/api/memoService.ts';
 
 const { mutate, isPending } = useMutation({
@@ -92,9 +89,22 @@ const handleSubmitData = async () => {
             size="1fr"
             class="py-2 flex flex-col gap-y-4"
           >
-            <UserSection v-model:rut="userInputs.rut" v-model:nombre="userInputs.nombre" />
-            <InfoSection v-model:tipo="infoInputs.tipo" v-model:patente="infoInputs.patente" v-model:periodo="infoInputs.periodo" />
-            <DirectionSection v-model:calle="directionInputs.calle" v-model:numero="directionInputs.numero" v-model:aclaratoria="directionInputs.aclaratoria" />
+            <span class="flex flex-col gap-y-4 w-11/12 m-auto">
+              <FormInput label="Rut" id="rut" type="text" v-model:value="userInputs.rut" />
+              <FormInput label="Nombre" id="name" type="text" v-model:value="userInputs.nombre" />
+            </span>
+            <span class="flex flex-col gap-y-4 w-11/12 m-auto">
+              <FormSelect v-model:tipo="infoInputs.tipo" />
+              <FormInput label="Patente" id="patente" type="text" v-model:value="infoInputs.patente" />
+              <FormInput label="Periodo" id="periodo" type="text" v-model:value="infoInputs.periodo">
+                <p class="text-sm text-slate-700 dark:text-slate-400 mt-1">Por ejemplo, 20251S (primer semestre del 2025)</p>
+              </FormInput>
+            </span>
+            <span class="flex flex-col gap-y-4 w-11/12 m-auto">
+              <FormInput label="Calle" id="calle" type="text" v-model:value="directionInputs.calle" />
+              <FormInput label="Numero" id="numero" type="text" v-model:value="directionInputs.numero" />
+              <FormInput label="Aclaratoria" id="aclaratoria" type="text" v-model:value="directionInputs.aclaratoria" />
+            </span>
           </SplitterPanel>
 
           <SplitterResizeHandle
@@ -108,8 +118,19 @@ const handleSubmitData = async () => {
             size="1fr"
             class="py-2 flex flex-col gap-y-4"
           >
-            <FinancesSection v-model:capital="financesInputs.capital" v-model:afecto="financesInputs.afecto" v-model:total="financesInputs.total" v-model:emision="financesInputs.emision" />
-            <LabelSection v-model:fechaPagos="labelInputs.fechaPagos" v-model:giro="labelInputs.giro" v-model:agtp="labelInputs.agtp" />      
+            <span class="flex flex-col gap-y-4 w-11/12 mx-auto">
+              <FormInput label="Capital" id="capital" type="number" v-model:value="financesInputs.capital" />
+              <FormInput label="Afecto" id="afecto" type="number" v-model:value="financesInputs.afecto" />
+              <FormInput label="Total" id="total" type="number" v-model:value="financesInputs.total" />
+              <FormInput label="Emisión" id="emision" type="number" v-model:value="financesInputs.emision" />
+            </span>
+            <span class="flex flex-col gap-y-4 w-11/12 mx-auto">
+              <FormInput label="Fecha de pago" id="fechaPago" type="text" v-model:value="labelInputs.fechaPagos">
+                <p class="text-sm text-slate-700 dark:text-slate-400 mt-1">Por ejemplo, 01-02-2025 (01 de febrero, 2025)</p>
+              </FormInput>
+              <FormInput label="Giro" id="giro" type="text" v-model:value="labelInputs.giro" />
+              <FormInput label="AGTP" id="agtp" type="text" v-model:value="labelInputs.agtp" />
+            </span>
           </SplitterPanel>
         </SplitterGroup>
       </div>

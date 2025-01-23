@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { Label } from 'radix-vue';
+
 const props = defineProps({
     param: String
 })
