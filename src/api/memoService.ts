@@ -17,9 +17,9 @@ export const fetchOverall = async () => {
   }
 }
 
-export const getMemos = async (patente: string) => {
+export const getMemos = async (rol: string, rut: string, direction: string) => {
   try {
-    const res = await fetch(`${URL}/${patente}`);
+    const res = await fetch(`${URL}/find?rol=${rol}&rut=${rut}&direction=${direction}`);
     const response = await res.json();
 
     if (!res.ok) {
