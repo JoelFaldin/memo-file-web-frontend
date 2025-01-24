@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Label, SelectContent, SelectGroup, SelectItem, SelectItemIndicator, SelectItemText, SelectLabel, SelectPortal, SelectRoot, SelectScrollDownButton, SelectScrollUpButton, SelectTrigger, SelectValue, SelectViewport } from 'radix-vue';
+import { Label, SelectContent, SelectGroup, SelectItem, SelectItemIndicator, SelectItemText, SelectLabel, SelectPortal, SelectRoot, SelectTrigger, SelectValue, SelectViewport } from 'radix-vue';
 import { Icon } from "@iconify/vue";
 
 const types = ["COMER", "PROFE", "INDUS", "ALCOH", "MEF"];

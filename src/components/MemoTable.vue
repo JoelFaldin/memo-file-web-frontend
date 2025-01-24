@@ -1,5 +1,11 @@
 <script lang="ts" setup>
+import { fixStringLength } from '@/composables/fixStringLength';
+
 import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody,TableCell } from './ui/table';
+import { formatCurrency } from '@/composables/formatCurrency';
+import { formatRut } from '@/composables/formatRut';
+import { formatTime } from '@/composables/formatTime';
+import { formatPayTime } from '@/composables/formatPayTime';
 
 const headers = ["Rut", "Tipo", "Patente", "Dirección", "Periodo", "Capital", "Afecto", "Total", "Emisión", "Giro", "AGTP", "Fecha de pago"];
 
@@ -18,19 +24,19 @@ const props = defineProps(['data']);
         </TableHeader>
 
         <TableBody>
-            <TableRow v-for="row in props.data.joinedMemos" class="border-slate-500 text-black dark:text-white">
-                <TableCell>{{ row.rut }}</TableCell>
+            <TableRow v-for="row in props.data.findMemo" class="border-slate-500 text-black dark:text-white">
+                <TableCell>{{ formatRut(row.rut) }}</TableCell>
                 <TableCell>{{ row.tipo }}</TableCell>
                 <TableCell>{{ row.patente }}</TableCell>
-                <TableCell>{{ row.direccion }}</TableCell>
-                <TableCell>{{ row.periodo }}</TableCell>
-                <TableCell>{{ parseFloat(row.capital) }}</TableCell>
+                <TableCell :title="fixStringLength(row.direccion).fullText">{{ fixStringLength(row.direccion).newString }}</TableCell>
+                <TableCell>{{ formatTime(row.periodo) }}</TableCell>
+                <TableCell>{{ formatCurrency(parseFloat(row.capital)) }}</TableCell>
                 <TableCell>{{ row.afecto }}</TableCell>
-                <TableCell>{{ row.total }}</TableCell>
+                <TableCell>{{ formatCurrency(row.total) }}</TableCell>
                 <TableCell>{{ row.emision }}</TableCell>
-                <TableCell>{{ row.giro }}</TableCell>
+                <TableCell :title="fixStringLength(row.giro).fullText">{{ fixStringLength(row.giro).newString }}</TableCell>
                 <TableCell>{{ row.agtp }}</TableCell>
-                <TableCell>{{ row.pay_times }}</TableCell>
+                <TableCell>{{ formatPayTime(row.pay_times.day, row.pay_times.month, row.pay_times.year) }}</TableCell>
             </TableRow>
         </TableBody>
     </Table>

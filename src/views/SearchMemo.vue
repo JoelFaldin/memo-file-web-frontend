@@ -74,10 +74,10 @@ const goNextPage = () => {
     <section v-else-if="isError || error" class="text-center">
       <p class="text-slate-500 my-4">{{ error ?? 'Ha ocurrido un error al intentar buscar memorándums con esa patente.' }}</p>
     </section>
-    <section v-else-if="data?.joinedMemos?.length === 0">
+    <section v-else-if="data?.findMemo?.length === 0">
       <p>No hay memos con la patente indicada.</p>
     </section>
-    <section v-else-if="data?.joinedMemos">
+    <section v-else-if="data?.findMemo">
       <p class="text-center mb-5 text-slate-600 dark:text-slate-400">Total: {{ data.total }}</p>
 
       <MemoTable :data="data" />
@@ -89,7 +89,7 @@ const goNextPage = () => {
           :disabled="page === 1"
           @click="goPreviousPage"
         >
-          Previous
+          Anterior
         </Button>
         <Button
           variant="outline"
@@ -97,7 +97,7 @@ const goNextPage = () => {
           :disabled="!data.nextPage"
           @click="goNextPage"
         >
-          Next
+          Siguiente
         </Button>
       </div>
     </section>
