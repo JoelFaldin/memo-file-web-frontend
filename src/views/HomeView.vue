@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/vue-query';
 
 import { fetchOverall } from '@/api/memoService.ts';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const { isLoading, isError, data, error } = useQuery({
     queryKey: ['overall'],
@@ -17,7 +18,17 @@ const { isLoading, isError, data, error } = useQuery({
             <p class="pb-10 pt-2 text-slate-600 dark:text-slate-400">Lista de memorándums 2010-2024</p>
 
             <span v-if="isLoading">
-                <p>Cargando tabla resumen...</p>
+                <table style="width:100%;" class="text-slate-600 dark:text-slate-400 mb-2">
+                    <tr v-for="_ in new Array(3)"  class="border border-slate-200 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700">
+                        <td class="p-2">
+                            <Skeleton class="h-4 w-full px-14" />
+                        </td>
+                        <td class="p-2" style="width:30%;"></td>
+                        <td class="text-right p-2">
+                            <Skeleton class="h-4 w-full px-14" />
+                        </td>
+                    </tr>
+                </table>
             </span>
             <span v-else-if="isError || error" class="flex flex-col justify-center text-center">
                 <p>Ha habido un error, intenta más tarde.</p>
@@ -33,6 +44,6 @@ const { isLoading, isError, data, error } = useQuery({
                     </tr>
                 </table>
             </span>
-            </div>
         </div>
+    </div>
 </template>

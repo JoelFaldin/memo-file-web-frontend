@@ -2,10 +2,13 @@
 import { keepPreviousData, useQuery } from '@tanstack/vue-query';
 import { ref } from 'vue';
 
+import TableSkeleton from '@/components/TableSkeleton.vue';
 import SearchLabel from '@/components/SearchLabel.vue';
 import MemoTable from '@/components/MemoTable.vue';
+import TableHead from '@/components/TableHead.vue';
 import { getMemos } from '@/api/memoService.ts';
 import { Button } from '@/components/ui/button';
+import { Table } from '@/components/ui/table';
 
 const rol = ref('');
 const rut = ref('');
@@ -69,7 +72,10 @@ const goNextPage = () => {
     </div>
 
     <section v-if="isLoading">
-      Buscando memos...
+      <Table class="border border-slate-500">
+        <TableHead />
+        <TableSkeleton />
+      </Table>
     </section>
     <section v-else-if="isError || error" class="text-center">
       <p class="text-slate-500 my-4">{{ error ?? 'Ha ocurrido un error al intentar buscar memorándums con esa patente.' }}</p>

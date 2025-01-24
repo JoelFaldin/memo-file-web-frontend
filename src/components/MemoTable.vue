@@ -1,27 +1,19 @@
 <script lang="ts" setup>
 import { fixStringLength } from '@/composables/fixStringLength';
 
-import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody,TableCell } from './ui/table';
+import { Table, TableRow, TableBody, TableCell } from './ui/table';
 import { formatCurrency } from '@/composables/formatCurrency';
 import { formatRut } from '@/composables/formatRut';
 import { formatTime } from '@/composables/formatTime';
 import { formatPayTime } from '@/composables/formatPayTime';
-
-const headers = ["Rut", "Tipo", "Patente", "Dirección", "Periodo", "Capital", "Afecto", "Total", "Emisión", "Giro", "AGTP", "Fecha de pago"];
+import TableHead from './TableHead.vue';
 
 const props = defineProps(['data']);
 </script>
 
 <template>
     <Table class="border border-slate-500">
-        <TableCaption class="text-slate-600 dark:text-slate-400">Lista de memos</TableCaption>
-        <TableHeader>
-            <TableRow>
-                <TableHead v-for="header in headers">
-                    {{ header }}
-                </TableHead>
-            </TableRow>
-        </TableHeader>
+        <TableHead />
 
         <TableBody>
             <TableRow v-for="row in props.data.findMemo" class="border-slate-500 text-black dark:text-white">
