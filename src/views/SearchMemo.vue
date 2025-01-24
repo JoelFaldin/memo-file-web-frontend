@@ -50,7 +50,7 @@ const goNextPage = () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col gap-y-10 items-center justify-start p-4">
+  <div class="min-h-screen flex flex-col gap-y-8 items-center justify-start p-4">
     <div class="flex flex-col justify-center items-center gap-y-2">
       <section  class="flex flex-row gap-x-10 items-center justify-center bg-white dark:bg-inherit rounded-lg border border-slate-700 p-6 shadow-sm w-fit">
         <SearchLabel v-model:param="rol">
@@ -66,9 +66,14 @@ const goNextPage = () => {
         </SearchLabel>
         
       </section>
-      <button :class="`h-[35px] inline-flex items-center rounded-md w-fit ${isLoading ? 'bg-slate-500' : 'bg-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm ${isLoading ? 'hover:bg-slate-500' : 'hover:bg-indigo-500'} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${isLoading ? 'focus-visible:outline-slate-500' : 'focus-visible:outline-indigo-600'}`" @click="searchMemo" :disabled="isLoading" >
-        Buscar
-      </button>
+        <Button
+          variant="outline"
+          size="lg"
+          :disabled="isLoading"
+          @click="searchMemo"
+        >
+          Buscar
+        </Button>
     </div>
 
     <section v-if="isLoading">
@@ -88,6 +93,7 @@ const goNextPage = () => {
 
       <MemoTable :data="data" />
 
+      <p class="mb-5 text-slate-600 dark:text-slate-400">Página {{ page }} de {{ data.totalPages }}</p>
       <div class="space-x-2">
         <Button
           variant="outline"

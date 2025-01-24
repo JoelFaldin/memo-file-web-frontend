@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { useMutation } from '@tanstack/vue-query';
+import { useMutation, useQuery } from '@tanstack/vue-query';
 import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
-import { uploadExcel } from '@/api/excelService';
+import { downloadExcelTemplate, uploadExcel } from '@/api/excelService';
+import { Button } from '@/components/ui/button';
 
 const excel = ref<File | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -29,6 +30,12 @@ const { mutate, isPending } = useMutation({
   }
 });
 
+const { isLoading, isError, error, refetch } = useQuery({
+  queryKey: ['exceltemplate'],
+  queryFn: downloadExcelTemplate,
+  enabled: false
+})
+
 const handleSubmit = async () => {
   if (!excel.value) {
     toast.error('Debes seleccionar un archivo excel');
@@ -49,10 +56,14 @@ const storeFile = (event: Event) => {
   const target = event.target as HTMLInputElement;
   excel.value = target.files![0];
 }
+
+const downloadTemplate = async () => {
+  refetch();
+}
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center">
+  <div class="min-h-screen flex flex-col gap-y-5 items-center justify-center">
     <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full">
       <h1 class="text-3xl font-bold text-black dark:text-white">Subir archivo excel</h1>
 
@@ -65,8 +76,32 @@ const storeFile = (event: Event) => {
         </label>
         <input class="opacity-0 absolute -z-10" type="file" id="file" ref="fileInput" accept=".xls, .xlsx" @change="storeFile" />
       </section>
-    
-      <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isPending ? 'bg-slate-400 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" :disabled="isPending" @click="handleSubmit">Subir excel</button>
+      
+      <Button
+        variant="outline"
+        size="lg"
+        :disabled="isPending"
+        @click="handleSubmit"
+      >
+        Subir excel
+      </Button>
     </div>
+
+    <div class="flex flex-row items-center gap-x-5">
+      <p class="text-slate-500 my-4">Descarga una plantilla aquí:</p>
+      <Button
+          variant="outline"
+          size="lg"
+          :disabled="isLoading"
+          @click="downloadTemplate"
+        >
+          Descargar plantilla
+      </Button>
+    </div>
+
+    <span v-if="isError">
+      {{ error }}
+    </span>
+
   </div>
 </template>

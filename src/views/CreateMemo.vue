@@ -7,6 +7,7 @@ import { ref } from 'vue';
 import FormInput from '@/components/FormInput.vue';
 import FormSelect from '@/components/FormSelect.vue';
 import { uploadMemo } from '@/api/memoService.ts';
+import { Button } from '@/components/ui/button';
 
 const { mutate, isPending } = useMutation({
   mutationFn: uploadMemo,
@@ -75,8 +76,8 @@ const handleSubmitData = async () => {
 
 <template>
   <div class="min-h-screen flex items-start justify-center">
-    <div class="flex flex-col items-center bg-card rounded-lg p-6 m-2 shadow-sm w-full bg-white dark:bg-inherit">
-      <h3 class="text-2xl font-bold mb-5 text-black dark:text-white">Guardar un nuevo memorándum</h3>
+    <div class="flex flex-col gap-y-8 items-center bg-card rounded-lg p-6 m-2 shadow-sm w-full bg-white dark:bg-inherit">
+      <h3 class="text-2xl font-bold text-black dark:text-white">Guardar un nuevo memorándum</h3>
 
       <div class="flex flex-col gap-y-4 w-full">
         <SplitterGroup
@@ -135,7 +136,14 @@ const handleSubmitData = async () => {
         </SplitterGroup>
       </div>
 
-      <button :class="`h-[35px] mt-5 inline-flex items-center rounded-md ${isPending ? 'bg-slate-500 hover:bg-slate-500 focus-visible:outline-slate-500 cursor-default' : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'} px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`" :disabled="isPending" @click="handleSubmitData">Enviar datos</button>
+      <Button
+        variant="outline"
+        size="lg"
+        :disabled="isPending"
+        @click="handleSubmitData"
+      >
+        Enviar datos
+      </Button>
     </div>
   </div>
 </template>
