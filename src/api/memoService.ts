@@ -1,4 +1,5 @@
 import type { NewMemoInterface } from "@/interfaces/memoInterface";
+import type { Ref } from "vue";
 
 const URL = 'http://localhost:3000/memo'
 
@@ -17,9 +18,9 @@ export const fetchOverall = async () => {
   }
 }
 
-export const getMemos = async (rol: string, rut: string, direction: string) => {
+export const getMemos = async (rol: string, rut: string, direction: string, page: Ref<number>) => {
   try {
-    const res = await fetch(`${URL}/find?rol=${rol}&rut=${rut}&direction=${direction}`);
+    const res = await fetch(`${URL}/find?rol=${rol}&rut=${rut}&direction=${direction}&page=${page.value}&limit=10`);
     const response = await res.json();
 
     if (!res.ok) {

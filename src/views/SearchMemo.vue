@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
+import { keepPreviousData, useQuery } from '@tanstack/vue-query';
 import { ref } from 'vue';
 
 import SearchLabel from '@/components/SearchLabel.vue';
 import MemoTable from '@/components/MemoTable.vue';
 import { getMemos } from '@/api/memoService.ts';
+import { Button } from '@/components/ui/button';
 
 const rol = ref('');
 const rut = ref('');
 const direction = ref('');
+const page = ref(1);
+const enabled = ref(false);
 
-const { data, isLoading, isError, error, refetch } = useQuery({
-  queryKey: ['searchedMemos'],
-  queryFn: () => getMemos(rol.value, rut.value, direction.value),
-  enabled: false
+const { data, isLoading, isError, error, refetch, isPlaceholderData } = useQuery({
+  queryKey: ['searchedMemos', page],
+  queryFn: () => getMemos(rol.value, rut.value, direction.value, page),
+  enabled,
+  placeholderData: keepPreviousData,
 });
 
 const searchMemo = async () => {  
@@ -24,12 +28,20 @@ const searchMemo = async () => {
   
   try {    
     await refetch();
-
-    rol.value = '';
-    rut.value = '';
-    direction.value = '';
   } catch(error) {
     console.error(error);
+  }
+}
+
+const goPreviousPage = () => {
+  enabled.value = true;
+  page.value = Math.max(page.value - 1, 1);
+}
+
+const goNextPage = () => {
+  enabled.value = true;
+  if (!isPlaceholderData.value) {
+      page.value = page.value + 1;
   }
 }
 </script>
@@ -69,6 +81,25 @@ const searchMemo = async () => {
       <p class="text-center mb-5 text-slate-600 dark:text-slate-400">Total: {{ data.total }}</p>
 
       <MemoTable :data="data" />
+
+      <div class="space-x-2">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="page === 1"
+          @click="goPreviousPage"
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!data.nextPage"
+          @click="goNextPage"
+        >
+          Next
+        </Button>
+      </div>
     </section>
   </div>
 </template>
