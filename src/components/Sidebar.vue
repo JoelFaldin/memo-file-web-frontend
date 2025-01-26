@@ -16,7 +16,10 @@ const route = useRoute();
             <div class="space-y-2">
                 <span v-for="(item, index) in router.options.routes" :key="`router${index}`">
                     <RouterLink :to="item.path">
-                        <Button class="dark:text-white w-full justify-start my-1 py-4" :variant="route.path == item.path ? 'secondary' : 'ghost'">{{ item.name }}</Button>
+                        <Button class="dark:text-white w-full justify-start my-1 py-4" :variant="route.path == item.path ? 'secondary' : 'ghost'">
+                            <component :is="item.meta?.icon" v-if="item.meta?.icon" class="mr-2" />
+                            {{ item.name }}
+                        </Button>
                     </RouterLink>
                 </span>
             </div>
