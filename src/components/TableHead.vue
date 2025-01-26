@@ -9,7 +9,7 @@ const headers = ["Rut", "Tipo", "Patente", "Dirección", "Periodo", "Capital", "
     <TableCaption class="text-slate-600 dark:text-slate-400">Lista de memos</TableCaption>
         <TableHeader>
             <TableRow>
-                <TableHead v-for="header in headers">
+                <TableHead v-for="(header, index) in headers" :key="`head${index}`">
                     {{ header }}
                 </TableHead>
             </TableRow>

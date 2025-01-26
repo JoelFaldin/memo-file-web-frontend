@@ -2,7 +2,7 @@
 import { useColorMode } from '@vueuse/core';
 import { Toaster } from 'vue-sonner';
 
-import Sidebar from './components/Sidebar.vue';
+import Sidebar from './components/SideBar.vue';
 
 const mode = useColorMode()
 

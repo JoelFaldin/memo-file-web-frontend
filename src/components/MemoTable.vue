@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { fixStringLength } from '@/composables/fixStringLength';
 
+import { fixStringLength } from '@/composables/stringUtils/fixStringLength';
+import { formatCurrency } from '@/composables/stringUtils/formatCurrency';
+import { formatPayTime } from '@/composables/stringUtils/formatPayTime';
 import { Table, TableRow, TableBody, TableCell } from './ui/table';
-import { formatCurrency } from '@/composables/formatCurrency';
-import { formatRut } from '@/composables/formatRut';
-import { formatTime } from '@/composables/formatTime';
-import { formatPayTime } from '@/composables/formatPayTime';
+import { formatTime } from '@/composables/stringUtils/formatTime';
+import { formatRut } from '@/composables/stringUtils/formatRut';
 import TableHead from './TableHead.vue';
 
 const props = defineProps(['data']);
@@ -16,7 +16,7 @@ const props = defineProps(['data']);
         <TableHead />
 
         <TableBody>
-            <TableRow v-for="row in props.data.findMemo" class="border-slate-500 text-black dark:text-white">
+            <TableRow v-for="row in props.data.findMemo" :key="row.id" class="border-slate-500 text-black dark:text-white">
                 <TableCell>{{ formatRut(row.rut) }}</TableCell>
                 <TableCell>{{ row.tipo }}</TableCell>
                 <TableCell>{{ row.patente }}</TableCell>

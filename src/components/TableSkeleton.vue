@@ -6,8 +6,8 @@ import { Skeleton } from './ui/skeleton';
 
 <template>
     <TableBody>
-        <TableRow v-for="_ in new Array(9)" class="border-slate-500 text-black dark:text-white">
-            <TableCell v-for="_ in new Array(12)">
+        <TableRow v-for="(_, index) in new Array(9)" :key="`rowSkeleton${index}`" class="border-slate-500 text-black dark:text-white">
+            <TableCell v-for="(_, index) in new Array(12)" :key="`cellSkeleton${index}`">
                 <Skeleton class="h-4 w-full px-4" />
             </TableCell>
         </TableRow>

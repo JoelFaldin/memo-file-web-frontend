@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import { useSearchMemo } from '@/composables/useSearchMemo';
 import TableSkeleton from '@/components/TableSkeleton.vue';
 import SearchLabel from '@/components/SearchLabel.vue';
+import { useSearchMemo } from '@/composables/useMemo';
 import MemoTable from '@/components/MemoTable.vue';
 import TableHead from '@/components/TableHead.vue';
 import { Button } from '@/components/ui/button';

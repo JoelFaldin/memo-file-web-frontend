@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup name="SidebarMenu">
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 
 import ThemeToggle from './ThemeToggle.vue';
@@ -14,7 +14,7 @@ const route = useRoute();
         <div class="p-4">
             <h1 class="text-2xl font-bold mb-4 dark:text-white">Bienvenido</h1>
             <div class="space-y-2">
-                <span v-for="item in router.options.routes">
+                <span v-for="(item, index) in router.options.routes" :key="`router${index}`">
                     <RouterLink :to="item.path">
                         <Button class="dark:text-white w-full justify-start my-1 py-4" :variant="route.path == item.path ? 'secondary' : 'ghost'">{{ item.name }}</Button>
                     </RouterLink>

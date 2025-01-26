@@ -19,7 +19,7 @@ const mode = useColorMode();
                 <span v-if="mode == 'light'">
                     <IconSun class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" :color="mode == 'light' ? 'black' : mode == 'dark' ? 'white' : 'black'" />
                 </span>
-                <span v-else="mode == 'dark'">
+                <span v-else>
                     <IconMoon class="h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:-rotate-0 dark:scale-100" :color="mode == 'light' ? 'black' : mode == 'dark' ? 'white' : 'black'" />
                 </span>
                 <span class="sr-only">Cambiar tema</span>

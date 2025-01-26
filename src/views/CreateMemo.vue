@@ -2,8 +2,8 @@
 import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
 import { ref } from 'vue';
 
-import { useCreateMemo } from '@/composables/useCreateMemo';
-import { reFormatRut } from '@/composables/formatRut';
+import { reFormatRut } from '@/composables/stringUtils/formatRut';
+import { useCreateMemo } from '@/composables/useMemo';
 import FormSelect from '@/components/FormSelect.vue';
 import FormInput from '@/components/FormInput.vue';
 import { Button } from '@/components/ui/button';
