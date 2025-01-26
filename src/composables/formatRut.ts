@@ -12,3 +12,7 @@ export const formatRut = (rut: string) => {
 
     return firstPartArr.reverse().join('').concat('-').concat(rutArr[1])
 }
+
+export const reFormatRut = (rut: string) => {
+    return rut.split('').filter(char => char != '.').join('');
+}

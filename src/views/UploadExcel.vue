@@ -1,40 +1,16 @@
 <script lang="ts" setup>
-import { useMutation, useQuery } from '@tanstack/vue-query';
 import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
-import { downloadExcelTemplate, uploadExcel } from '@/api/excelService';
 import { Button } from '@/components/ui/button';
+import { useExcelTemplate, useUploadExcel } from '@/composables/useExcel';
 
 const excel = ref<File | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 
-const { mutate, isPending } = useMutation({
-  mutationFn: uploadExcel,
-  onMutate: async () => {
-    const loading = toast.loading('Subiendo archivo excel...');
+const { mutate, isPending } = useUploadExcel({ excel, fileInput });
 
-    return { loading };
-  },
-  onSuccess: (_, __, context) => {
-    toast.success('Datos subidos exitosamente!');
-    toast.dismiss(context?.loading);
-
-    excel.value = null;
-    fileInput.value!.value = '';
-  },
-  onError: (error, _, context) => {
-    toast.error('Ha ocurrido un error al subir el archivo excel.');
-    toast.dismiss(context?.loading);
-    console.error(error);
-  }
-});
-
-const { isLoading, isError, error, refetch } = useQuery({
-  queryKey: ['exceltemplate'],
-  queryFn: downloadExcelTemplate,
-  enabled: false
-})
+const { isLoading, isError, error, refetch } = useExcelTemplate();
 
 const handleSubmit = async () => {
   if (!excel.value) {

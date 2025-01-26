@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
-
-import { fetchOverall } from '@/api/memoService.ts';
+import { useOverall } from '@/composables/useOverall';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['overall'],
-    queryFn: fetchOverall
-});
+const { isLoading, isError, error, data } = useOverall();
 
 </script>
 
@@ -19,7 +14,7 @@ const { isLoading, isError, data, error } = useQuery({
 
             <span v-if="isLoading">
                 <table style="width:100%;" class="text-slate-600 dark:text-slate-400 mb-2">
-                    <tr v-for="_ in new Array(3)"  class="border border-slate-200 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700">
+                    <tr v-for="(_, index) in new Array(3)" :key="index" class="border border-slate-200 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700">
                         <td class="p-2">
                             <Skeleton class="h-4 w-full px-14" />
                         </td>
@@ -37,7 +32,7 @@ const { isLoading, isError, data, error } = useQuery({
             </span>
             <span v-else-if="data" class="w-9/12">
                 <table style="width:100%;" class="text-slate-600 dark:text-slate-400 mb-2">
-                    <tr v-for="count in data.totalCount"  class="border border-slate-200 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700">
+                    <tr v-for="(count, index) in data.totalCount" :key="`${index}column`"  class="border border-slate-200 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700">
                         <td class="p-2">{{ count.count }}</td>
                         <td class="p-2" style="width:30%;"></td>
                         <td class="text-right p-2">{{ count.label }}</td>

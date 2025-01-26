@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { keepPreviousData, useQuery } from '@tanstack/vue-query';
 import { ref } from 'vue';
 
+import { useSearchMemo } from '@/composables/useSearchMemo';
 import TableSkeleton from '@/components/TableSkeleton.vue';
 import SearchLabel from '@/components/SearchLabel.vue';
 import MemoTable from '@/components/MemoTable.vue';
 import TableHead from '@/components/TableHead.vue';
-import { getMemos } from '@/api/memoService.ts';
 import { Button } from '@/components/ui/button';
 import { Table } from '@/components/ui/table';
 
@@ -16,12 +15,7 @@ const direction = ref('');
 const page = ref(1);
 const enabled = ref(false);
 
-const { data, isLoading, isError, error, refetch, isPlaceholderData } = useQuery({
-  queryKey: ['searchedMemos', page],
-  queryFn: () => getMemos(rol.value, rut.value, direction.value, page),
-  enabled,
-  placeholderData: keepPreviousData,
-});
+const { data, isLoading, isError, error, refetch, isPlaceholderData } = useSearchMemo(page, enabled, rol, rut, direction);
 
 const searchMemo = async () => {  
   if (!rol.value && !rut.value && !direction.value) {

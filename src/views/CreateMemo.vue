@@ -1,47 +1,12 @@
 <script lang="ts" setup>
 import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
-import { useMutation } from '@tanstack/vue-query';
-import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
-import FormInput from '@/components/FormInput.vue';
+import { useCreateMemo } from '@/composables/useCreateMemo';
+import { reFormatRut } from '@/composables/formatRut';
 import FormSelect from '@/components/FormSelect.vue';
-import { uploadMemo } from '@/api/memoService.ts';
+import FormInput from '@/components/FormInput.vue';
 import { Button } from '@/components/ui/button';
-
-const { mutate, isPending } = useMutation({
-  mutationFn: uploadMemo,
-  onMutate: async () => {
-    const loading = toast.loading('Creando memorándum...');
-
-    return { loading };
-  },
-  onSuccess: (_, __, context) => {
-    toast.success('Memorándum creado con éxito!');
-    toast.dismiss(context?.loading);
-
-    userInputs.value.rut = '';
-    userInputs.value.nombre = '';
-    infoInputs.value.tipo = '';
-    infoInputs.value.patente = '';
-    infoInputs.value.periodo = '';
-    directionInputs.value.calle = '';
-    directionInputs.value.numero = '';
-    directionInputs.value.aclaratoria = '';
-    financesInputs.value.capital = '';
-    financesInputs.value.afecto = '';
-    financesInputs.value.total = '';
-    financesInputs.value.emision = '';
-    labelInputs.value.fechaPagos = '';
-    labelInputs.value.giro = '';
-    labelInputs.value.agtp = '';
-  },
-  onError: (error, _, context) => {
-    toast.error('Ha ocurrido un error al crear el memorándum.');
-    toast.dismiss(context?.loading);
-    console.log(error);
-  }
-})
 
 const userInputs = ref({ rut: '', nombre: '' });
 const infoInputs = ref({ tipo: '', patente: '', periodo: '' });
@@ -49,12 +14,14 @@ const directionInputs = ref({ calle: '', numero: '', aclaratoria: '' });
 const financesInputs = ref({ capital: '', afecto: '', total: '', emision: '' });
 const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' });
 
+const { mutate, isPending } = useCreateMemo({ userInputs, infoInputs, directionInputs, financesInputs, labelInputs });
+
 const handleSubmitData = async () => {
   try {
     mutate({
         tipo: infoInputs.value.tipo,
         patente: infoInputs.value.patente,
-        rut: userInputs.value.rut,
+        rut: reFormatRut(userInputs.value.rut),
         nombre: userInputs.value.nombre,
         calle: directionInputs.value.calle,
         numero: directionInputs.value.numero,
