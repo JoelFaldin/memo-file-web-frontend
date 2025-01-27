@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import { fixStringLength } from "@/composables/stringUtils/fixStringLength";
 import { formatCurrency } from "@/composables/stringUtils/formatCurrency";
 import { formatPayTime } from '@/composables/stringUtils/formatPayTime';
+import { formatRut } from '@/composables/stringUtils/formatRut';
 
 describe('fix string length util', () => {
     test('removes whitespaces and adds alternative title when strings length is bigger than 15', () => {
@@ -36,5 +37,15 @@ describe('format currency util', () => {
 describe('format pay time util', () => {
     test('correctly formats date given 3 numbers', () => {
         expect(formatPayTime(1, 5, 2023)).toBe('01-05-2023');
+    })
+})
+
+describe('format rut util', () => {
+    test('formats a rut that starts with 2 digits', () => {
+        expect(formatRut('20000000-k')).toBe('20.000.000-k');
+    })
+
+    test('formats a rut that starts with 1 digit', () => {
+        expect(formatRut('9000000-k')).toBe('9.000.000-k');
     })
 })
