@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import { fixStringLength } from "@/composables/stringUtils/fixStringLength";
 import { formatCurrency } from "@/composables/stringUtils/formatCurrency";
+import { formatPayTime } from '@/composables/stringUtils/formatPayTime';
 
 describe('fix string length util', () => {
     test('removes whitespaces and adds alternative title when strings length is bigger than 15', () => {
@@ -29,5 +30,11 @@ describe('format currency util', () => {
         expect(formatCurrency(23500)).toBe('23.500');
         expect(formatCurrency(650000)).toBe('650.000');
         expect(formatCurrency(6623000)).toBe('6.623.000');
+    })
+});
+
+describe('format pay time util', () => {
+    test('correctly formats date given 3 numbers', () => {
+        expect(formatPayTime(1, 5, 2023)).toBe('01-05-2023');
     })
 })
