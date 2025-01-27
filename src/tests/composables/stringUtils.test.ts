@@ -4,6 +4,7 @@ import { fixStringLength } from "@/composables/stringUtils/fixStringLength";
 import { formatCurrency } from "@/composables/stringUtils/formatCurrency";
 import { formatPayTime } from '@/composables/stringUtils/formatPayTime';
 import { formatRut } from '@/composables/stringUtils/formatRut';
+import { formatTime } from '@/composables/stringUtils/formatTime';
 
 describe('fix string length util', () => {
     test('removes whitespaces and adds alternative title when strings length is bigger than 15', () => {
@@ -38,7 +39,7 @@ describe('format pay time util', () => {
     test('correctly formats date given 3 numbers', () => {
         expect(formatPayTime(1, 5, 2023)).toBe('01-05-2023');
     })
-})
+});
 
 describe('format rut util', () => {
     test('formats a rut that starts with 2 digits', () => {
@@ -47,5 +48,15 @@ describe('format rut util', () => {
 
     test('formats a rut that starts with 1 digit', () => {
         expect(formatRut('9000000-k')).toBe('9.000.000-k');
+    })
+});
+
+describe('format time util', () => {
+    test('formats the time separating year and semester', () => {
+        expect(formatTime('20051S')).toBe('2005-1S');
+        expect(formatTime('20102S')).toBe('2010-2S');
+        expect(formatTime('20151S')).toBe('2015-1S');
+        expect(formatTime('20202S')).toBe('2020-2S');
+        expect(formatTime('20251S')).toBe('2025-1S');
     })
 })
