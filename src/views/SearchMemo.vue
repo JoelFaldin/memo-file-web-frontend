@@ -23,7 +23,7 @@ const searchMemo = async () => {
     return;
   }
   
-  try {    
+  try {
     await refetch();
   } catch(error) {
     console.error(error);

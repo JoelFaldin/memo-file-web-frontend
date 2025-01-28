@@ -16,7 +16,7 @@ export const useSearchMemo = (page: Ref<number>, enabled: Ref<boolean>, rol: Ref
   return useQuery({
     queryKey: ['searchedMemos', page],
     queryFn: () => getMemos(rol.value, rut.value, direction.value, page),
-    enabled: enabled.value,
+    enabled: enabled,
     placeholderData: keepPreviousData,
   });
 }
