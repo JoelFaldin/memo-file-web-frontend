@@ -1,10 +1,9 @@
-import { keepPreviousData, useQuery } from "@tanstack/vue-query";
+import { useQuery } from "@tanstack/vue-query";
 import { describe, vi, expect, test, type Mock } from "vitest";
 import { nextTick, ref } from "vue";
 
 import { useOverall } from "@/composables/useOverall";
 import { useSearchMemo } from "@/composables/useMemo";
-import exp from "constants";
 
 const mockOverallResponse = {
     "totalCount": [
@@ -73,6 +72,38 @@ describe('fetch overall', () => {
         expect(isLoading).toEqual(false);
         expect(isError).toEqual(false);
     });
+
+    test('returns true loading value while loading', async () => {
+        const mockQuery = {
+            data: undefined,
+            isLoading: true,
+            isError: false
+        };
+
+        (useQuery as Mock).mockReturnValue(mockQuery);
+        const { data, isLoading, isError } = useOverall();
+        await nextTick();
+
+        expect(data).toEqual(undefined);
+        expect(isLoading).toEqual(true);
+        expect(isError).toEqual(false);
+    });
+
+    test('returns error', async () => {
+        const mockQuery = {
+            data: undefined,
+            isLoading: false,
+            isError: true
+        };
+
+        (useQuery as Mock).mockReturnValue(mockQuery);
+        const { data, isLoading, isError } = useOverall();
+        await nextTick();
+
+        expect(data).toBeUndefined();
+        expect(isLoading).toEqual(false);
+        expect(isError).toEqual(true);
+    })
 })
 
 describe('use memorandums', () => {
