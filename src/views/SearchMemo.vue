@@ -17,7 +17,7 @@ const enabled = ref(false);
 
 const { data, isLoading, isError, error, refetch, isPlaceholderData } = useSearchMemo(page, enabled, rol, rut, direction);
 
-const searchMemo = async () => {  
+const searchMemo = async () => {
   if (!rol.value && !rut.value && !direction.value) {
     alert('Debes indicar un rol, rut o dirección para buscar!');
     return;
@@ -66,7 +66,9 @@ const goNextPage = () => {
           :disabled="isLoading"
           @click="searchMemo"
         >
-          Buscar
+          <span class="text-black dark:text-white">
+            Buscar
+          </span>  
         </Button>
     </div>
 
@@ -80,9 +82,9 @@ const goNextPage = () => {
       <p class="text-slate-500 my-4">{{ error ?? 'Ha ocurrido un error al intentar buscar memorándums con esa patente.' }}</p>
     </section>
     <section v-else-if="data?.findMemo?.length === 0">
-      <p>No hay memos con la patente indicada.</p>
+      <p class="text-black dark:text-white">No hay memos con la patente indicada.</p>
     </section>
-    <section v-else-if="data?.findMemo">
+    <section v-else-if="data?.findMemo && (rol || rut || direction)">
       <p class="text-center mb-5 text-slate-600 dark:text-slate-400">Total: {{ data.total }}</p>
 
       <MemoTable :data="data" />
@@ -95,7 +97,9 @@ const goNextPage = () => {
           :disabled="page === 1"
           @click="goPreviousPage"
         >
-          Anterior
+          <span class="text-black dark:text-white">
+            Anterior
+          </span>
         </Button>
         <Button
           variant="outline"
@@ -103,13 +107,11 @@ const goNextPage = () => {
           :disabled="!data.nextPage"
           @click="goNextPage"
         >
-          Siguiente
+          <span class="text-black dark:text-white">
+            Siguiente
+          </span>
         </Button>
       </div>
     </section>
   </div>
 </template>
-
-<style scoped>
-
-</style>

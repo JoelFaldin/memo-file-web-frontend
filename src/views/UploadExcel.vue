@@ -42,6 +42,7 @@ const downloadTemplate = async () => {
   <div class="min-h-screen flex flex-col gap-y-5 items-center justify-center">
     <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full">
       <h1 class="text-3xl font-bold text-black dark:text-white">Subir archivo excel</h1>
+      <p class="text-slate-700 dark:text-slate-300 m-auto mt-3 text-sm underline underline-offset-4">Importante: el formato de fecha es 20201201 (yyyy-mm-dd)!</p>
 
       <section class="flex flex-col items-center mt-6 gap-y-4 my-4 w-full h-20">
         <label for="file" class="w-full h-full flex flex-col my-auto border-[1px] border-dashed border-slate-500">
@@ -59,7 +60,9 @@ const downloadTemplate = async () => {
         :disabled="isPending"
         @click="handleSubmit"
       >
-        Subir excel
+        <span class="text-black dark:text-white">
+          Subir excel
+        </span>
       </Button>
     </div>
 
@@ -71,7 +74,9 @@ const downloadTemplate = async () => {
           :disabled="isLoading"
           @click="downloadTemplate"
         >
-          Descargar plantilla
+          <span class="text-black dark:text-white">
+            Descargar plantilla
+          </span>
       </Button>
     </div>
 

@@ -109,7 +109,9 @@ const handleSubmitData = async () => {
         :disabled="isPending"
         @click="handleSubmitData"
       >
-        Enviar datos
+        <span class="text-black dark:text-white">
+          Enviar datos
+        </span>
       </Button>
     </div>
   </div>
