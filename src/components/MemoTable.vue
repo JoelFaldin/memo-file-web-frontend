@@ -29,6 +29,8 @@ const props = defineProps(['data']);
                 <TableCell :title="fixStringLength(row.giro).fullText">{{ fixStringLength(row.giro).newString }}</TableCell>
                 <TableCell>{{ row.agtp }}</TableCell>
                 <TableCell>{{ formatPayTime(row.pay_times.day, row.pay_times.month, row.pay_times.year) }}</TableCell>
+                <TableCell :title="fixStringLength(row.representantes.nombre_representante).fullText">{{ fixStringLength(row.representantes.nombre_representante).newString }}</TableCell>
+                <TableCell>{{ row.representantes.rut_representante }}</TableCell>
             </TableRow>
         </TableBody>
     </Table>

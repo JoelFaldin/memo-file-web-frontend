@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { TableCaption, TableHead, TableHeader, TableRow } from './ui/table';
 
-const headers = ["Rut", "Tipo", "Patente", "Dirección", "Periodo", "Capital", "Afecto", "Total", "Emisión", "Giro", "AGTP", "Fecha de pago"];
+const headers = ["Rut", "Tipo", "Patente", "Dirección", "Periodo", "Capital", "Afecto", "Total", "Emisión", "Giro", "AGTP", "Fecha de pago", "Representante", "Rut representante"];
 
 </script>
 

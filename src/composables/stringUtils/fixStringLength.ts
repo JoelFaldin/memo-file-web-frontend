@@ -1,4 +1,8 @@
 export const fixStringLength = (str: string) => {
+    if (str === null) {
+        return { newStr: '', fullText: null }
+    }
+
     if (str.length < 15) {
         return { newString: str, fullText: '' }
     } else {

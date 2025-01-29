@@ -25,6 +25,7 @@ const searchMemo = async () => {
   
   try {
     await refetch();
+    enabled.value = false;
   } catch(error) {
     console.error(error);
   }
@@ -84,7 +85,7 @@ const goNextPage = () => {
     <section v-else-if="data?.findMemo?.length === 0">
       <p class="text-black dark:text-white">No hay memos con la patente indicada.</p>
     </section>
-    <section v-else-if="data?.findMemo && (rol || rut || direction)">
+    <section v-else-if="data?.findMemo">
       <p class="text-center mb-5 text-slate-600 dark:text-slate-400">Total: {{ data.total }}</p>
 
       <MemoTable :data="data" />
@@ -104,7 +105,7 @@ const goNextPage = () => {
         <Button
           variant="outline"
           size="sm"
-          :disabled="!data.nextPage"
+          :disabled="!data.nextPage || isLoading"
           @click="goNextPage"
         >
           <span class="text-black dark:text-white">
