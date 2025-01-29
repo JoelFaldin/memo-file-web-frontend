@@ -24,7 +24,7 @@ const props = defineProps(['data']);
                 <TableCell>{{ formatTime(row.periodo) }}</TableCell>
                 <TableCell>{{ formatCurrency(parseFloat(row.capital)) }}</TableCell>
                 <TableCell>{{ row.afecto }}</TableCell>
-                <TableCell>{{ formatCurrency(row.total) }}</TableCell>
+                <TableCell>{{ formatCurrency(parseFloat(row.total)) }}</TableCell>
                 <TableCell>{{ row.emision }}</TableCell>
                 <TableCell :title="fixStringLength(row.giro).fullText">{{ fixStringLength(row.giro).newString }}</TableCell>
                 <TableCell>{{ row.agtp }}</TableCell>

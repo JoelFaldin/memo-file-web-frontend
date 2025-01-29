@@ -1,16 +1,21 @@
 export const formatRut = (rut: string) => {
-    const rutArr = rut.split('-')
-    const reversedRut = rutArr[0].split('').reverse()
-    const firstPartArr = []
+    const rutArr = rut.split('-');
+    const first = rutArr[0];
+    const second = rutArr[1];
 
-    for (let i = 0; i < reversedRut.length; i++) {
-        if ((i % 3 === 0) && i != 0) {
-            firstPartArr.push('.')
+    let newRut = '';
+    let count = 0;
+
+    for (let i = first.length - 1; i >= 0; i--) {
+        if ((count % 3 === 0) && count > 0) {
+            newRut = '.' + newRut;
         }
-        firstPartArr.push(reversedRut[i])
+
+        newRut = first[i] + newRut;
+        count++;
     }
 
-    return firstPartArr.reverse().join('').concat('-').concat(rutArr[1])
+    return newRut + '-' + second;
 }
 
 export const reFormatRut = (rut: string) => {
