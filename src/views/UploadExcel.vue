@@ -2,7 +2,7 @@
 import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
-import { useExcelTemplate, useUploadExcel } from '@/composables/useExcel';
+import { useDownloadData, useExcelTemplate, useUploadExcel } from '@/composables/useExcel';
 import { Button } from '@/components/ui/button';
 
 const excel = ref<File | null>(null);
@@ -11,6 +11,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
 const { mutate, isPending } = useUploadExcel({ excel, fileInput });
 
 const { isLoading, isError, error, refetch } = useExcelTemplate();
+const { refetch: refetchExcelData } = useDownloadData();
 
 const handleSubmit = async () => {
   if (!excel.value) {
@@ -36,10 +37,14 @@ const storeFile = (event: Event) => {
 const downloadTemplate = async () => {
   refetch();
 }
+
+const downloadExcelData = async () => {
+  refetchExcelData();
+}
 </script>
 
 <template>
-  <div class="flex flex-row items-center justify-center h-screen gap-x-10">
+  <div class="flex flex-col lg:flex-row items-center justify-center h-screen lg:gap-x-10 gap-y-10">
     <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full h-72">
       <h1 class="text-3xl font-bold text-black dark:text-white">Subir archivo excel</h1>
       <p class="text-slate-700 dark:text-slate-300 m-auto mt-3 text-sm underline underline-offset-4">Importante: el formato de fecha es 20201201 (yyyy-mm-dd)!</p>
@@ -81,6 +86,8 @@ const downloadTemplate = async () => {
           </span>
       </Button>
   </div>
+
+  <a @click="downloadExcelData">Descargar excel con memos</a>  
 
     <span v-if="isError">
       {{ error }}

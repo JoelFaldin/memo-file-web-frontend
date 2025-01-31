@@ -2,9 +2,8 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { toast } from "vue-sonner";
 import type { Ref } from "vue";
 
-import { downloadExcelTemplate } from '@/api/excelService';
+import { downloadExcelData, downloadExcelTemplate } from '@/api/excelService';
 import { uploadExcel } from "@/api/excelService";
-
 
 interface uploadExcelInterface {
   excel: Ref<File | null>,
@@ -38,6 +37,14 @@ export const useExcelTemplate = () => {
   return useQuery({
     queryKey: ['exceltemplate'],
     queryFn: downloadExcelTemplate,
+    enabled: false
+  })
+}
+
+export const useDownloadData = () => {
+  return useQuery({
+    queryKey: ['excelData'],
+    queryFn: downloadExcelData,
     enabled: false
   })
 }

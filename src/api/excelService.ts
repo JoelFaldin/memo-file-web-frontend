@@ -20,7 +20,7 @@ export const uploadExcel = async (formData: FormData) => {
 
 export const downloadExcelTemplate = async () => {
   try {
-    const res = await fetch(`${URL}/`)
+    const res = await fetch(`${URL}/`);
 
     const blob = new Blob([await res.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
@@ -35,5 +35,33 @@ export const downloadExcelTemplate = async () => {
   } catch(error) {
     console.log(error);
     return Promise.reject(error);
+  }
+}
+
+export const downloadExcelData = async () => {
+  try {
+    const res = await fetch(`${URL}/data`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error('Ha ocurrido un problema, inténtalo más tarde.');
+    }
+
+    const blob = await res.blob();
+    const location = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = location;
+    a.download = 'memos.xlsx';
+    a.click();
+
+    window.URL.revokeObjectURL(location);
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
