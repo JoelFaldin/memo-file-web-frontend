@@ -14,4 +14,6 @@ export interface NewMemoInterface {
     fechaPagos: string,
     giro: string,
     agtp: string,
+    nombre_representante: string,
+    rut_representante: string,
 }

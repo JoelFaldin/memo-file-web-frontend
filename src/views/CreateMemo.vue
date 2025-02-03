@@ -13,8 +13,9 @@ const infoInputs = ref({ tipo: '', patente: '', periodo: '' });
 const directionInputs = ref({ calle: '', numero: '', aclaratoria: '' });
 const financesInputs = ref({ capital: '', afecto: '', total: '', emision: '' });
 const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' });
+const representantInputs = ref({ nombre: '', rut: '', });
 
-const { mutate, isPending } = useCreateMemo({ userInputs, infoInputs, directionInputs, financesInputs, labelInputs });
+const { mutate, isPending } = useCreateMemo({ userInputs, infoInputs, directionInputs, financesInputs, labelInputs, representantInputs });
 
 const handleSubmitData = async () => {
   try {
@@ -33,7 +34,9 @@ const handleSubmitData = async () => {
         emision: parseInt(financesInputs.value.emision),
         fechaPagos: labelInputs.value.fechaPagos,
         giro: labelInputs.value.giro,
-        agtp: labelInputs.value?.agtp
+        agtp: labelInputs.value?.agtp,
+        nombre_representante: representantInputs.value.nombre,
+        rut_representante: representantInputs.value.rut,
     });
   } catch (error) {
     console.error(error);
@@ -58,8 +61,8 @@ const handleSubmitData = async () => {
             class="py-2 flex flex-col gap-y-4"
           >
             <span class="flex flex-col gap-y-4 w-11/12 m-auto">
-              <FormInput label="Rut" id="rut" type="text" v-model:value="userInputs.rut" />
-              <FormInput label="Nombre" id="name" type="text" v-model:value="userInputs.nombre" />
+              <FormInput label="Rut del local" id="rut" type="text" v-model:value="userInputs.rut" />
+              <FormInput label="Nombre del local (nombre de fantasía)" id="name" type="text" v-model:value="userInputs.nombre" />
             </span>
             <span class="flex flex-col gap-y-4 w-11/12 m-auto">
               <FormSelect v-model:tipo="infoInputs.tipo" />
@@ -96,8 +99,12 @@ const handleSubmitData = async () => {
               <FormInput label="Fecha de pago" id="fechaPago" type="text" v-model:value="labelInputs.fechaPagos">
                 <p class="text-sm text-slate-700 dark:text-slate-400 mt-1">Por ejemplo, 01-02-2025 (01 de febrero, 2025)</p>
               </FormInput>
-              <FormInput label="Giro" id="giro" type="text" v-model:value="labelInputs.giro" />
-              <FormInput label="AGTP" id="agtp" type="text" v-model:value="labelInputs.agtp" />
+              <span class="flex flex-row gap-x-4">
+                <FormInput label="Giro" id="giro" type="text" v-model:value="labelInputs.giro" />
+                <FormInput label="AGTP" id="agtp" type="text" v-model:value="labelInputs.agtp" />
+              </span>
+              <FormInput label="Nombre del representante" id="representante_name" type="text" v-model:value="representantInputs.nombre" />
+              <FormInput label="Rut del representante" id="representante_rut" type="text" v-model:value="representantInputs.rut" />
             </span>
           </SplitterPanel>
         </SplitterGroup>

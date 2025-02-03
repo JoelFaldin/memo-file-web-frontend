@@ -10,6 +10,7 @@ interface createMemoInterface {
   directionInputs: Ref<{ calle: string, numero: string, aclaratoria: string }>,
   financesInputs: Ref<{ capital: string, afecto: string, total: string, emision: string }>,
   labelInputs: Ref<{ fechaPagos: string, giro: string, agtp: string }>,
+  representantInputs: Ref<{ nombre: string, rut: string }>,
 }
 
 export const useSearchMemo = (page: Ref<number>, enabled: Ref<boolean>, rol: Ref<string>, rut: Ref<string>, direction: Ref<string>) => {
@@ -21,18 +22,18 @@ export const useSearchMemo = (page: Ref<number>, enabled: Ref<boolean>, rol: Ref
   });
 }
 
-export const useCreateMemo = ({ userInputs, infoInputs, directionInputs, financesInputs, labelInputs }: createMemoInterface) => {
+export const useCreateMemo = ({ userInputs, infoInputs, directionInputs, financesInputs, labelInputs, representantInputs }: createMemoInterface) => {
   return useMutation({
     mutationFn: uploadMemo,
     onMutate: async () => {
       const loading = toast.loading('Creando memorándum...');
-  
+
       return { loading };
     },
     onSuccess: (_, __, context) => {
       toast.success('Memorándum creado con éxito!');
       toast.dismiss(context?.loading);
-  
+
       userInputs.value.rut = '';
       userInputs.value.nombre = '';
       infoInputs.value.tipo = '';
@@ -48,6 +49,8 @@ export const useCreateMemo = ({ userInputs, infoInputs, directionInputs, finance
       labelInputs.value.fechaPagos = '';
       labelInputs.value.giro = '';
       labelInputs.value.agtp = '';
+      representantInputs.value.nombre = '';
+      representantInputs.value.rut = '';
     },
     onError: (error, _, context) => {
       toast.error('Ha ocurrido un error al crear el memorándum.');
