@@ -15,13 +15,13 @@ export const useUploadExcel = ({ excel, fileInput }: uploadExcelInterface) => {
     mutationFn: uploadExcel,
     onMutate: async () => {
       const loading = toast.loading('Subiendo archivo excel...');
-  
+
       return { loading };
     },
     onSuccess: (_, __, context) => {
       toast.success('Datos subidos exitosamente!');
       toast.dismiss(context?.loading);
-  
+
       excel.value = null;
       fileInput.value!.value = '';
     },

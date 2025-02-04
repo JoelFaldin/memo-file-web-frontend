@@ -47,7 +47,7 @@ const downloadExcelData = async () => {
   <div class="flex flex-col lg:flex-row items-center justify-center h-screen lg:gap-x-10 gap-y-10">
     <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full h-72">
       <h1 class="text-3xl font-bold text-black dark:text-white">Subir archivo excel</h1>
-      <p class="text-slate-700 dark:text-slate-300 m-auto mt-3 text-sm underline underline-offset-4">Importante: el formato de fecha es 20201201 (yyyy-mm-dd)!</p>
+      <p class=" text-center text-slate-700 dark:text-slate-300 m-auto mt-3 text-sm underline underline-offset-4">Importante: el formato de fecha es 20201201 (yyyy-mm-dd)!</p>
 
       <section class="flex flex-col items-center mt-6 gap-y-4 my-4 w-full h-20">
         <label for="file" class="w-full h-full flex flex-col my-auto border-[1px] border-dashed border-slate-500">
@@ -58,7 +58,7 @@ const downloadExcelData = async () => {
         </label>
         <input class="opacity-0 absolute -z-10" type="file" id="file" ref="fileInput" accept=".xls, .xlsx" @change="storeFile" />
       </section>
-      
+
       <Button
         variant="outline"
         size="lg"
@@ -73,7 +73,7 @@ const downloadExcelData = async () => {
 
     <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full h-72">
       <h2 class="text-3xl font-bold text-black dark:text-white">Descarga la plantilla</h2>
-      <p class="text-slate-700 dark:text-slate-300 mt-3 text-sm underline underline-offset-4">Asegúrate que la información esté correctamente formateada</p>
+      <p class="text-center text-slate-700 dark:text-slate-300 mt-3 text-sm underline underline-offset-4">Asegúrate de que la información esté correctamente formateada para guardarla en la base de datos!</p>
       <Button
           class="my-auto"
           variant="outline"
@@ -85,9 +85,9 @@ const downloadExcelData = async () => {
             Descargar plantilla
           </span>
       </Button>
-  </div>
+    </div>
 
-  <a @click="downloadExcelData">Descargar excel con memos</a>  
+  <a @click="downloadExcelData">Descargar excel con memos</a>
 
     <span v-if="isError">
       {{ error }}

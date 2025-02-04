@@ -1,7 +1,7 @@
 import type { NewMemoInterface } from "@/interfaces/memoInterface";
 import type { Ref } from "vue";
 
-const URL = `${import.meta.env.VITE_BACKEND_URL}:3000/memo`;
+const URL = `${import.meta.env.VITE_BACKEND_URL}/memo`;
 
 export const fetchOverall = async () => {
   try {

@@ -22,7 +22,7 @@ const searchMemo = async () => {
     alert('Debes indicar un rol, rut o dirección para buscar!');
     return;
   }
-  
+
   try {
     await refetch();
     enabled.value = false;
@@ -59,7 +59,7 @@ const goNextPage = () => {
         <SearchLabel v-model:param="direction">
           Buscar por dirección:
         </SearchLabel>
-        
+
       </section>
         <Button
           variant="outline"
@@ -69,7 +69,7 @@ const goNextPage = () => {
         >
           <span class="text-black dark:text-white">
             Buscar
-          </span>  
+          </span>
         </Button>
     </div>
 

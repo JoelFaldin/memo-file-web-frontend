@@ -26,7 +26,7 @@ const { isLoading, isError, error, data } = useOverall();
                 </table>
             </span>
             <span v-else-if="isError || error" class="flex flex-col justify-center text-center">
-                <p>Ha habido un error, intenta más tarde.</p>
+                <p>Ha ocurrido un error, intenta más tarde.</p>
                 <p>Detalles del error:</p>
                 <p class="text-slate-500 my-4">{{ error }}</p>
             </span>

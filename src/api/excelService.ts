@@ -1,4 +1,4 @@
-const URL = `${import.meta.env.VITE_BACKEND_URL}:3000/excel`;
+const URL = `${import.meta.env.VITE_BACKEND_URL}/excel`;
 
 export const uploadExcel = async (formData: FormData) => {
   try {

@@ -3,8 +3,8 @@ import { describe, expect, test } from 'vitest';
 import { fixStringLength } from "@/composables/stringUtils/fixStringLength";
 import { formatCurrency } from "@/composables/stringUtils/formatCurrency";
 import { formatPayTime } from '@/composables/stringUtils/formatPayTime';
-import { formatRut } from '@/composables/stringUtils/formatRut';
 import { formatTime } from '@/composables/stringUtils/formatTime';
+import { formatRut } from '@/composables/stringUtils/formatRut';
 
 describe('fix string length util', () => {
     test('removes whitespaces and adds alternative title when strings length is bigger than 15', () => {
