@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatCurrency } from '@/composables/stringUtils/formatCurrency';
 import { useOverall } from '@/composables/useOverall';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -33,7 +34,7 @@ const { isLoading, isError, error, data } = useOverall();
             <span v-else-if="data" class="w-9/12">
                 <table style="width:100%;" class="text-slate-600 dark:text-slate-400 mb-2">
                     <tr v-for="(count, index) in data.totalCount" :key="`${index}column`"  class="border border-slate-200 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700">
-                        <td class="p-2">{{ count.count }}</td>
+                        <td class="p-2">{{ formatCurrency(count.count) }}</td>
                         <td class="p-2" style="width:30%;"></td>
                         <td class="text-right p-2">{{ count.label }}</td>
                     </tr>

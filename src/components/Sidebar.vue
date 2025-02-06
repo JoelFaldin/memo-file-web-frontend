@@ -10,7 +10,7 @@ const route = useRoute();
 </script>
 
 <template>
-    <nav class="w-64 h-screen bg-background dark:bg-slate-900 border-r">
+    <nav class="w-64 h-screen bg-background dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
         <div class="p-4">
             <h1 class="text-2xl font-bold mb-4 dark:text-white">Bienvenido</h1>
             <div class="space-y-2">
