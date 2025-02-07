@@ -26,7 +26,12 @@ export const useInfiniteSearch = (rol: Ref<string>, rut: Ref<string>, direction:
   return useInfiniteQuery({
     queryKey: ['infiniteMemos'],
     queryFn: ({ pageParam = 0 }) => fetchInfiniteMemos(rol.value, rut.value, direction.value, pageParam),
-    getNextPageParam: (lastPage: { hasNextPage: boolean; }) => lastPage.hasNextPage ?? false,
+    getNextPageParam: (lastPage: { hasNextPage: boolean; }, allPages: Array<{ hasNextPage: boolean }>) => {
+      if (lastPage.hasNextPage) {
+        return allPages.length;
+      }
+      return false;
+    },
     initialPageParam: false,
     enabled: enableInfinite,
   })

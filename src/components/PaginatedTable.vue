@@ -2,11 +2,11 @@
 import { ref } from 'vue';
 
 import type { DataInterface } from '@/interfaces/memoInterface';
-import MemoTable from '../MemoTable.vue';
 import TableSkeleton from '@/components/TableSkeleton.vue';
 import TableHead from '@/components/TableHead.vue';
 import { Button } from '@/components/ui/button';
 import { Table } from '@/components/ui/table';
+import MemoTable from './MemoTable.vue';
 
 const enableSearch = ref(false);
 const page = ref(1);

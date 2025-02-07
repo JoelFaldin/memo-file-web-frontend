@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
-
+import PaginatedTable from '@/components/PaginatedTable.vue';
 import SearchLabel from '@/components/SearchLabel.vue';
-import MemoTable from '@/components/MemoTable.vue';
+import { useInfiniteSearch, useSearchMemo } from '@/composables/useMemo';
 import { Button } from '@/components/ui/button';
-import PaginatedTable from '@/components/icons/PaginatedTable.vue';
+import { ref } from 'vue';
+import InfiniteTable from '@/components/InfiniteTable.vue';
 
 const rol = ref('');
 const rut = ref('');
@@ -13,11 +13,10 @@ const page = ref(1);
 
 const enableSearch = ref(false);
 const enableInfinite = ref(false);
-const isInfiniteScroll = ref(false);
-const observerTarget = ref(null);
+const isInfiniteScroll = ref(true);
 
 const { data, isLoading, isError, error, refetch, isPlaceholderData } = useSearchMemo(page, enableSearch, rol, rut, direction);
-// const { data: infiniteData, isLoading: infiniteLoading, isError: isInfiniteError, error: infiniteError, refetch: infiniteRefetch, fetchNextPage: infiniteFetchNext, hasNextPage: infiniteHasNext } = useInfiniteSearch(rol, rut, direction, enableInfinite)
+const { data: infiniteData, isLoading: infiniteLoading, isError: isInfiniteError, error: infiniteError, refetch: infiniteRefetch, fetchNextPage: infiniteFetchNext, hasNextPage: infiniteHasNext } = useInfiniteSearch(rol, rut, direction, enableInfinite)
 
 const searchMemo = async () => {
   if (!rol.value && !rut.value && !direction.value) {
@@ -27,7 +26,7 @@ const searchMemo = async () => {
 
   try {
     if (isInfiniteScroll.value) {
-      // await infiniteRefetch();
+      await infiniteRefetch();
       enableInfinite.value = false;
     } else {
       await refetch();
@@ -37,28 +36,6 @@ const searchMemo = async () => {
     console.error(error);
   }
 }
-
-// const observer = ref<IntersectionObserver | null>(null);
-
-// const setupObserver = () => {
-//   if (observer.value) {
-//     observer.value.disconnect();
-//   }
-
-//   observer.value = new IntersectionObserver(
-//     (entries) => {
-//       if (entries[0].isIntersecting && hasNextPage.value) {
-//         fetchNextPage();
-//       }
-//     },
-//     { rootMargin: '100px' },
-//   );
-
-//   if (observerTarget.value) observer.value.observe(observerTarget.value);
-// }
-
-// onMounted(setupObserver);
-// onUnmounted(() => observer.value?.disconnect());
 </script>
 
 <template>
@@ -98,14 +75,31 @@ const searchMemo = async () => {
 
 
     <div v-if="isInfiniteScroll">
-      <p>INFINITE SCROLL DUDE</p>
-      <MemoTable :data="data" />
+      <section v-if="infiniteData?.pages">
+        <InfiniteTable
+          :data="infiniteData"
+          :infiniteLoading="infiniteLoading"
+          :isInfiniteError="isInfiniteError"
+          :infiniteError="infiniteError"
+          :infiniteRefetch="infiniteRefetch"
+          :infiniteFetchNext="infiniteFetchNext"
+          :infiniteHasNext="infiniteHasNext"
+        />
+      </section>
     </div>
     <div v-else>
       <section v-if="data?.findMemo">
-        <PaginatedTable :rol="rol" :rut="rut" :direction="direction" :data="data" :isLoading="isLoading" :isError="isError" :error="error" :refecth="refetch" :isPlaceholderData="isPlaceholderData" />
-
-        <div ref="observerTarget"></div>
+        <PaginatedTable
+          :rol="rol"
+          :rut="rut"
+          :direction="direction"
+          :data="data"
+          :isLoading="isLoading"
+          :isError="isError"
+          :error="error"
+          :refecth="refetch"
+          :isPlaceholderData="isPlaceholderData"
+        />
       </section>
     </div>
   </div>
