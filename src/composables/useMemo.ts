@@ -1,8 +1,8 @@
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/vue-query";
+import { keepPreviousData, useInfiniteQuery, useMutation, useQuery } from "@tanstack/vue-query";
 import { toast } from 'vue-sonner';
 import type { Ref } from "vue";
 
-import { getMemos, uploadMemo } from '@/api/memoService.ts';
+import { fetchInfiniteMemos, getMemos, uploadMemo } from '@/api/memoService.ts';
 
 interface createMemoInterface {
   userInputs: Ref<{ rut: string, nombre: string }>,
@@ -20,6 +20,16 @@ export const useSearchMemo = (page: Ref<number>, enabled: Ref<boolean>, rol: Ref
     enabled: enabled,
     placeholderData: keepPreviousData,
   });
+}
+
+export const useInfiniteSearch = (rol: Ref<string>, rut: Ref<string>, direction: Ref<string>, enableInfinite: Ref<boolean>) => {
+  return useInfiniteQuery({
+    queryKey: ['infiniteMemos'],
+    queryFn: ({ pageParam = 0 }) => fetchInfiniteMemos(rol.value, rut.value, direction.value, pageParam),
+    getNextPageParam: (lastPage: { hasNextPage: boolean; }) => lastPage.hasNextPage ?? false,
+    initialPageParam: false,
+    enabled: enableInfinite,
+  })
 }
 
 export const useCreateMemo = ({ userInputs, infoInputs, directionInputs, financesInputs, labelInputs, representantInputs }: createMemoInterface) => {

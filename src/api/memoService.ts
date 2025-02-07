@@ -19,7 +19,7 @@ export const fetchOverall = async () => {
 }
 
 export const getMemos = async (rol: string, rut: string, direction: string, page: Ref<number>) => {
-  const newRut = rut.split('').filter((n) => n != '.').join('')
+  const newRut = rut.split('').filter((n) => n != '.').join('');
 
   try {
     const res = await fetch(`${URL}/find?rol=${rol}&rut=${newRut}&direction=${direction}&page=${page.value}&limit=10`);
@@ -31,6 +31,23 @@ export const getMemos = async (rol: string, rut: string, direction: string, page
 
     return response;
   } catch(error) {
+    return Promise.reject(error);
+  }
+}
+
+export const fetchInfiniteMemos = async (rol: string, rut: string, direction: string, pageParam: number | boolean) => {
+  const newRut = rut.split('').filter((n) => n != '.').join('');
+
+  try {
+    const res = await fetch(`${URL}/find?rol=${rol}&rut=${newRut}&direction=${direction}&page=${pageParam}&limit=10`);
+    const response = await res.json();
+
+    if (!res.ok) {
+      return Promise.reject(response.message);
+    }
+
+    return response;
+  } catch (error) {
     return Promise.reject(error);
   }
 }
