@@ -1,5 +1,5 @@
 export const fixStringLength = (str: string) => {
-    if (str === null) {
+    if (!str) {
         return { newStr: '', fullText: null }
     }
 
@@ -7,7 +7,7 @@ export const fixStringLength = (str: string) => {
         return { newString: str, fullText: '' }
     } else {
         const newString = str.slice(0, 15)
-    
+
         return { newString: `${newString}...`, fullText: str }
     }
 }
