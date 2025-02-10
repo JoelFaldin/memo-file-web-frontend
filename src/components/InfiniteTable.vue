@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
-import MemoTable from './MemoTable.vue';
-import type { DataInterface } from '@/interfaces/memoInterface';
+import { onMounted, onUnmounted, ref, toRaw } from 'vue';
+
+import { fixStringLength } from '@/composables/stringUtils/fixStringLength';
+import { formatCurrency } from '@/composables/stringUtils/formatCurrency';
+import { formatPayTime } from '@/composables/stringUtils/formatPayTime';
+import { Table, TableBody, TableCell, TableRow } from './ui/table';
+import { formatTime } from '@/composables/stringUtils/formatTime';
+import { formatRut } from '@/composables/stringUtils/formatRut';
+import type { Memo } from '@/interfaces/memoInterface';
+import TableHead from './TableHead.vue';
 
 const props = defineProps<{
   data: {
-    pages?: {
-      target: {
-        findMemo: DataInterface[],
-        message: string,
-        nextPage: boolean,
-        totalPages: number,
-      }
-    }[],
-  },
+    findMemo: Memo[],
+    total: number;
+    totalPages: number;
+    nextPage: boolean;
+  }[],
   infiniteLoading: boolean,
   isInfiniteError: boolean,
   infiniteError: unknown,
   infiniteRefetch: () => void,
   infiniteFetchNext: () => void,
   infiniteHasNext: boolean,
-
 }>();
 
 const observer = ref<IntersectionObserver | null>(null);
@@ -46,12 +48,34 @@ const setupObserver = () => {
 onMounted(setupObserver);
 onUnmounted(() => observer.value?.disconnect());
 
-console.log(props.data);
+const memoData = toRaw(props.data).map(data => data.findMemo).flat() || [];
+
+console.log(toRaw(props.data).map(data => data.findMemo));
 </script>
 
 <template>
-  <p>INFINITE SCROLL DUDE</p>
-  <MemoTable :data="props.data" />
+  <Table class="border border-slate-500">
+    <TableHead />
+
+    <TableBody>
+      <TableRow v-for="row in memoData" :key="row.id" class="border-slate-500 text-black dark:text-white">
+        <TableCell>{{ formatRut(row.local.rut_local) }}</TableCell>
+        <TableCell>{{ row.tipo }}</TableCell>
+        <TableCell>{{ row.local.patente }}</TableCell>
+        <TableCell :title="fixStringLength(row.direccion).fullText">{{ fixStringLength(row.direccion).newString }}</TableCell>
+        <TableCell>{{ formatTime(row.periodo) }}</TableCell>
+        <TableCell>{{ formatCurrency(parseFloat(row.capital)) }}</TableCell>
+        <TableCell>{{ row.afecto }}</TableCell>
+        <TableCell>{{ formatCurrency(parseFloat(row.total)) }}</TableCell>
+        <TableCell>{{ row.emision }}</TableCell>
+        <TableCell :title="fixStringLength(row.giro).fullText">{{ fixStringLength(row.giro).newString }}</TableCell>
+        <TableCell>{{ row.agtp }}</TableCell>
+        <TableCell>{{ formatPayTime(row.pay_times.day, row.pay_times.month, row.pay_times.year) }}</TableCell>
+        <TableCell :title="fixStringLength(row.local.representantes?.nombre_representante).fullText">{{ fixStringLength(row.local.representantes?.nombre_representante).newString }}</TableCell>
+        <TableCell>{{ row.local.representantes?.rut_representante }}</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
 
   <div ref="observerTarget"></div>
 </template>

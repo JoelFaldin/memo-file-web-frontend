@@ -3,6 +3,7 @@ import { toast } from 'vue-sonner';
 import type { Ref } from "vue";
 
 import { fetchInfiniteMemos, getMemos, uploadMemo } from '@/api/memoService.ts';
+import type { InfiniteQueryInterface } from "@/interfaces/memoInterface";
 
 interface createMemoInterface {
   userInputs: Ref<{ rut: string, nombre: string }>,
@@ -16,7 +17,7 @@ interface createMemoInterface {
 export const useSearchMemo = (page: Ref<number>, enabled: Ref<boolean>, rol: Ref<string>, rut: Ref<string>, direction: Ref<string>) => {
   return useQuery({
     queryKey: ['searchedMemos', page],
-    queryFn: () => getMemos(rol.value, rut.value, direction.value, page),
+    queryFn: () => getMemos(rol, rut, direction, page),
     enabled: enabled,
     placeholderData: keepPreviousData,
   });
@@ -26,7 +27,7 @@ export const useInfiniteSearch = (rol: Ref<string>, rut: Ref<string>, direction:
   return useInfiniteQuery({
     queryKey: ['infiniteMemos'],
     queryFn: ({ pageParam = 0 }) => fetchInfiniteMemos(rol.value, rut.value, direction.value, pageParam),
-    getNextPageParam: (lastPage: { hasNextPage: boolean; }, allPages: Array<{ hasNextPage: boolean }>) => {
+    getNextPageParam: (lastPage: InfiniteQueryInterface, allPages: InfiniteQueryInterface[]) => {
       if (lastPage.hasNextPage) {
         return allPages.length;
       }

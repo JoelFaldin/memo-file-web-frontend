@@ -13,7 +13,7 @@ const page = ref(1);
 
 const enableSearch = ref(false);
 const enableInfinite = ref(false);
-const isInfiniteScroll = ref(true);
+const isInfiniteScroll = ref(false);
 
 const { data, isLoading, isError, error, refetch, isPlaceholderData } = useSearchMemo(page, enableSearch, rol, rut, direction);
 const { data: infiniteData, isLoading: infiniteLoading, isError: isInfiniteError, error: infiniteError, refetch: infiniteRefetch, fetchNextPage: infiniteFetchNext, hasNextPage: infiniteHasNext } = useInfiniteSearch(rol, rut, direction, enableInfinite)
@@ -35,6 +35,11 @@ const searchMemo = async () => {
   } catch(error) {
     console.error(error);
   }
+}
+
+const updatePage = (newPage: number) => {
+  page.value = newPage;
+  refetch();
 }
 </script>
 
@@ -72,12 +77,10 @@ const searchMemo = async () => {
       </span>
     </div>
 
-
-
     <div v-if="isInfiniteScroll">
       <section v-if="infiniteData?.pages">
         <InfiniteTable
-          :data="infiniteData"
+          :data="infiniteData.pages"
           :infiniteLoading="infiniteLoading"
           :isInfiniteError="isInfiniteError"
           :infiniteError="infiniteError"
@@ -97,8 +100,10 @@ const searchMemo = async () => {
           :isLoading="isLoading"
           :isError="isError"
           :error="error"
-          :refecth="refetch"
+          :refetch="refetch"
           :isPlaceholderData="isPlaceholderData"
+          :page="page"
+          @update:page="updatePage"
         />
       </section>
     </div>

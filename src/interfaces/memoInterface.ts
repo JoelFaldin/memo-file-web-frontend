@@ -18,33 +18,38 @@ export interface NewMemoInterface {
   rut_representante: string,
 }
 
-export interface DataInterface {
-  findMemo: {
-    afecto: number,
-    agtp: string,
-    capital: string,
-    direccion: string,
-    emision: number,
-    giro: string,
-    id: string,
-    local: {
-      nombre_local: string,
-      patente: string,
-      representantes: string,
-      rut_local: string,
-    },
-    pay_times: {
-      day: number,
-      memo_id: string,
-      month: number,
-      year: number,
-    },
-    periodo: string,
-    tipo: string,
-    total: string,
-  }[],
-  message: string,
-  nextPage: boolean,
-  total: number,
-  totalPages: number,
+export interface Memo {
+  afecto: number;
+  agtp: string;
+  capital: string;
+  direccion: string;
+  emision: number;
+  giro: string;
+  id: string;
+  local: {
+    rut_local: string;
+    patente: string;
+    nombre_local: string;
+    representantes: {
+      nombre_representante: string | null;
+      rut_representante: string | null;
+    } | null,
+  },
+  pay_times: {
+    day: number;
+    month: number;
+    year: number;
+  },
+  periodo: string;
+  tipo: string;
+  total: string;
+}
+
+export interface InfiniteQueryInterface {
+  hasNextPage: boolean;
+  findMemo: Memo[];
+  message: string;
+  nextPage: boolean;
+  totalPages: number;
+  total: number;
 }

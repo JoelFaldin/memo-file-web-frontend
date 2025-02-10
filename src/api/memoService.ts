@@ -18,11 +18,11 @@ export const fetchOverall = async () => {
   }
 }
 
-export const getMemos = async (rol: string, rut: string, direction: string, page: Ref<number>) => {
-  const newRut = rut.split('').filter((n) => n != '.').join('');
+export const getMemos = async (rol: Ref<string>, rut: Ref<string>, direction: Ref<string>, page: Ref<number>) => {
+  const newRut = rut.value.split('').filter((n) => n != '.').join('');
 
   try {
-    const res = await fetch(`${URL}/find?rol=${rol}&rut=${newRut}&direction=${direction}&page=${page.value}&limit=10`);
+    const res = await fetch(`${URL}/find?rol=${rol.value}&rut=${newRut}&direction=${direction.value}&page=${page.value}&limit=10`);
     const response = await res.json();
 
     if (!res.ok) {
