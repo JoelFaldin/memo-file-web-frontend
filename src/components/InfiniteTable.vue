@@ -27,6 +27,7 @@ const props = defineProps<{
 
 const observer = ref<IntersectionObserver | null>(null);
 const observerTarget = ref(null);
+const queryRef = ref(props.data);
 
 const setupObserver = () => {
   if (observer.value) {
@@ -37,6 +38,7 @@ const setupObserver = () => {
     (entries) => {
       if (entries[0].isIntersecting && props.infiniteHasNext) {
         props.infiniteFetchNext();
+        queryRef.value = toRaw(props.data)
       }
     },
     { rootMargin: '100px' },
@@ -47,10 +49,6 @@ const setupObserver = () => {
 
 onMounted(setupObserver);
 onUnmounted(() => observer.value?.disconnect());
-
-const memoData = toRaw(props.data).map(data => data.findMemo).flat() || [];
-
-console.log(toRaw(props.data).map(data => data.findMemo));
 </script>
 
 <template>
@@ -58,7 +56,7 @@ console.log(toRaw(props.data).map(data => data.findMemo));
     <TableHead />
 
     <TableBody>
-      <TableRow v-for="row in memoData" :key="row.id" class="border-slate-500 text-black dark:text-white">
+      <TableRow v-for="row in queryRef.map(page => page.findMemo).flat()" :key="row.id" class="border-slate-500 text-black dark:text-white">
         <TableCell>{{ formatRut(row.local.rut_local) }}</TableCell>
         <TableCell>{{ row.tipo }}</TableCell>
         <TableCell>{{ row.local.patente }}</TableCell>

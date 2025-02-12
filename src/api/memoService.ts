@@ -35,7 +35,7 @@ export const getMemos = async (rol: Ref<string>, rut: Ref<string>, direction: Re
   }
 }
 
-export const fetchInfiniteMemos = async (rol: string, rut: string, direction: string, pageParam: number | boolean) => {
+export const fetchInfiniteMemos = async (rol: string, rut: string, direction: string, pageParam: number) => {
   const newRut = rut.split('').filter((n) => n != '.').join('');
 
   try {
