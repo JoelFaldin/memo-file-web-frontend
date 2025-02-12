@@ -39,7 +39,7 @@ export const fetchInfiniteMemos = async (rol: string, rut: string, direction: st
   const newRut = rut.split('').filter((n) => n != '.').join('');
 
   try {
-    const res = await fetch(`${URL}/infinite?rol=${rol}&rut=${newRut}&direction=${direction}&pageparam=${pageParam}&limit=20`);
+    const res = await fetch(`${URL}/infinite?rol=${rol}&rut=${newRut}&direction=${direction}&pageparam=${pageParam}&limit=40`);
     const response = await res.json();
 
     if (!res.ok) {

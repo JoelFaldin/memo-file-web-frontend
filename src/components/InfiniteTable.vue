@@ -41,7 +41,7 @@ const setupObserver = () => {
         queryRef.value = toRaw(props.data)
       }
     },
-    { rootMargin: '100px' },
+    { rootMargin: '300px' },
   );
 
   if (observerTarget.value) observer.value.observe(observerTarget.value);
@@ -75,5 +75,5 @@ onUnmounted(() => observer.value?.disconnect());
     </TableBody>
   </Table>
 
-  <div ref="observerTarget"></div>
+  <div ref="observerTarget" class="h-1" />
 </template>
