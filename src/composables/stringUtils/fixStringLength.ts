@@ -1,4 +1,4 @@
-export const fixStringLength = (str: string) => {
+export const fixStringLength = (str: string | null | undefined) => {
     if (!str) {
         return { newStr: '', fullText: null }
     }

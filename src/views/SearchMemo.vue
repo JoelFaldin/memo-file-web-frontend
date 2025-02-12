@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-import TableSkeleton from '@/components/TableSkeleton.vue';
+import PaginatedTable from '@/components/PaginatedTable.vue';
 import SearchLabel from '@/components/SearchLabel.vue';
-import { useSearchMemo } from '@/composables/useMemo';
-import MemoTable from '@/components/MemoTable.vue';
-import TableHead from '@/components/TableHead.vue';
+import { useInfiniteSearch, useSearchMemo } from '@/composables/useMemo';
 import { Button } from '@/components/ui/button';
-import { Table } from '@/components/ui/table';
+import { ref } from 'vue';
+import InfiniteTable from '@/components/InfiniteTable.vue';
 
 const rol = ref('');
 const rut = ref('');
 const direction = ref('');
 const page = ref(1);
-const enabled = ref(false);
 
-const { data, isLoading, isError, error, refetch, isPlaceholderData } = useSearchMemo(page, enabled, rol, rut, direction);
+const enableSearch = ref(false);
+const enableInfinite = ref(false);
+const isInfiniteScroll = ref(false);
+
+const { data, isLoading, isError, error, refetch, isPlaceholderData } = useSearchMemo(page, enableSearch, rol, rut, direction);
+const { data: infiniteData, isLoading: infiniteLoading, isError: isInfiniteError, error: infiniteError, refetch: infiniteRefetch, fetchNextPage: infiniteFetchNext, hasNextPage: infiniteHasNext } = useInfiniteSearch(rol, rut, direction, enableInfinite)
 
 const searchMemo = async () => {
   if (!rol.value && !rut.value && !direction.value) {
@@ -24,23 +25,21 @@ const searchMemo = async () => {
   }
 
   try {
-    await refetch();
-    enabled.value = false;
+    if (isInfiniteScroll.value) {
+      await infiniteRefetch();
+      enableInfinite.value = false;
+    } else {
+      await refetch();
+      enableSearch.value = false;
+    }
   } catch(error) {
     console.error(error);
   }
 }
 
-const goPreviousPage = () => {
-  enabled.value = true;
-  page.value = Math.max(page.value - 1, 1);
-}
-
-const goNextPage = () => {
-  enabled.value = true;
-  if (!isPlaceholderData.value) {
-      page.value = page.value + 1;
-  }
+const updatePage = (newPage: number) => {
+  page.value = newPage;
+  refetch();
 }
 </script>
 
@@ -59,60 +58,54 @@ const goNextPage = () => {
         <SearchLabel v-model:param="direction">
           Buscar por dirección:
         </SearchLabel>
-
       </section>
-        <Button
-          variant="outline"
-          size="lg"
-          :disabled="isLoading"
-          @click="searchMemo"
-        >
-          <span class="text-black dark:text-white">
-            Buscar
-          </span>
-        </Button>
+
+      <Button
+        variant="outline"
+        size="lg"
+        :disabled="isLoading"
+        @click="searchMemo"
+      >
+        <span class="text-black dark:text-white">
+          Buscar
+        </span>
+      </Button>
+
+      <span class="flex flex-row justify-center items-center gap-x-3">
+        <input type="checkbox" id="infiniteSearch" v-model="isInfiniteScroll" />
+        <label for="infiniteSearch" class="text-slate-600 dark:text-slate-400">Scroll infinito</label>
+      </span>
     </div>
 
-    <section v-if="isLoading">
-      <Table class="border border-slate-500">
-        <TableHead />
-        <TableSkeleton />
-      </Table>
-    </section>
-    <section v-else-if="isError || error" class="text-center">
-      <p class="text-slate-500 my-4">{{ error ?? 'Ha ocurrido un error al intentar buscar memorándums con esa patente.' }}</p>
-    </section>
-    <section v-else-if="data?.findMemo?.length === 0">
-      <p class="text-black dark:text-white">No hay memos con la patente indicada.</p>
-    </section>
-    <section v-else-if="data?.findMemo">
-      <p class="text-center mb-5 text-slate-600 dark:text-slate-400">Total: {{ data.total }}</p>
-
-      <MemoTable :data="data" />
-
-      <p class="mb-5 text-slate-600 dark:text-slate-400">Página {{ page }} de {{ data.totalPages }}</p>
-      <div class="space-x-2">
-        <Button
-          variant="outline"
-          size="sm"
-          :disabled="page === 1"
-          @click="goPreviousPage"
-        >
-          <span class="text-black dark:text-white">
-            Anterior
-          </span>
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          :disabled="!data.nextPage || isLoading"
-          @click="goNextPage"
-        >
-          <span class="text-black dark:text-white">
-            Siguiente
-          </span>
-        </Button>
-      </div>
-    </section>
+    <div v-if="isInfiniteScroll">
+      <section v-if="infiniteData?.pages">
+        <InfiniteTable
+          :data="infiniteData.pages"
+          :infiniteLoading="infiniteLoading"
+          :isInfiniteError="isInfiniteError"
+          :infiniteError="infiniteError"
+          :infiniteRefetch="infiniteRefetch"
+          :infiniteFetchNext="infiniteFetchNext"
+          :infiniteHasNext="infiniteHasNext"
+        />
+      </section>
+    </div>
+    <div v-else>
+      <section v-if="data?.findMemo">
+        <PaginatedTable
+          :rol="rol"
+          :rut="rut"
+          :direction="direction"
+          :data="data"
+          :isLoading="isLoading"
+          :isError="isError"
+          :error="error"
+          :refetch="refetch"
+          :isPlaceholderData="isPlaceholderData"
+          :page="page"
+          @update:page="updatePage"
+        />
+      </section>
+    </div>
   </div>
 </template>
