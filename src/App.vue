@@ -10,7 +10,7 @@ const mode = useColorMode()
 
 <template>
   <div class="flex h-screen">
-    
+
     <Sidebar />
     <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto text-white`">
       <Toaster :theme="mode == 'light' ? 'light' : 'dark'" richColors position="bottom-right" />
