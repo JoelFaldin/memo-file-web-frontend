@@ -44,7 +44,7 @@ const downloadExcelData = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row items-center justify-center h-screen lg:gap-x-10 gap-y-10">
+  <div class="flex flex-col xl:flex-row py-10 items-center justify-center h-screen lg:gap-x-10 gap-y-10">
     <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full h-72">
       <h1 class="text-3xl font-bold text-black dark:text-white">Subir archivo excel</h1>
       <p class=" text-center text-slate-700 dark:text-slate-300 m-auto mt-3 text-sm underline underline-offset-4">Importante: el formato de fecha es 20201201 (yyyy-mm-dd)!</p>
@@ -75,23 +75,36 @@ const downloadExcelData = async () => {
       <h2 class="text-3xl font-bold text-black dark:text-white">Descarga la plantilla</h2>
       <p class="text-center text-slate-700 dark:text-slate-300 mt-3 text-sm underline underline-offset-4">Asegúrate de que la información esté correctamente formateada para guardarla en la base de datos!</p>
       <Button
-          class="my-auto"
-          variant="outline"
-          size="lg"
-          :disabled="isLoading"
-          @click="downloadTemplate"
-        >
-          <span class="text-black dark:text-white">
-            Descargar plantilla
-          </span>
+        class="my-auto"
+        variant="outline"
+        size="lg"
+        :disabled="isLoading"
+        @click="downloadTemplate"
+      >
+        <span class="text-black dark:text-white">
+          Descargar plantilla
+        </span>
       </Button>
     </div>
 
-  <a @click="downloadExcelData">Descargar excel con memos</a>
+    <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full h-72">
+      <h3 class="text-3xl font-bold text-black dark:text-white">Descargar excel con memos</h3>
+      <p class="text-center text-slate-700 dark:text-slate-300 mt-3 text-sm underline underline-offset-4">Ésta acción descargará en tu equipo un archivo excel que contiene todos los datos de la base de datos!</p>
 
-    <span v-if="isError">
-      {{ error }}
-    </span>
 
+      <Button
+        class="my-auto"
+        variant="outline"
+        size="lg"
+        @click="downloadExcelData"
+      >
+        <span v-if="!isError">
+          Descargar excel
+        </span>
+        <span v-else>
+          {{ error }}
+        </span>
+      </Button>
+    </div>
   </div>
 </template>
