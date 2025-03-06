@@ -2,7 +2,7 @@ import { describe, vi, expect, test, type Mock } from "vitest";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { nextTick, ref } from "vue";
 
-import { mockMultiplePageSearchMemo, mockOverallResponse, mockSearchMemosResponse, mockErrorReturnSearchMemo, mockCreateMemoSuccess, mockInputCreateMemo } from "./mockData";
+import { mockMultiplePageSearchMemo, mockOverallResponse, mockSearchMemosResponse, mockErrorReturnSearchMemo, mockCreateMemoSuccess, mockInputCreateMemo } from "./mockData/mockData";
 import { useCreateMemo, useSearchMemo } from "@/composables/useMemo";
 import { reFormatRut } from "@/composables/stringUtils/formatRut";
 import { useOverall } from "@/composables/useOverall";
