@@ -3,6 +3,7 @@ import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
 import { useDownloadData, useExcelTemplate, useUploadExcel } from '@/composables/useExcel';
+import ExcelCard from '@/components/ExcelCard.vue';
 import { Button } from '@/components/ui/button';
 
 const excel = ref<File | null>(null);
@@ -10,8 +11,8 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const { mutate, isPending } = useUploadExcel({ excel, fileInput });
 
-const { isLoading, isError, error, refetch } = useExcelTemplate();
-const { refetch: refetchExcelData } = useDownloadData();
+const { isLoading: isTemplateLoading, refetch: templateRefetch } = useExcelTemplate();
+const { isLoading: isExcelDataLoading, refetch: excelDataRefetch } = useDownloadData();
 
 const handleSubmit = async () => {
   if (!excel.value) {
@@ -38,7 +39,7 @@ const downloadTemplate = async () => {
   const loading = toast.loading("Descargando la plantilla...");
 
   try {
-    const res = await refetch();
+    const res = await templateRefetch();
     const { error: templateError } = res;
 
     if (templateError) {
@@ -56,7 +57,7 @@ const downloadTemplate = async () => {
 }
 
 const downloadExcelData = async () => {
-  refetchExcelData();
+  excelDataRefetch();
 }
 </script>
 
@@ -88,40 +89,21 @@ const downloadExcelData = async () => {
       </Button>
     </div>
 
-    <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full h-72">
-      <h2 class="text-3xl font-bold text-black dark:text-white">Descarga la plantilla</h2>
-      <p class="text-center text-slate-700 dark:text-slate-300 mt-3 text-sm underline underline-offset-4">Asegúrate de que la información esté correctamente formateada para guardarla en la base de datos!</p>
-      <Button
-        class="my-auto"
-        variant="outline"
-        size="lg"
-        :disabled="isLoading"
-        @click="downloadTemplate"
-      >
-        <span class="text-black dark:text-white">
-          Descargar plantilla
-        </span>
-      </Button>
-    </div>
+    <ExcelCard
+      title="Descarga la plantilla"
+      desc="Asegúrate de que la información esté correctamente formateada para guardarla en la base de datos!"
+      :disabled="isTemplateLoading"
+      button-text="Descargar plantilla"
+      @handle:click="downloadTemplate"
+    />
 
-    <div class="flex flex-col items-center bg-card rounded-lg bg-white dark:bg-inherit border border-slate-300 dark:border-slate-700 p-6 shadow-sm max-w-md w-full h-72">
-      <h3 class="text-3xl font-bold text-black dark:text-white">Descargar excel con memos</h3>
-      <p class="text-center text-slate-700 dark:text-slate-300 mt-3 text-sm underline underline-offset-4">Ésta acción descargará en tu equipo un archivo excel que contiene todos los datos de la base de datos!</p>
+    <ExcelCard
+      title="Descargar excel con memos"
+      desc="Ésta acción descargará en tu equipo un archivo excel que contiene todos los datos de la base de datos!"
+      :disabled="isExcelDataLoading"
+      button-text="Descargar excel"
+      @handle:click="downloadExcelData"
+    />
 
-
-      <Button
-        class="my-auto"
-        variant="outline"
-        size="lg"
-        @click="downloadExcelData"
-      >
-        <span v-if="!isError">
-          Descargar excel
-        </span>
-        <span v-else>
-          {{ error }}
-        </span>
-      </Button>
-    </div>
   </div>
 </template>
