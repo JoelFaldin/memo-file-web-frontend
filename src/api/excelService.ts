@@ -63,6 +63,7 @@ export const downloadExcelData = async () => {
     a.click();
 
     window.URL.revokeObjectURL(location);
+    return res.blob;
   } catch (error) {
     throw error;
   }

@@ -57,7 +57,24 @@ const downloadTemplate = async () => {
 }
 
 const downloadExcelData = async () => {
-  excelDataRefetch();
+  const loading = toast.loading("Descargando excel con memorándums. Esto puede tardar un momento.");
+
+  try {
+    const res = await excelDataRefetch();
+    const { error: excelDataError } = res;
+
+    if (excelDataError) {
+      throw excelDataError;
+    }
+
+    toast.dismiss(loading);
+    toast.success("Excel con memorándums descargado con éxito!");
+  } catch (error) {
+    toast.dismiss(loading);
+    toast.error("Ha ocurrido un error al intentar descargar el archivo. Revisa tu conexión e inténtalo más tarde.");
+
+    console.log(error);
+  }
 }
 </script>
 
