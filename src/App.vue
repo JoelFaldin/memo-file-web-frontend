@@ -9,21 +9,21 @@ const mode = useColorMode()
 </script>
 
 <template>
-  <div class="flex h-screen">
+    <div class="flex h-screen">
 
-    <Sidebar />
-    <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto text-white`">
-      <Toaster :theme="mode == 'light' ? 'light' : 'dark'" richColors position="bottom-right" />
-      <RouterView />
-    </section>
-  </div>
+        <Sidebar />
+        <section :class="`${mode == 'light' ? 'bgSectionLight' : 'bgSectionDark'} flex-1 overflow-y-auto text-white`">
+        <Toaster :theme="mode == 'light' ? 'light' : 'dark'" richColors position="bottom-right" />
+        <RouterView />
+        </section>
+    </div>
 </template>
 
 <style scoped>
-  .bgSectionDark {
-    background: linear-gradient(to bottom, #1e1e2e, #12121a);
-  }
-  .bgSectionLight {
-    background: linear-gradient(to bottom, #ffffff, #cecece)
-  }
+    .bgSectionDark {
+        background: linear-gradient(to bottom, #1e1e2e, #12121a);
+    }
+    .bgSectionLight {
+        background: linear-gradient(to bottom, #ffffff, #cecece)
+    }
 </style>
