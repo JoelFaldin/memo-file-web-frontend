@@ -26,12 +26,12 @@ export const getMemos = async (rol: Ref<string>, rut: Ref<string>, direction: Re
     const response = await res.json();
 
     if (!res.ok) {
-      return Promise.reject(response.message);
+      throw new Error(response.message);
     }
 
     return response;
   } catch(error) {
-    return Promise.reject(error);
+    throw error;
   }
 }
 

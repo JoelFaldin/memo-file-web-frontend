@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import PaginatedTable from '@/components/PaginatedTable.vue';
-import SearchLabel from '@/components/SearchLabel.vue';
-import { useInfiniteSearch, useSearchMemo } from '@/composables/useMemo';
-import { Button } from '@/components/ui/button';
+import { toast } from 'vue-sonner';
 import { ref } from 'vue';
+
+import { useInfiniteSearch, useSearchMemo } from '@/composables/useMemo';
+import PaginatedTable from '@/components/PaginatedTable.vue';
 import InfiniteTable from '@/components/InfiniteTable.vue';
+import SearchLabel from '@/components/SearchLabel.vue';
+import { Button } from '@/components/ui/button';
 
 const rol = ref('');
 const rut = ref('');
@@ -24,15 +26,35 @@ const searchMemo = async () => {
     return;
   }
 
+  const loading = toast.loading("Buscando memorándums...");
+
   try {
     if (isInfiniteScroll.value) {
-      await infiniteRefetch();
+      const res = await infiniteRefetch();
+      const { error: infiniteScrollError } = res;
+
+      if (infiniteScrollError) {
+        throw infiniteScrollError;
+      }
+
       enableInfinite.value = false;
     } else {
-      await refetch();
+      const res = await refetch();
+      const { error: refetchError } = res;
+
+      if (refetchError) {
+        throw refetchError;
+      }
+
       enableSearch.value = false;
     }
+
+    toast.dismiss(loading);
+    toast.success("Memorándums encontrados!");
   } catch(error) {
+    toast.dismiss(loading);
+    toast.error("Ha ocurrido un error al intentar buscar los memorándums. Inténtalo más tarde.");
+
     console.error(error);
   }
 }
