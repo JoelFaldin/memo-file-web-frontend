@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
+import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
 import { reFormatRut } from '@/composables/stringUtils/formatRut';
@@ -15,11 +16,13 @@ const financesInputs = ref({ capital: '', afecto: '', total: '', emision: '' });
 const labelInputs = ref({ fechaPagos: '', giro: '', agtp: '' });
 const representantInputs = ref({ nombre: '', rut: '', });
 
-const { mutate, isPending } = useCreateMemo({ userInputs, infoInputs, directionInputs, financesInputs, labelInputs, representantInputs });
+const { mutateAsync, isPending } = useCreateMemo();
 
 const handleSubmitData = async () => {
+  const loading = toast.loading("Creando memorándum...");
+
   try {
-    mutate({
+    await mutateAsync({
         tipo: infoInputs.value.tipo,
         patente: infoInputs.value.patente,
         rut: reFormatRut(userInputs.value.rut),
@@ -38,7 +41,31 @@ const handleSubmitData = async () => {
         nombre_representante: representantInputs.value.nombre,
         rut_representante: representantInputs.value.rut,
     });
+
+    toast.dismiss(loading);
+    toast.success("Memorándum creado con éxito!");
+
+    userInputs.value.rut = '';
+    userInputs.value.nombre = '';
+    infoInputs.value.tipo = '';
+    infoInputs.value.patente = '';
+    infoInputs.value.periodo = '';
+    directionInputs.value.calle = '';
+    directionInputs.value.numero = '';
+    directionInputs.value.aclaratoria = '';
+    financesInputs.value.capital = '';
+    financesInputs.value.afecto = '';
+    financesInputs.value.total = '';
+    financesInputs.value.emision = '';
+    labelInputs.value.fechaPagos = '';
+    labelInputs.value.giro = '';
+    labelInputs.value.agtp = '';
+    representantInputs.value.nombre = '';
+    representantInputs.value.rut = '';
   } catch (error) {
+    toast.dismiss(loading);
+    toast.error("Ha ocurrido un error al crear el memorándum.");
+
     console.error(error);
   }
 }

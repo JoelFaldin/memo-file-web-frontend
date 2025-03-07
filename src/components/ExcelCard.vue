@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Button } from '@/components/ui/button';
 
-
 defineProps({
   title: String,
   desc: String,
