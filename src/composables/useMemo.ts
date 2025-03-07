@@ -29,7 +29,7 @@ export const useInfiniteSearch = (
         queryFn: ({ pageParam = 0 }) =>
         fetchInfiniteMemos(rol.value, rut.value, direction.value, pageParam),
         getNextPageParam: (lastPage) => {
-        return lastPage.page;
+            return lastPage.page;
         },
         initialPageParam: 0,
         enabled: enableInfinite,

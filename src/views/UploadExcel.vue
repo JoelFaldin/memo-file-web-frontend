@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 const excel = ref<File | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 
-const { mutate, isPending } = useUploadExcel({ excel, fileInput });
+const { mutateAsync, isPending } = useUploadExcel();
 
 const { isLoading: isTemplateLoading, refetch: templateRefetch } = useExcelTemplate();
 const { isLoading: isExcelDataLoading, refetch: excelDataRefetch } = useDownloadData();
@@ -23,9 +23,23 @@ const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('excel', excel.value as unknown as Blob);
 
+    const loading = toast.loading('Subiendo archivo excel...');
+
     try {
-        mutate(formData);
+        const res = await mutateAsync(formData);
+        const { error: mutateError } = res;
+
+        if (mutateError) throw mutateError;
+
+        excel.value = null;
+        fileInput.value!.value = '';
+
+        toast.dismiss(loading);
+        toast.success("Datos subidos exitosamente!");
     } catch(error) {
+        toast.dismiss(loading);
+        toast.error("Ha ocurrido un error al subir el archivo excel.");
+
         console.error(error);
     }
 }
@@ -42,9 +56,7 @@ const downloadTemplate = async () => {
         const res = await templateRefetch();
         const { error: templateError } = res;
 
-        if (templateError) {
-        throw templateError;
-        }
+        if (templateError) throw templateError;
 
         toast.dismiss(loading);
         toast.success("Plantilla descargada!");
@@ -63,9 +75,7 @@ const downloadExcelData = async () => {
         const res = await excelDataRefetch();
         const { error: excelDataError } = res;
 
-        if (excelDataError) {
-        throw excelDataError;
-        }
+        if (excelDataError) throw excelDataError;
 
         toast.dismiss(loading);
         toast.success("Excel con memorándums descargado con éxito!");
