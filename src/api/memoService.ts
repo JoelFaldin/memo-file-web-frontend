@@ -8,11 +8,11 @@ export const fetchOverall = async () => {
         const res = await fetch(`${URL}/overall`);
         const response = await res.json();
 
-        if (!res.ok) return Promise.reject(response.message);
+        if (!res.ok) throw new Error(response.message);
 
         return response;
     } catch(error) {
-        return Promise.reject(error);
+        throw error;
     }
 }
 

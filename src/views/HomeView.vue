@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { toast } from 'vue-sonner';
+import { watch } from 'vue';
+
 import { formatCurrency } from '@/composables/stringUtils/formatCurrency';
 import { useOverall } from '@/composables/useOverall';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const { isLoading, isError, error, data } = useOverall();
+
+watch(isError, (val) => {
+    if (val) {
+        toast.error("Hubo un error al intentar conseguir los datos. Inténtalo más tarde.");
+        console.log(error);
+    }
+})
 
 </script>
 
