@@ -14,13 +14,17 @@ export const uploadExcel = async (formData: FormData) => {
 
     return response;
   } catch (error) {
-    return Promise.reject(error);
+    throw error;
   }
 }
 
 export const downloadExcelTemplate = async () => {
   try {
     const res = await fetch(`${URL}/`);
+
+    if (!res.ok) {
+      throw new Error('Ha ocurrido un problema, inténtalo más tarde.');
+    }
 
     const blob = new Blob([await res.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
@@ -33,8 +37,7 @@ export const downloadExcelTemplate = async () => {
 
     return res.blob;
   } catch(error) {
-    console.log(error);
-    return Promise.reject(error);
+    throw error;
   }
 }
 
@@ -61,7 +64,6 @@ export const downloadExcelData = async () => {
 
     window.URL.revokeObjectURL(location);
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

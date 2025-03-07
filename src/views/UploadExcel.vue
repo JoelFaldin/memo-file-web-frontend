@@ -35,7 +35,24 @@ const storeFile = (event: Event) => {
 }
 
 const downloadTemplate = async () => {
-  refetch();
+  const loading = toast.loading("Descargando la plantilla...");
+
+  try {
+    const res = await refetch();
+    const { error: templateError } = res;
+
+    if (templateError) {
+      throw templateError;
+    }
+
+    toast.dismiss(loading);
+    toast.success("Plantilla descargada!");
+  } catch (error) {
+    toast.dismiss(loading);
+    toast.error("Ha ocurrido un error al intentar descargar la plantilla. Inténtalo nuevamente.");
+
+    console.log(error);
+  }
 }
 
 const downloadExcelData = async () => {
