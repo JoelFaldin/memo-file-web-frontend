@@ -58,10 +58,10 @@ export const uploadMemo = async (newMemo: NewMemoInterface) => {
 
         const response = await res.json();
 
-        if (!res.ok) return Promise.reject(response.message);
+        if (!res.ok) throw new Error(response.message);
 
         return response;
     } catch(error) {
-        return Promise.reject(error);
+        throw error;
     }
 }

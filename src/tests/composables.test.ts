@@ -127,6 +127,26 @@ describe('use memorandums', () => {
 })
 
 describe('create memo', () => {
+    const inputs = {
+        tipo: mockInputCreateMemo.infoInputs.tipo,
+        patente: mockInputCreateMemo.infoInputs.patente,
+        rut: reFormatRut(mockInputCreateMemo.userInputs.rut),
+        nombre: mockInputCreateMemo.userInputs.nombre,
+        calle: mockInputCreateMemo.directionInputs.calle,
+        numero: mockInputCreateMemo.directionInputs.numero,
+        aclaratoria: mockInputCreateMemo.directionInputs.aclaratoria,
+        periodo: mockInputCreateMemo.infoInputs.periodo,
+        capital: parseFloat(mockInputCreateMemo.financesInputs.capital),
+        afecto: parseInt(mockInputCreateMemo.financesInputs.afecto),
+        total: parseFloat(mockInputCreateMemo.financesInputs.total),
+        emision: parseInt(mockInputCreateMemo.financesInputs.emision),
+        fechaPagos: mockInputCreateMemo.labelInputs.fechaPagos,
+        giro: mockInputCreateMemo.labelInputs.giro,
+        agtp: mockInputCreateMemo.labelInputs.agtp,
+        nombre_representante: mockInputCreateMemo.representantInputs.nombre,
+        rut_representante: mockInputCreateMemo.representantInputs.rut
+    };
+
     test('can create a memo', async () => {
         const mockMutation = {
             mutate: vi.fn(),
@@ -139,30 +159,27 @@ describe('create memo', () => {
 
         const { mutateAsync, isError } = useCreateMemo();
 
-        const inputs = {
-            tipo: mockInputCreateMemo.infoInputs.tipo,
-            patente: mockInputCreateMemo.infoInputs.patente,
-            rut: reFormatRut(mockInputCreateMemo.userInputs.rut),
-            nombre: mockInputCreateMemo.userInputs.nombre,
-            calle: mockInputCreateMemo.directionInputs.calle,
-            numero: mockInputCreateMemo.directionInputs.numero,
-            aclaratoria: mockInputCreateMemo.directionInputs.aclaratoria,
-            periodo: mockInputCreateMemo.infoInputs.periodo,
-            capital: parseFloat(mockInputCreateMemo.financesInputs.capital),
-            afecto: parseInt(mockInputCreateMemo.financesInputs.afecto),
-            total: parseFloat(mockInputCreateMemo.financesInputs.total),
-            emision: parseInt(mockInputCreateMemo.financesInputs.emision),
-            fechaPagos: mockInputCreateMemo.labelInputs.fechaPagos,
-            giro: mockInputCreateMemo.labelInputs.giro,
-            agtp: mockInputCreateMemo.labelInputs.agtp,
-            nombre_representante: mockInputCreateMemo.representantInputs.nombre,
-            rut_representante: mockInputCreateMemo.representantInputs.rut
-        };
-
         const res = await mutateAsync(inputs);
 
         expect(isError).toBe(false);
         expect(res).toEqual({ message: 'Memorándum creado con éxito!' });
         expect(mockMutation.mutateAsync).toHaveBeenCalledWith(inputs);
+    })
+
+    test('handles error', async () => {
+        const mockMutation = {
+            mutate: vi.fn(),
+            mutateAsync: vi.fn().mockResolvedValue(new Error('Error al crear el memorándum.')),
+            isLoading: false,
+            isError: true,
+        };
+
+        (useMutation as Mock).mockReturnValue(mockMutation);
+
+        const { mutateAsync, isError } = useCreateMemo();
+        const res = await mutateAsync(inputs);
+
+        expect(isError).toBe(true);
+        expect(res).toEqual(new Error('Error al crear el memorándum.'));
     })
 })
