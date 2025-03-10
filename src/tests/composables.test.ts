@@ -6,6 +6,7 @@ import { mockMultiplePageSearchMemo, mockOverallResponse, mockSearchMemosRespons
 import { useCreateMemo, useSearchMemo } from "@/composables/useMemo";
 import { reFormatRut } from "@/composables/stringUtils/formatRut";
 import { useOverall } from "@/composables/useOverall";
+import { useUploadExcel } from "@/composables/useExcel";
 
 vi.mock('@tanstack/vue-query', () => ({
     useQuery: vi.fn(),
@@ -149,7 +150,6 @@ describe('create memo', () => {
 
     test('can create a memo', async () => {
         const mockMutation = {
-            mutate: vi.fn(),
             mutateAsync: vi.fn().mockResolvedValue({ message: 'Memorándum creado con éxito!' }),
             isLoading: false,
             isError: false,
@@ -168,7 +168,6 @@ describe('create memo', () => {
 
     test('handles error', async () => {
         const mockMutation = {
-            mutate: vi.fn(),
             mutateAsync: vi.fn().mockResolvedValue(new Error('Error al crear el memorándum.')),
             isLoading: false,
             isError: true,
@@ -181,5 +180,40 @@ describe('create memo', () => {
 
         expect(isError).toBe(true);
         expect(res).toEqual(new Error('Error al crear el memorándum.'));
+    })
+})
+
+describe('excel service', () => {
+    test('can upload excel', async () => {
+        const mockMutation = {
+            mutate: vi.fn(),
+            mutateAsync: vi.fn().mockResolvedValue({ message: 'Excel subido con éxito!' }),
+            isLoading: false,
+            isError: false,
+        };
+
+        (useMutation as Mock).mockReturnValue(mockMutation);
+
+        const { mutateAsync, isError } = useUploadExcel();
+        const res = await mutateAsync(new FormData());
+
+        expect(isError).toBe(false);
+        expect(res).toEqual({ message: 'Excel subido con éxito!' });
+    })
+
+    test('shows error when theres a problem', async () => {
+        const mockMutation = {
+            mutateAsync: vi.fn().mockResolvedValue(new Error('Error al subir el excel.')),
+            isLoading: false,
+            isError: true,
+        };
+
+        (useMutation as Mock).mockReturnValue(mockMutation);
+
+        const { mutateAsync, isError } = useUploadExcel();
+        const res = await mutateAsync(new FormData());
+
+        expect(isError).toBe(true);
+        expect(res).toEqual(new Error('Error al subir el excel.'));
     })
 })
