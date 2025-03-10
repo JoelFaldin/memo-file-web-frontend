@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, toRaw } from 'vue';
+import { onMounted, onUnmounted, ref, toRaw, watch } from 'vue';
+import { toast } from 'vue-sonner';
 
 import { fixStringLength } from '@/composables/stringUtils/fixStringLength';
 import { formatCurrency } from '@/composables/stringUtils/formatCurrency';
@@ -36,10 +37,10 @@ const setupObserver = () => {
 
     observer.value = new IntersectionObserver(
         (entries) => {
-        if (entries[0].isIntersecting && props.infiniteHasNext) {
-            props.infiniteFetchNext();
-            queryRef.value = toRaw(props.data)
-        }
+            if (entries[0].isIntersecting && props.infiniteHasNext) {
+                props.infiniteFetchNext();
+                queryRef.value = toRaw(props.data)
+            }
         },
         { rootMargin: '300px' },
     );
@@ -49,6 +50,13 @@ const setupObserver = () => {
 
 onMounted(setupObserver);
 onUnmounted(() => observer.value?.disconnect());
+
+watch(() => props.infiniteError, (val) => {
+    if (val) {
+        toast.error("Hubo un error al intentar conseguir los datos. Inténtalo más tarde.");
+        console.log(props.infiniteError);
+    }
+})
 </script>
 
 <template>

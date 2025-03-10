@@ -30,23 +30,23 @@ const searchMemo = async () => {
 
     try {
         if (isInfiniteScroll.value) {
-        const res = await infiniteRefetch();
-        const { error: infiniteScrollError } = res;
+            const res = await infiniteRefetch();
+            const { error: infiniteScrollError } = res;
 
-        if (infiniteScrollError) {
-            throw infiniteScrollError;
-        }
+            if (infiniteScrollError) {
+                throw infiniteScrollError;
+            }
 
-        enableInfinite.value = false;
+            enableInfinite.value = false;
         } else {
-        const res = await refetch();
-        const { error: refetchError } = res;
+            const res = await refetch();
+            const { error: refetchError } = res;
 
-        if (refetchError) {
-            throw refetchError;
-        }
+            if (refetchError) {
+                throw refetchError;
+            }
 
-        enableSearch.value = false;
+            enableSearch.value = false;
         }
 
         toast.dismiss(loading);

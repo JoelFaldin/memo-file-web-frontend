@@ -38,11 +38,11 @@ export const fetchInfiniteMemos = async (rol: string, rut: string, direction: st
         const res = await fetch(`${URL}/infinite?rol=${rol}&rut=${newRut}&direction=${direction}&pageparam=${pageParam}&limit=40`);
         const response = await res.json();
 
-        if (!res.ok) return Promise.reject(response.message);
+        if (!res.ok) throw new Error(response.message);
 
         return response;
     } catch (error) {
-        return Promise.reject(error);
+        throw error;
     }
 }
 
