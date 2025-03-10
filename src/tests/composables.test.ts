@@ -102,9 +102,9 @@ describe('use memorandums', () => {
 
     test('returns error when search doesnt return anything', async () => {
         const mockQuery = {
-          data: mockErrorReturnSearchMemo,
-          isLoading: false,
-          isError: true,
+            data: mockErrorReturnSearchMemo,
+            isLoading: false,
+            isError: true,
         };
 
         (useQuery as Mock).mockReturnValue(mockQuery);
@@ -122,30 +122,30 @@ describe('use memorandums', () => {
 describe('create memo', () => {
     test('can create a memo', async () => {
         const mockCreateMemo = {
-          mutate: vi.fn().mockResolvedValue({
-            data: mockCreateMemoSuccess,
-            isPending: false,
-          }),
+            mutate: vi.fn().mockResolvedValue({
+                data: mockCreateMemoSuccess,
+                isPending: false,
+            }),
         };
 
         const inputs = {
-          tipo: mockInputCreateMemo.infoInputs.tipo,
-          patente: mockInputCreateMemo.infoInputs.patente,
-          rut: reFormatRut(mockInputCreateMemo.userInputs.rut),
-          nombre: mockInputCreateMemo.userInputs.nombre,
-          calle: mockInputCreateMemo.directionInputs.calle,
-          numero: mockInputCreateMemo.directionInputs.numero,
-          aclaratoria: mockInputCreateMemo.directionInputs.aclaratoria,
-          periodo: mockInputCreateMemo.infoInputs.periodo,
-          capital: parseFloat(mockInputCreateMemo.financesInputs.capital),
-          afecto: parseInt(mockInputCreateMemo.financesInputs.afecto),
-          total: parseFloat(mockInputCreateMemo.financesInputs.total),
-          emision: parseInt(mockInputCreateMemo.financesInputs.emision),
-          fechaPagos: mockInputCreateMemo.labelInputs.fechaPagos,
-          giro: mockInputCreateMemo.labelInputs.giro,
-          agtp: mockInputCreateMemo.labelInputs.agtp,
-          nombre_representante: mockInputCreateMemo.representantInputs.nombre,
-          rut_representante: mockInputCreateMemo.representantInputs.rut
+            tipo: mockInputCreateMemo.infoInputs.tipo,
+            patente: mockInputCreateMemo.infoInputs.patente,
+            rut: reFormatRut(mockInputCreateMemo.userInputs.rut),
+            nombre: mockInputCreateMemo.userInputs.nombre,
+            calle: mockInputCreateMemo.directionInputs.calle,
+            numero: mockInputCreateMemo.directionInputs.numero,
+            aclaratoria: mockInputCreateMemo.directionInputs.aclaratoria,
+            periodo: mockInputCreateMemo.infoInputs.periodo,
+            capital: parseFloat(mockInputCreateMemo.financesInputs.capital),
+            afecto: parseInt(mockInputCreateMemo.financesInputs.afecto),
+            total: parseFloat(mockInputCreateMemo.financesInputs.total),
+            emision: parseInt(mockInputCreateMemo.financesInputs.emision),
+            fechaPagos: mockInputCreateMemo.labelInputs.fechaPagos,
+            giro: mockInputCreateMemo.labelInputs.giro,
+            agtp: mockInputCreateMemo.labelInputs.agtp,
+            nombre_representante: mockInputCreateMemo.representantInputs.nombre,
+            rut_representante: mockInputCreateMemo.representantInputs.rut
         };
 
         (useMutation as Mock).mockReturnValue(mockCreateMemo);
