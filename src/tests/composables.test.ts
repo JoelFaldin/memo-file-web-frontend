@@ -2,7 +2,7 @@ import { describe, vi, expect, test, type Mock } from "vitest";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { nextTick, ref } from "vue";
 
-import { mockMultiplePageSearchMemo, mockOverallResponse, mockSearchMemosResponse, mockErrorReturnSearchMemo, mockCreateMemoSuccess, mockInputCreateMemo } from "./mockData/mockData";
+import { mockMultiplePageSearchMemo, mockOverallResponse, mockSearchMemosResponse, mockErrorReturnSearchMemo, mockInputCreateMemo } from "./mockData/mockData";
 import { useCreateMemo, useSearchMemo } from "@/composables/useMemo";
 import { reFormatRut } from "@/composables/stringUtils/formatRut";
 import { useOverall } from "@/composables/useOverall";
@@ -12,6 +12,13 @@ vi.mock('@tanstack/vue-query', () => ({
     keepPreviousData: true,
     useMutation: vi.fn(),
 }))
+
+vi.mock('@/api/memoService', () => {
+    return {
+        uploadMemo: vi.fn(),
+        fetchOverall: vi.fn(),
+    }
+})
 
 describe('fetch overall', () => {
     test('returns correctly formatted data', async () => {
@@ -121,12 +128,16 @@ describe('use memorandums', () => {
 
 describe('create memo', () => {
     test('can create a memo', async () => {
-        const mockCreateMemo = {
-            mutate: vi.fn().mockResolvedValue({
-                data: mockCreateMemoSuccess,
-                isPending: false,
-            }),
+        const mockMutation = {
+            mutate: vi.fn(),
+            mutateAsync: vi.fn().mockResolvedValue({ message: 'Memorándum creado con éxito!' }),
+            isLoading: false,
+            isError: false,
         };
+
+        (useMutation as Mock).mockReturnValue(mockMutation);
+
+        const { mutateAsync, isError } = useCreateMemo();
 
         const inputs = {
             tipo: mockInputCreateMemo.infoInputs.tipo,
@@ -148,22 +159,10 @@ describe('create memo', () => {
             rut_representante: mockInputCreateMemo.representantInputs.rut
         };
 
-        (useMutation as Mock).mockReturnValue(mockCreateMemo);
-        const mutation = useCreateMemo({
-            userInputs: ref(mockInputCreateMemo.userInputs),
-            infoInputs: ref(mockInputCreateMemo.infoInputs),
-            directionInputs: ref(mockInputCreateMemo.directionInputs),
-            financesInputs: ref(mockInputCreateMemo.financesInputs),
-            labelInputs: ref(mockInputCreateMemo.labelInputs),
-            representantInputs: ref(mockInputCreateMemo.representantInputs)
-        });
-        mutation.mutate(inputs);
+        const res = await mutateAsync(inputs);
 
-        expect(mockCreateMemo.mutate).toHaveBeenCalled();
-        expect(mockCreateMemo.mutate).toHaveBeenCalledWith(inputs);
-
-        const res = await mockCreateMemo.mutate.mock.results[0].value;
-        expect(res.isPending).toEqual(false);
-        expect(res.data.value.message).toEqual("Memorándum creado con éxito!");
+        expect(isError).toBe(false);
+        expect(res).toEqual({ message: 'Memorándum creado con éxito!' });
+        expect(mockMutation.mutateAsync).toHaveBeenCalledWith(inputs);
     })
 })
