@@ -24,7 +24,7 @@ const route = useRoute();
                 </span>
             </div>
         </div>
-        <div className="absolute bottom-6 left-4">
+        <div className="absolute bottom-6 left-4" data-testid="theme-toggle">
             <ThemeToggle />
         </div>
     </nav>

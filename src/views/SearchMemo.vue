@@ -79,7 +79,7 @@ const updatePage = async (newPage: number) => {
 <template>
     <div class="min-h-screen flex flex-col gap-y-8 items-center justify-start p-4">
         <div class="flex flex-col justify-center items-center gap-y-2">
-        <section  class="flex flex-row gap-x-10 items-center justify-center bg-white dark:bg-inherit rounded-lg border border-slate-700 p-6 shadow-sm w-fit">
+        <section class="flex flex-row gap-x-10 items-center justify-center bg-white dark:bg-inherit rounded-lg border border-slate-700 p-6 shadow-sm w-fit">
             <SearchLabel v-model:param="rol">
             Buscar por rol (patente):
             </SearchLabel>
