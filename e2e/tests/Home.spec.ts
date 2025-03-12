@@ -15,6 +15,33 @@ test.describe('Home page', () => {
     });
 
     test('renders count of each table', async ({ page }) => {
+        await page.route('**/memo/overall', async (route) => {
+            await route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify({
+                    "totalCount": [
+                        {
+                            "label": "Memorándums",
+                            "count": 1
+                        },
+                        {
+                            "label": "Fechas de pago",
+                            "count": 1
+                        },
+                        {
+                            "label": "Locales únicos",
+                            "count": 1
+                        },
+                        {
+                            "label": "Representantes únicos",
+                            "count": 1
+                        }
+                    ]
+                })
+            })
+        })
+
         await expect(page.locator('td').getByText('Memorándums')).toBeVisible();
         await expect(page.locator('td').getByText('Fechas de pago')).toBeVisible();
         await expect(page.locator('td').getByText('Locales únicos')).toBeVisible();
