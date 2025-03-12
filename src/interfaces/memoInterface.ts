@@ -2,10 +2,10 @@ export interface NewMemoInterface {
     tipo: string,
     patente: string,
     rut: string,
-    nombre: string,
+    name: string,
     calle: string,
     numero: string,
-    aclaratoria: string,
+    aclaratoria?: string,
     periodo: string,
     capital: number,
     afecto: number,
@@ -14,8 +14,8 @@ export interface NewMemoInterface {
     fechaPagos: string,
     giro: string,
     agtp: string,
-    nombre_representante: string,
-    rut_representante: string,
+    nombre_representante?: string,
+    rut_representante?: string,
 }
 
 export interface Memo {
