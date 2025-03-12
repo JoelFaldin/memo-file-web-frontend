@@ -24,7 +24,7 @@ watch(isError, (val) => {
             <p class="pb-10 pt-2 text-slate-600 dark:text-slate-400">Lista de memorándums 2010-2024</p>
 
             <span v-if="isLoading">
-                <table style="width:100%;" class="text-slate-600 dark:text-slate-400 mb-2">
+                <table style="width:100%;" class="text-slate-600 dark:text-slate-400 mb-2" data-testid="skeleton-table">
                     <tr v-for="(_, index) in new Array(4)" :key="index" class="border border-slate-200 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700">
                         <td class="p-2">
                             <Skeleton class="h-4 w-full px-14" />
