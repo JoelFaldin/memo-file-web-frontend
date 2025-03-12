@@ -100,7 +100,7 @@ const handleSubmitData = async () => {
                 </span>
                 <span class="flex flex-col gap-y-4 w-11/12 m-auto">
                 <FormInput label="Calle" id="calle" type="text" v-model:value="directionInputs.calle" />
-                <FormInput label="Numero" id="numero" type="text" v-model:value="directionInputs.numero" />
+                <FormInput label="Número" id="numero" type="text" v-model:value="directionInputs.numero" />
                 <FormInput label="Aclaratoria" id="aclaratoria" type="text" v-model:value="directionInputs.aclaratoria" />
                 </span>
             </SplitterPanel>

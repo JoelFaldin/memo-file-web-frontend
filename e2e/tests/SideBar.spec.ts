@@ -32,4 +32,28 @@ test.describe('SideBar', () => {
         await expect(page.getByRole('button', { name: 'Buscar', exact: true })).toBeVisible();
         await expect(page.locator('label').getByText('Scroll infinito')).toBeVisible();
     });
+
+    test('can navigate to create page', async ({ page }) => {
+        await page.click('button:has-text("Crear memorándum")');
+
+        await expect(page.locator('h3')).toHaveText('Guardar un nuevo memorándum');
+        await expect(page.getByText('Rut del local')).toBeVisible();
+        await expect(page.getByText('Nombre del local (nombre de fantasía)')).toBeVisible();
+        await expect(page.getByText('Tipo de patente', { exact: true })).toBeVisible();
+        await expect(page.getByText('Patente', { exact: true })).toBeVisible();
+        await expect(page.getByText('Periodo')).toBeVisible();
+        await expect(page.getByText('Calle')).toBeVisible();
+        await expect(page.getByText('Número')).toBeVisible();
+        await expect(page.getByText('Aclaratoria')).toBeVisible();
+        await expect(page.getByText('Capital')).toBeVisible();
+        await expect(page.getByText('Afecto')).toBeVisible();
+        await expect(page.getByText('Total')).toBeVisible();
+        await expect(page.getByText('Emisión')).toBeVisible();
+        await expect(page.getByText('Fecha de pago')).toBeVisible();
+        await expect(page.getByText('Giro')).toBeVisible();
+        await expect(page.getByText('AGTP')).toBeVisible();
+        await expect(page.getByText('Nombre del representante')).toBeVisible();
+        await expect(page.getByText('Rut del representante')).toBeVisible();
+        await expect(page.locator('button').getByText('Enviar datos')).toBeVisible();
+    })
 })
