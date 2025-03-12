@@ -16,6 +16,17 @@ test.describe('SideBar', () => {
         await expect(page.getByTestId('theme-toggle')).toBeVisible();
     });
 
+    test('button theme can change theme', async ({ page }) => {
+        await page.getByTestId('theme-toggle').click();
+
+        await page.getByText('Oscuro').click();
+        await expect(page.locator('section').first().evaluate((el) => el.classList.contains('bgSectionDark'))).resolves.toBeTruthy();
+
+        await page.getByTestId('theme-toggle').click();
+        await page.getByText('Claro').click();
+        await expect(page.locator('section').first().evaluate((el) => el.classList.contains('bgSectionLight'))).resolves.toBeTruthy();
+    })
+
     test('can navigate to Home', async ({ page }) => {
         await page.click('button:has-text("Inicio")');
 
