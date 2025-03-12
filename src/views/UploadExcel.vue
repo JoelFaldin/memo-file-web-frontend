@@ -110,7 +110,7 @@ const downloadExcelData = async () => {
             :disabled="isPending"
             @click="handleSubmit"
         >
-            <span class="text-black dark:text-white">
+            <span class="text-black dark:text-white" data-testid="excel-upload-button">
             Subir excel
             </span>
         </Button>

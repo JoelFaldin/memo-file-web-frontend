@@ -55,5 +55,21 @@ test.describe('SideBar', () => {
         await expect(page.getByText('Nombre del representante')).toBeVisible();
         await expect(page.getByText('Rut del representante')).toBeVisible();
         await expect(page.locator('button').getByText('Enviar datos')).toBeVisible();
+    });
+
+    test('can navigate to excel page', async ({ page }) => {
+        await page.click('button:has-text("Subir excel")');
+
+        await expect(page.locator('h1').getByText('Subir archivo excel')).toBeVisible();
+        await expect(page.locator('p').getByText('Importante: el formato de fecha es 20201201 (yyyy-mm-dd)!')).toBeVisible();
+        await expect(page.getByTestId('excel-upload-button')).toBeVisible();
+
+        await expect(page.locator('h2').getByText('Descarga la plantilla')).toBeVisible();
+        await expect(page.locator('p').getByText('Asegúrate de que la información esté correctamente formateada para guardarla en la base de datos!')).toBeVisible();
+        await expect(page.locator('button').getByText('Descargar plantilla')).toBeVisible();
+
+        await expect(page.locator('h2').getByText('Descargar excel con memos')).toBeVisible();
+        await expect(page.locator('p').getByText('Ésta acción descargará en tu equipo un archivo excel que contiene todos los datos de la base de datos!')).toBeVisible();
+        await expect(page.locator('button').getByText('Descargar excel')).toBeVisible();
     })
 })
