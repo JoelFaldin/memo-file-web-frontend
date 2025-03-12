@@ -2,7 +2,8 @@
 import { Label } from 'radix-vue';
 
 const props = defineProps({
-    param: String
+    param: String,
+    name: String,
 })
 
 defineEmits([
@@ -20,6 +21,7 @@ defineEmits([
             type="text"
             :value="props.param"
             @input="$emit(`update:param`, ($event.target as HTMLInputElement).value)"
+            :name="props.name"
         >
     </span>
 </template>

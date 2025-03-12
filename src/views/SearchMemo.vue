@@ -22,7 +22,7 @@ const { data: infiniteData, isLoading: infiniteLoading, isError: isInfiniteError
 
 const searchMemo = async () => {
     if (!rol.value && !rut.value && !direction.value) {
-        alert('Debes indicar un rol, rut o dirección para buscar!');
+        toast.warning('Debes indicar un rol, rut o dirección para buscar!');
         return;
     }
 
@@ -80,15 +80,15 @@ const updatePage = async (newPage: number) => {
     <div class="min-h-screen flex flex-col gap-y-8 items-center justify-start p-4">
         <div class="flex flex-col justify-center items-center gap-y-2">
         <section class="flex flex-row gap-x-10 items-center justify-center bg-white dark:bg-inherit rounded-lg border border-slate-700 p-6 shadow-sm w-fit">
-            <SearchLabel v-model:param="rol">
+            <SearchLabel v-model:param="rol" name="rol">
             Buscar por rol (patente):
             </SearchLabel>
 
-            <SearchLabel v-model:param="rut">
+            <SearchLabel v-model:param="rut" name="rut">
             Buscar por rut:
             </SearchLabel>
 
-            <SearchLabel v-model:param="direction">
+            <SearchLabel v-model:param="direction" name="direction">
             Buscar por dirección:
             </SearchLabel>
         </section>

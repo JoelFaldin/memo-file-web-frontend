@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+import { homeResponse } from '../placeholders/home';
+
 test.describe('Home page', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('http://localhost:5173');
@@ -23,26 +25,7 @@ test.describe('Home page', () => {
             await route.fulfill({
                 status: 200,
                 contentType: 'application/json',
-                body: JSON.stringify({
-                    "totalCount": [
-                        {
-                            "label": "Memorándums",
-                            "count": 1
-                        },
-                        {
-                            "label": "Fechas de pago",
-                            "count": 1
-                        },
-                        {
-                            "label": "Locales únicos",
-                            "count": 1
-                        },
-                        {
-                            "label": "Representantes únicos",
-                            "count": 1
-                        }
-                    ]
-                })
+                body: JSON.stringify(homeResponse)
             })
         })
 
