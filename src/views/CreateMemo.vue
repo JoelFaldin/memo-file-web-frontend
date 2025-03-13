@@ -3,7 +3,7 @@ import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
 import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
-import { parseForm } from '@/composables/stringUtils/checkForm';
+import { parseForm } from '@/composables/useFormSchema';
 import { useCreateMemo } from '@/composables/useMemo';
 import FormSelect from '@/components/FormSelect.vue';
 import FormInput from '@/components/FormInput.vue';
@@ -24,10 +24,10 @@ const handleSubmitData = async (event: Event) => {
         const formData = new FormData(event.target as HTMLFormElement);
         const data = Object.fromEntries(formData.entries());
         const values = {
-            capital: parseFloat(data.capital.toString()),
-            afecto: parseInt(data.afecto.toString()),
-            total: parseFloat(data.total.toString()),
-            emision: parseInt(data.emision.toString()),
+            capital: data.capital.toString(),
+            afecto: data.afecto.toString(),
+            total: data.total.toString(),
+            emision: data.emision.toString(),
             tipo: selectedValue.value,
             patente: data.patente.toString(),
             rut: data.rut.toString(),
@@ -60,7 +60,7 @@ const handleSubmitData = async (event: Event) => {
 
         loading = toast.loading("Creando memorándum...");
 
-        await mutateAsync(values);
+        await mutateAsync(res.data);
 
         toast.dismiss(loading);
         toast.success("Memorándum creado con éxito!");
@@ -208,6 +208,7 @@ const clearError = (name: string) => {
             </SplitterGroup>
 
             <Button
+                class="mx-auto w-fit"
                 variant="outline"
                 size="lg"
                 :disabled="isPending"

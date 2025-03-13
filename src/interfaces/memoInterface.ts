@@ -18,6 +18,13 @@ export interface NewMemoInterface {
     rut_representante?: string,
 }
 
+export interface NewMemoStrings extends Omit<NewMemoInterface, "capital" | "afecto" | "total" | "emision"> {
+    capital: string,
+    afecto: string,
+    total: string,
+    emision: string
+}
+
 export interface Memo {
     afecto: number;
     agtp: string;
