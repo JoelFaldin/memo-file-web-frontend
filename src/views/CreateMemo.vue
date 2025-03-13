@@ -10,6 +10,8 @@ import FormInput from '@/components/FormInput.vue';
 import { Button } from '@/components/ui/button';
 
 const selectedValue = ref('');
+const resetKey = ref(0);
+const form = ref<HTMLFormElement | null>(null);
 const formErrors = ref<Record<string, string>>({});
 
 const { mutateAsync, isPending } = useCreateMemo();
@@ -63,9 +65,11 @@ const handleSubmitData = async (event: Event) => {
         toast.dismiss(loading);
         toast.success("Memorándum creado con éxito!");
 
+        selectedValue.value = '';
+        resetKey.value++;
+        form.value?.reset();
     } catch (error) {
         toast.error("Ha ocurrido un error al crear el memorándum.");
-
         console.error(error);
     }
 }
@@ -82,7 +86,7 @@ const clearError = (name: string) => {
         <div class="flex flex-col gap-y-8 items-center bg-card rounded-lg p-6 m-2 shadow-sm w-full bg-white dark:bg-inherit">
         <h3 class="text-2xl font-bold text-black dark:text-white">Guardar un nuevo memorándum</h3>
 
-        <form class="flex flex-col gap-y-4 w-full" @submit.prevent="handleSubmitData">
+        <form ref="form" class="flex flex-col gap-y-4 w-full" @submit.prevent="handleSubmitData">
             <SplitterGroup
             id="group1"
             direction="horizontal"
@@ -106,7 +110,7 @@ const clearError = (name: string) => {
                     </span>
                     <span class="flex flex-col gap-y-4 w-11/12 m-auto">
                         <span class="flex flex-col gap-y-1">
-                            <FormSelect v-model:tipo="selectedValue" @clear:error="(name) => clearError(name)" />
+                            <FormSelect v-model:tipo="selectedValue" :reset-key="resetKey" @clear:error="(name) => clearError(name)" />
                             <p v-if="formErrors.tipo" class="text-red-500 text-sm">{{ formErrors.tipo }}</p>
                         </span>
 
