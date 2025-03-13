@@ -3,27 +3,25 @@ import { SplitterGroup, SplitterPanel, SplitterResizeHandle } from 'radix-vue';
 import { toast } from 'vue-sonner';
 import { ref } from 'vue';
 
-// import { reFormatRut } from '@/composables/stringUtils/formatRut';
 import { parseForm } from '@/composables/stringUtils/checkForm';
 import { useCreateMemo } from '@/composables/useMemo';
 import FormSelect from '@/components/FormSelect.vue';
 import FormInput from '@/components/FormInput.vue';
 import { Button } from '@/components/ui/button';
 
-const selectedValue = ref();
+const selectedValue = ref('');
 const formErrors = ref<Record<string, string>>({});
 
 const { mutateAsync, isPending } = useCreateMemo();
 
 const handleSubmitData = async (event: Event) => {
     event = event as SubmitEvent;
-    let loading = null
+    let loading = null;
 
     try {
         const formData = new FormData(event.target as HTMLFormElement);
         const data = Object.fromEntries(formData.entries());
-
-        const res = parseForm({
+        const values = {
             capital: parseFloat(data.capital.toString()),
             afecto: parseInt(data.afecto.toString()),
             total: parseFloat(data.total.toString()),
@@ -41,7 +39,9 @@ const handleSubmitData = async (event: Event) => {
             agtp: data.agtp?.toString(),
             nombre_representante: data.nombreRepresentante.toString(),
             rut_representante: data.rutRepresentante.toString()
-        });
+        }
+
+        const res = parseForm(values);
 
         if (!res.success) {
             formErrors.value = {};
@@ -58,25 +58,7 @@ const handleSubmitData = async (event: Event) => {
 
         loading = toast.loading("Creando memorándum...");
 
-        // await mutateAsync({
-        //     tipo: formValues.value.tipo,
-        //     patente: formValues.value.patente,
-        //     rut: reFormatRut(formValues.value.rut),
-        //     nombre: formValues.value.nombre,
-        //     calle: formValues.value.calle,
-        //     numero: formValues.value.numero,
-        //     aclaratoria: formValues.value?.aclaratoria,
-        //     periodo: formValues.value.periodo,
-        //     capital: parseFloat(formValues.value.capital),
-        //     afecto: parseInt(formValues.value.afecto),
-        //     total: parseFloat(formValues.value.total),
-        //     emision: parseInt(formValues.value.emision),
-        //     fechaPagos: formValues.value.fechaPagos,
-        //     giro: formValues.value.giro,
-        //     agtp: formValues.value?.agtp,
-        //     nombre_representante: formValues.value.nombre,
-        //     rut_representante: formValues.value.rut,
-        // });
+        await mutateAsync(values);
 
         toast.dismiss(loading);
         toast.success("Memorándum creado con éxito!");
@@ -124,7 +106,7 @@ const clearError = (name: string) => {
                     </span>
                     <span class="flex flex-col gap-y-4 w-11/12 m-auto">
                         <span class="flex flex-col gap-y-1">
-                            <FormSelect @clear:error="(name) => clearError(name)" />
+                            <FormSelect v-model:tipo="selectedValue" @clear:error="(name) => clearError(name)" />
                             <p v-if="formErrors.tipo" class="text-red-500 text-sm">{{ formErrors.tipo }}</p>
                         </span>
 

@@ -5,21 +5,24 @@ import { Icon } from "@iconify/vue";
 const types = ["COMER", "PROFE", "INDUS", "ALCOH", "MEF"];
 
 defineProps({
-    tipo: {
-        type: String,
-        default: ''
-    },
+    tipo: String,
 })
 
-defineEmits([
-    'clear:error'
+const emit = defineEmits([
+    'clear:error',
+    'update:tipo'
 ])
+
+const select = (value: string) => {
+    emit('clear:error', 'tipo');
+    emit('update:tipo', value);
+}
 </script>
 
 <template>
     <section class="flex flex-col w-full text-black dark:text-white">
     <Label class="text-[15px] font-semibold leading-[35px] text-black dark:text-white" for="tipo">Tipo de patente</Label>
-        <SelectRoot :value="tipo || ''" @update:model-value="$emit('clear:error', 'tipo')">
+        <SelectRoot :value="tipo || ''" @update:model-value="select">
             <SelectTrigger
                 class="border b-slate-100 inline-flex min-w-[160px] items-center justify-between rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] shadow-[0_0px_5px] dark:shadow-[0_2px_10px] dark:shadow-black/10 hover:bg-gray-200 dark:hover:bg-gray-800 focus:shadow-[0_0_0_2px] focus:shadow-white dark:focus:shadow-black data-[placeholder]:text-slate-500"
             >
