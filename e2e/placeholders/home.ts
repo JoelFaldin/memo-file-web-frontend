@@ -18,3 +18,24 @@ export const homeResponse = {
         }
     ]
 }
+
+export const homeResponseAfterUpload = {
+    "totalCount": [
+        {
+            "label": "Memorándums",
+            "count": 10
+        },
+        {
+            "label": "Fechas de pago",
+            "count": 10
+        },
+        {
+            "label": "Locales únicos",
+            "count": 10
+        },
+        {
+            "label": "Representantes únicos",
+            "count": 0
+        }
+    ]
+}

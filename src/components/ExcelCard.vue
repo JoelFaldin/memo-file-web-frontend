@@ -6,6 +6,7 @@ defineProps({
     desc: String,
     disabled: Boolean,
     buttonText: String,
+    dataTestid: String
 })
 
 defineEmits([
@@ -23,6 +24,7 @@ defineEmits([
             size="lg"
             :disabled="disabled"
             @click="$emit('handle:click')"
+            :data-testid="dataTestid"
         >
             <span class="text-black dark:text-white">
                 {{  buttonText  }}

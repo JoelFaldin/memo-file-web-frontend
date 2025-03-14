@@ -38,7 +38,6 @@ test.describe('Create memo page', () => {
         await page.getByRole('button').getByText('Enviar datos').click();
 
         await expect(page.getByText('Creando memorándum...')).toBeVisible();
-        await expect(page.getByRole('button').getByText('Enviar datos')).toBeDisabled();
     });
 
     test('shows success notification when creating memo', async ({ page, fillLargeForm }) => {

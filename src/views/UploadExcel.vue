@@ -16,7 +16,7 @@ const { isLoading: isExcelDataLoading, refetch: excelDataRefetch } = useDownload
 
 const handleSubmit = async () => {
     if (!excel.value) {
-        toast.error('Debes seleccionar un archivo excel');
+        toast.warning('Debes seleccionar un archivo excel!');
         return;
     }
 
@@ -96,10 +96,10 @@ const downloadExcelData = async () => {
 
         <section class="flex flex-col items-center mt-6 gap-y-4 my-4 w-full h-20">
             <label for="file" class="w-full h-full flex flex-col my-auto border-[1px] border-dashed border-slate-500">
-            <p class="text-slate-700 dark:text-slate-300 m-auto">Seleccione el archivo excel:</p>
+                <p class="text-slate-700 dark:text-slate-300 m-auto">Seleccione el archivo excel:</p>
 
-            <p class="text-slate-700 dark:text-slate-300 m-auto" v-if="excel === null">No has seleccionado un archivo aún</p>
-            <p class="text-slate-700 dark:text-slate-300 m-auto" v-else>{{ excel.name }}</p>
+                <p class="text-slate-700 dark:text-slate-300 m-auto" v-if="excel === null">No has seleccionado un archivo aún</p>
+                <p class="text-slate-700 dark:text-slate-300 m-auto" v-else>{{ excel.name }}</p>
             </label>
             <input class="opacity-0 absolute -z-10" type="file" id="file" ref="fileInput" accept=".xls, .xlsx" @change="storeFile" />
         </section>
@@ -109,27 +109,30 @@ const downloadExcelData = async () => {
             size="lg"
             :disabled="isPending"
             @click="handleSubmit"
+            data-testid="upload-excel"
         >
             <span class="text-black dark:text-white" data-testid="excel-upload-button">
-            Subir excel
+                Subir excel
             </span>
         </Button>
         </div>
 
         <ExcelCard
-        title="Descarga la plantilla"
-        desc="Asegúrate de que la información esté correctamente formateada para guardarla en la base de datos!"
-        :disabled="isTemplateLoading"
-        button-text="Descargar plantilla"
-        @handle:click="downloadTemplate"
+            title="Descarga la plantilla"
+            desc="Asegúrate de que la información esté correctamente formateada para guardarla en la base de datos!"
+            :disabled="isTemplateLoading"
+            button-text="Descargar plantilla"
+            @handle:click="downloadTemplate"
+            data-testid="download-template"
         />
 
         <ExcelCard
-        title="Descargar excel con memos"
-        desc="Ésta acción descargará en tu equipo un archivo excel que contiene todos los datos de la base de datos!"
-        :disabled="isExcelDataLoading"
-        button-text="Descargar excel"
-        @handle:click="downloadExcelData"
+            title="Descargar excel con memos"
+            desc="Ésta acción descargará en tu equipo un archivo excel que contiene todos los datos de la base de datos!"
+            :disabled="isExcelDataLoading"
+            button-text="Descargar excel"
+            @handle:click="downloadExcelData"
+            data-testid="download-excel-data"
         />
 
     </div>
