@@ -13,3 +13,19 @@ export const formData = {
     giro: 'ABOGADO',
     agtp: '0',
 }
+
+export const wrongFormData = {
+    patente: '    ',
+    rut: '11.111.111-1',
+    name: 'test',
+    calle: 'test',
+    numero: '3000',
+    periodo: '20251S',
+    capital: '100.000',
+    afecto: '142',
+    total: '100.000',
+    emision: '0',
+    fechaPagos: '01022025',
+    giro: 'ABOGADO',
+    agtp: '0',
+}

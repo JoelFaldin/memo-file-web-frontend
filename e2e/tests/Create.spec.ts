@@ -1,5 +1,5 @@
+import { formData, wrongFormData } from '../placeholders/create';
 import { test, expect } from '../setup/fixtures';
-import { formData } from '../placeholders/create';
 
 test.describe('Create memo page', () => {
     test.beforeEach(async ({ page }) => {
@@ -60,4 +60,25 @@ test.describe('Create memo page', () => {
 
         await expect(page.getByText('Memorándum creado con éxito!')).toBeVisible();
     });
+
+    test('shows error notification when theres an error', async ({ page, fillLargeForm }) => {
+        await page.locator('section >> [role="combobox"]').click();
+        await page.locator('text=COMER').nth(1).click();
+
+        await fillLargeForm(wrongFormData);
+
+        await page.route('**/memo/create', async (route) => {
+            await route.fulfill({
+                status: 400,
+                contentType: 'application/json',
+                body: JSON.stringify({
+                    message: 'Has ingresado una fecha inválida. Debe tener el formato de dd-mm-aaaa.',
+                })
+            })
+        });
+
+        await page.getByRole('button').getByText('Enviar datos').click();
+
+        await expect(page.getByText('Ha ocurrido un error al crear el memorándum.')).toBeVisible();
+    })
 })
