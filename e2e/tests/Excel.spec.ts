@@ -80,7 +80,7 @@ test.describe('Excel page', () => {
         });
 
         test('can download excel template', async ({ page }) => {
-            await page.route('**/excel', async (route) => {
+            await page.route('**/excel/', async (route) => {
                 await route.fulfill({
                     status: 200,
                     contentType: 'application/octet-stream',
@@ -93,9 +93,25 @@ test.describe('Excel page', () => {
 
 
             await page.getByTestId('download-template').click();
-            await page.waitForEvent('download');
 
             await expect(page.getByText('Plantilla descargada!')).toBeVisible();
+        });
+
+        test('shows error if theres error', async ({ page }) => {
+            await page.route('**/excel/', async (route) => {
+                await route.fulfill({
+                    status: 500,
+                    contentType: 'application/json',
+                    body: JSON.stringify({
+                        message: 'Ha ocurrido un error intentando descargar la plantilla, inténtalo más tarde.',
+                    }),
+                })
+            });
+
+            await page.getByTestId('download-template').click();
+            await page.waitForTimeout(10000);
+
+            await expect(page.getByText('Ha ocurrido un error al intentar descargar la plantilla. Inténtalo nuevamente.')).toBeVisible();
         })
     })
 })
