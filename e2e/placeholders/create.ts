@@ -1,0 +1,15 @@
+export const formData = {
+    patente: '400111-1',
+    rut: '11.111.111-1',
+    name: 'test',
+    calle: 'test',
+    numero: '3000',
+    periodo: '20251S',
+    capital: '100.000',
+    afecto: '0',
+    total: '100.000',
+    emision: '0',
+    fechaPagos: '01-02-2025',
+    giro: 'ABOGADO',
+    agtp: '0',
+}

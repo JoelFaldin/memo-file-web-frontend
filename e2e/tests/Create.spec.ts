@@ -1,4 +1,5 @@
 import { test, expect } from '../setup/fixtures';
+import { formData } from '../placeholders/create';
 
 test.describe('Create memo page', () => {
     test.beforeEach(async ({ page }) => {
@@ -32,25 +33,31 @@ test.describe('Create memo page', () => {
         await page.locator('section >> [role="combobox"]').click();
         await page.locator('text=COMER').nth(1).click();
 
-        await fillLargeForm({
-            patente: '400111-1',
-            rut: '11.111.111-1',
-            name: 'test',
-            calle: 'test',
-            numero: '3000',
-            periodo: '20251S',
-            capital: '100.000',
-            afecto: '0',
-            total: '100.000',
-            emision: '0',
-            fechaPagos: '01-02-2025',
-            giro: 'ABOGADO',
-            agtp: '0',
-        });
+        await fillLargeForm(formData);
 
         await page.getByRole('button').getByText('Enviar datos').click();
 
         await expect(page.getByText('Creando memorándum...')).toBeVisible();
         await expect(page.getByRole('button').getByText('Enviar datos')).toBeDisabled();
-    })
+    });
+
+    test('shows success notification when creating memo', async ({ page, fillLargeForm }) => {
+        await page.locator('section >> [role="combobox"]').click();
+        await page.locator('text=COMER').nth(1).click();
+
+        await fillLargeForm(formData);
+
+        await page.route('**/memo/create', async (route) => {
+            await route.fulfill({
+                status: 201,
+                contentType: 'application/json',
+                body: JSON.stringify({
+                    message: 'Memo created successfully',
+                })
+            })
+        });
+        await page.getByRole('button').getByText('Enviar datos').click();
+
+        await expect(page.getByText('Memorándum creado con éxito!')).toBeVisible();
+    });
 })
