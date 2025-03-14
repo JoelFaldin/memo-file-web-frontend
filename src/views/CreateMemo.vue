@@ -52,7 +52,7 @@ const handleSubmitData = async (event: Event) => {
                 formErrors.value[field] = error.message;
             });
 
-            toast.error("Por favor, revisa los campos marcados en rojo.");
+            toast.warning("Por favor, revisa los campos marcados en rojo.");
             return;
         } else {
             formErrors.value = {};
