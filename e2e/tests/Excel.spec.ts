@@ -112,6 +112,46 @@ test.describe('Excel page', () => {
             await page.waitForTimeout(10000);
 
             await expect(page.getByText('Ha ocurrido un error al intentar descargar la plantilla. Inténtalo nuevamente.')).toBeVisible();
-        })
+        });
+    });
+
+    test.describe('download excel with data', () => {
+        test.beforeEach(async ({ page }) => {
+            await page.goto('http://localhost:5173/excel');
+        });
+
+        test('can download excel', async ({ page }) => {
+            await page.route('**/excel/data', async (route) => {
+                await route.fulfill({
+                    status: 200,
+                    contentType: 'application/octet-stream',
+                    headers: {
+                        'Content-Disposition': 'attachment; filename="excel_template.xlsx"',
+                    },
+                    body: 'Mock excel content'
+                })
+            });
+
+            await page.getByTestId('download-excel-data').click();
+
+            await expect(page.getByText('Excel con memorándums descargado con éxito!')).toBeVisible();
+        });
+
+        test('shows error if theres any error', async ({ page }) => {
+            await page.route('**/excel/data', async (route) => {
+                await route.fulfill({
+                    status: 500,
+                    contentType: 'application/json',
+                    body: JSON.stringify({
+                        message: 'Ha ocurrido un error intentando descargar el excel con datos, inténtalo más tarde.',
+                    }),
+                })
+            });
+
+            await page.getByTestId('download-excel-data').click();
+            await page.waitForTimeout(10000);
+
+            await expect(page.getByText('Ha ocurrido un error al intentar descargar el archivo. Revisa tu conexión e inténtalo más tarde.')).toBeVisible();
+        });
     })
 })
