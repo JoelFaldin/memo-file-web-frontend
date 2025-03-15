@@ -1,39 +1,82 @@
-# memo-file-web-frontend
+# Memorandum File web 📁 🗃️
 
-This template should help get you started developing with Vue 3 in Vite.
+Hello there! 👋
 
-## Recommended IDE Setup
+<div align="center">
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+  <img src="https://c4.wallpaperflare.com/wallpaper/128/531/796/minimalism-kurzgesagt-earth-wallpaper-preview.jpg" width="700" />
 
-## Type Support for `.vue` Imports in TS
+</div>
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+This mini project simulates an enterprise software that works with excel files! I made it for an internship in my local area.
+It also helped me learn a bit of [VueJS](https://vuejs.org)!
 
-## Customize configuration
+## Functionalities
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- 🏠 Home page:
+  - General data review (amount of rows per table in the database).
+- 🔍 Search page:
+  - Search a memorandum via its role, rut or direction!
+- ➕ Create memo page:
+  - Big form, you can add a single memorandum and save it in the database! 🚀
+- 📊 Excel management page:
+  - Upload an excel file with data to save in the database!
+  - Download a template file.
+  - Download an excel file with all the data from the database!
 
-## Project Setup
+## Stack used
 
-```sh
-pnpm install
+<div align="center">
+
+  ![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
+  ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+  ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+  ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+  ![Vitest](https://img.shields.io/badge/-Vitest-252529?style=for-the-badge&logo=vitest&logoColor=FCC72B)
+  ![Playwright](https://img.shields.io/badge/-playwright-%232EAD33?style=for-the-badge&logo=playwright&logoColor=white)
+  ![PNPM](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)
+
+</div>
+
+## Run locally
+
+You can run this project locally, follow these steps (and don't forget to clone the [backend](https://github.com/JoelFaldin/memo-file-web-backend) app too):
+
+1- Clone the repo in your machine:
+
+```bash
+  git clone https://github.com/JoelFaldin/memo-file-web-frontend
 ```
 
-### Compile and Hot-Reload for Development
+2- Go to the folder and install dependencies:
 
-```sh
-pnpm dev
+```bash
+  cd memo-file-web-frontend
+  pnpm install
 ```
 
-### Type-Check, Compile and Minify for Production
+3- Start the project in development mode:
 
-```sh
-pnpm build
+```bash
+  pnpm run dev
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+4- Run unit tests:
 
-```sh
-pnpm lint
+```bash
+  pnpm run test
 ```
+
+5- Run end-to-end tests:
+
+```bash
+  pnpm run test:e2e
+```
+
+## Thanks for visiting! ✨🌌
+
+<div align="center">
+
+  <img src="https://wallpapercave.com/wp/wp4795342.jpg" width="700" />
+
+</div>
